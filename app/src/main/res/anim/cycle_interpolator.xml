@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><!--<interpolator xmlns:android="http://schemas.android.com/apk/res/android">这部分代码加上会报错误。但对程序运行无影响
+为了好看，注释了这段代码。若对功能有影响，可去除注释。-->
+<cycleInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:cycles="1" /><!--</interpolator>-->

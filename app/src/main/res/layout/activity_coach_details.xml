@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/top" />
+
+    <fragment
+        android:id="@+id/fragment"
+        class="rxh.shanks.fragment.BannerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <rxh.shanks.customview.CircleImageView
+            android:id="@+id/head_portrait"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/head_portrait"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/coach_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="阿三教练"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/coaching_years"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="执教20年"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/club_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="美年一点"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <rxh.shanks.customview.RatingBar
+            android:id="@+id/coach_ratingbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:clickable="false"
+            app:halfstart="true"
+            app:starCount="5"
+            app:starEmpty="@drawable/ic_love_empty"
+            app:starFill="@drawable/ic_love_fill"
+            app:starImageHeight="20dp"
+            app:starImagePadding="6dp"
+            app:starImageWidth="20dp" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:tabIndicatorColor="@color/red"
+        app:tabSelectedTextColor="@color/red"
+        app:tabTextColor="@color/black" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
+
+</LinearLayout>
