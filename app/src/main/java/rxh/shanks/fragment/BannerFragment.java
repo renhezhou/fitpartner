@@ -49,6 +49,7 @@ public class BannerFragment extends Fragment {
     }
 
     public void onEventMainThread(CurriculumEventBusEntity curriculumEventBusEntity) {
+        convenientBanner.notifyDataSetChanged();
         urls = curriculumEventBusEntity.getUrls();
         initview();
     }
@@ -104,7 +105,7 @@ public class BannerFragment extends Fragment {
                     .with(context)
                     .load(urls.get(position))
                     .centerCrop()
-                    .placeholder(R.drawable.ic_launcher)
+                    // .placeholder(R.drawable.ic_launcher)
                     .crossFade()
                     .into(imageView);
         }

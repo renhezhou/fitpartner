@@ -25,7 +25,7 @@ import rxh.shanks.view.SystemNextView;
 /**
  * Created by Administrator on 2016/8/19.
  */
-public class SystemSecondActivity extends BaseActivity implements SystemNextView, SystemDialogFragment.SystemDialogFragmentListener {
+public class SystemSecondActivity extends BaseActivity implements SystemNextView {
 
     @Bind(R.id.back)
     LinearLayout back;
@@ -34,10 +34,8 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
     @Bind(R.id.lv)
     ListView lv;
 
-    int delPosition;
     String type;
     private List<SystemLVEntity> data = new ArrayList<>();
-    SystemDialogFragment systemDialogFragment;
     SystemSecondAdapter systemSecondAdapter;
     SystemNextPresenter systemNextPresenter;
 
@@ -54,22 +52,11 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
         setContentView(R.layout.activity_system_second);
         ButterKnife.bind(this);
         back.setOnClickListener(this);
-        title.setText(CheckUtils.gettype(type));
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                delPosition = position;
-                if (systemDialogFragment == null) {
-                    systemDialogFragment = new SystemDialogFragment();
-                }
-                systemDialogFragment.show(getSupportFragmentManager(), "systemDialogFragment");
-                return false;
-            }
-        });
+        title.setText(type);
     }
 
     public void initdata() {
-        systemNextPresenter.getMsg(type);
+        systemNextPresenter.getMsg(CheckUtils.getbacktype(type));
     }
 
     @Override
@@ -81,6 +68,16 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
             default:
                 break;
         }
+    }
+
+    @Override
+    public void show() {
+        loading("加载中...", "true");
+    }
+
+    @Override
+    public void hide() {
+        dismiss();
     }
 
     @Override
@@ -98,10 +95,5 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
     @Override
     public void delSuccess() {
 
-    }
-
-    @Override
-    public void del(String position) {
-        systemNextPresenter.delMsg(String.valueOf(delPosition));
     }
 }

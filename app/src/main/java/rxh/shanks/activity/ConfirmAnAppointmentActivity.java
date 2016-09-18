@@ -24,6 +24,7 @@ import rxh.shanks.customview.CircleImageView;
 import rxh.shanks.customview.RatingBar;
 import rxh.shanks.entity.ConfirmAnAppointmentEventBusEntity;
 import rxh.shanks.entity.CurriculumEventBusEntity;
+import rxh.shanks.entity.NotMakeAnAppointmentEventBusEntity;
 import rxh.shanks.fragment.CalendarFragment;
 import rxh.shanks.fragment.ConfirmAnAppointmentFragment;
 import rxh.shanks.presenter.ConfirmAnAppointmentActivityPresenter;
@@ -145,6 +146,8 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     @Override
     public void ConfirmAnAppointment() {
         Toast.makeText(getApplicationContext(), "预约成功", Toast.LENGTH_LONG).show();
+        //用eb发送消息到上一级界面通知数据更新
+        EventBus.getDefault().post(new NotMakeAnAppointmentEventBusEntity(""));
         finish();
     }
 }

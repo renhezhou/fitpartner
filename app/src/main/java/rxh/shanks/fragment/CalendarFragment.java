@@ -46,8 +46,10 @@ public class CalendarFragment extends DialogFragment {
             @Override
             public void onDatePicked(String date) {
                 CalendarFragmentListener listener = (CalendarFragmentListener) getActivity();
-                listener.checkdate(date);
-                dismiss();
+                if (listener != null) {
+                    listener.checkdate(date);
+                    dismiss();
+                }
             }
         });
     }

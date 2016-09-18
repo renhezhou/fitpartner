@@ -131,20 +131,22 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
         }
         //fitTarget格式为1_4类型的
         String str = MyApplication.fitTarget;
-        String[] strs = str.split("_");
-        for (int i = 0; i < strs.length; i++) {
-            if (strs[i].equals("1")) {
-                muscle_flag = true;
-                muscle.setBackground(getResources().getDrawable(R.drawable.muscle_down));
-                muscle.setTextColor(getResources().getColor(R.color.white));
-            } else if (strs[i].equals("2")) {
-                fat_flag = true;
-                fat.setBackground(getResources().getDrawable(R.drawable.fat_down));
-                fat.setTextColor(getResources().getColor(R.color.white));
-            } else if (strs[i].equals("3")) {
-                shaping_flag = true;
-                shaping.setBackground(getResources().getDrawable(R.drawable.shaping_down));
-                shaping.setTextColor(getResources().getColor(R.color.white));
+        if (str != null) {
+            String[] strs = str.split("_");
+            for (int i = 0; i < strs.length; i++) {
+                if (strs[i].equals("1")) {
+                    muscle_flag = true;
+                    muscle.setBackground(getResources().getDrawable(R.drawable.muscle_down));
+                    muscle.setTextColor(getResources().getColor(R.color.white));
+                } else if (strs[i].equals("2")) {
+                    fat_flag = true;
+                    fat.setBackground(getResources().getDrawable(R.drawable.fat_down));
+                    fat.setTextColor(getResources().getColor(R.color.white));
+                } else if (strs[i].equals("3")) {
+                    shaping_flag = true;
+                    shaping.setBackground(getResources().getDrawable(R.drawable.shaping_down));
+                    shaping.setTextColor(getResources().getColor(R.color.white));
+                }
             }
         }
     }

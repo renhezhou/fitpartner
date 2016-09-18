@@ -56,6 +56,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //把activity放入activity栈里面
+        MyApplication application = (MyApplication) this.getApplication();
+        application.addActivity(this);
         //初始化极光推送并设置tag
         JPushInterface.init(getApplicationContext());
         JPushInterface.setAlias(getApplicationContext(), MyApplication.userID, new TagAliasCallback() {
@@ -205,7 +208,7 @@ public class MainActivity extends BaseActivity {
                  */
                 @Override
                 public void onSuccess(String userid) {
-                    
+
                 }
 
                 /**

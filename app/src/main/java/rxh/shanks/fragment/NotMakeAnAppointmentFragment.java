@@ -23,6 +23,7 @@ import rxh.shanks.adapter.NotMakeAnAppointmentAdapter;
 import rxh.shanks.customview.ListViewForScrollView;
 import rxh.shanks.entity.MyPrivateEducationEventBusEntity;
 import rxh.shanks.entity.NotMakeAnAppointmentEntity;
+import rxh.shanks.entity.NotMakeAnAppointmentEventBusEntity;
 import rxh.shanks.presenter.NotMakeAnAppointmentPresenter;
 import rxh.shanks.utils.MyApplication;
 import rxh.shanks.view.NotMakeAnAppointmentView;
@@ -39,7 +40,7 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
     List<NotMakeAnAppointmentEntity> data = new ArrayList<>();
     NotMakeAnAppointmentAdapter notMakeAnAppointmentAdapter;
     public String flag;//1表示是从我的私教跳转过来的 ，0表示从我的团课跳转过来的
-    String coachID, coachName, head_path, evaluate, club_name, when_long;
+    String coachID, coachName, head_path, evaluate, club_name, when_long, time;
     NotMakeAnAppointmentPresenter notMakeAnAppointmentPresenter;
 
     @Override
@@ -57,6 +58,7 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
         EventBus.getDefault().unregister(this);// 反注册EventBus
     }
 
+    //获取从activity传过来的数据
     public void onEventMainThread(MyPrivateEducationEventBusEntity myPrivateEducationEventBusEntity) {
         flag = myPrivateEducationEventBusEntity.getFlag();
         coachID = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getCoachID();
@@ -66,6 +68,15 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
         club_name = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getClubName();
         when_long = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getTeachTime();
         initview();
+        if (flag.equals("1")) {
+            notMakeAnAppointmentPresenter.getMyUnorderPrivateLesson(coachID);
+        } else {
+            notMakeAnAppointmentPresenter.getMyUnorderTeamLesson(coachID);
+        }
+    }
+
+    //获取下一级界面发送来的消息，更新数据
+    public void onEventMainThread(NotMakeAnAppointmentEventBusEntity notMakeAnAppointmentEventBusEntity) {
         if (flag.equals("1")) {
             notMakeAnAppointmentPresenter.getMyUnorderPrivateLesson(coachID);
         } else {
@@ -95,6 +106,7 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
                     intent.putExtra("evaluate", evaluate);
                     intent.putExtra("club_name", club_name);
                     intent.putExtra("when_long", when_long);
+                    intent.putExtra("time", data.get(position).getTime());
                     startActivity(intent);
                 } else {
                     MyApplication.lessonID = data.get(position).getLessonID();
@@ -122,11 +134,16 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        if (flag.equals("1")) {
+            notMakeAnAppointmentPresenter.getMyUnorderPrivateLesson(coachID);
+        } else {
+            notMakeAnAppointmentPresenter.getMyUnorderTeamLesson(coachID);
+        }
     }
 
     @Override
     public void getMyUnorderPrivateLesson(List<NotMakeAnAppointmentEntity> notMakeAnAppointmentEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data.clear();
         data = notMakeAnAppointmentEntityList;
         notMakeAnAppointmentAdapter = new NotMakeAnAppointmentAdapter(getActivity(), data);

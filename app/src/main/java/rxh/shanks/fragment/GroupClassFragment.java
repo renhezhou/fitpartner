@@ -71,13 +71,14 @@ public class GroupClassFragment extends Fragment implements OnRefreshListener, O
         });
     }
 
-    public void initdata(){
+    public void initdata() {
         coachDetailsPresenter.getTeamLesson();
     }
 
 
     @Override
     public void getPrivateLessongetTeamLesson(List<CoachDetailsEntity> coachDetailsEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data = coachDetailsEntityList;
         coachDetailsAdapter = new CoachDetailsAdapter(getActivity(), data);
         lv.setAdapter(coachDetailsAdapter);
@@ -91,7 +92,7 @@ public class GroupClassFragment extends Fragment implements OnRefreshListener, O
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        initdata();
     }
 
 }

@@ -91,5 +91,28 @@ public class CheckUtils {
         return result;
     }
 
-
+    //判断是哪种类型的提醒
+    public static String getbacktype(String type) {
+        String result = null;
+        if (type.equals("上课提醒")) {
+            result = "RemindLessonToUser";
+        } else if (type.equals("教练代约团课")) {
+            result = "ReplaceGroupClassToUser";
+        } else if (type.equals("教练代约私教课")) {
+            result = "ReplaceOrderLessonToUser";
+        } else if (type.equals("会员卡即将到期")) {
+            result = "CardCloseExpiredToUser";
+        } else if (type.equals("新增优惠券")) {
+            result = "SendCouponToUser";
+        } else if (type.equals("课程扣除提醒")) {
+            result = "DeductionLessonToUser";
+        } else if (type.equals("场馆通知")) {
+            result = "NormalMessageToUser";
+        } else if (type.equals("场馆活动")) {
+            result = "EventMessageToUser";
+        } else if (type.equals("系统通知")) {
+            result = "DevelopSystemMessage";
+        }
+        return result;
+    }
 }

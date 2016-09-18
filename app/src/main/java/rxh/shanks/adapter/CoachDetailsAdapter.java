@@ -71,7 +71,7 @@ public class CoachDetailsAdapter extends BaseAdapter {
                 .with(context)
                 .load(data.get(position).getLogo())
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher)
+                //.placeholder(R.drawable.ic_launcher)
                 .crossFade()
                 .into(holder.img);
         holder.project.setText(data.get(position).getCoachName());

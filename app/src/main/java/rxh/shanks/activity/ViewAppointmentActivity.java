@@ -66,13 +66,15 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //00:完成未评价  01:完成已评价  10:预约中 11:代约中
                 if (data.get(position).getState().equals("00")) {
-                    Intent intent = new Intent();
-                    intent.setClass(getApplicationContext(), EvaluateActivity.class);
-                    intent.putExtra("coachID", coachID);
-                    intent.putExtra("appointmentID", data.get(position).getAppointmentID());
-                    intent.putExtra("head_path", head_path);
-                    intent.putExtra("name", data.get(position).getLessonName());
-                    startActivity(intent);
+                    if (head_path != null) {
+                        Intent intent = new Intent();
+                        intent.setClass(getApplicationContext(), EvaluateActivity.class);
+                        intent.putExtra("coachID", coachID);
+                        intent.putExtra("appointmentID", data.get(position).getAppointmentID());
+                        intent.putExtra("head_path", head_path);
+                        intent.putExtra("name", data.get(position).getLessonName());
+                        startActivity(intent);
+                    }
                 } else if (data.get(position).getState().equals("10")) {
                     viewAppointmentPresenter.cancelBespokeLesson(data.get(position).getAppointmentID());
                 } else if (data.get(position).getState().equals("11")) {
@@ -100,7 +102,7 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        viewAppointmentPresenter.getOrderLesson(lessonID);
     }
 
     @Override
@@ -115,6 +117,7 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
 
     @Override
     public void getOrderLesson(List<ViewAppointmentEntity> viewAppointmentEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data.clear();
         data = viewAppointmentEntityList;
         viewAppointmentAdapter = new ViewAppointmentAdapter(ViewAppointmentActivity.this, data);

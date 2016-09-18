@@ -8,6 +8,7 @@ public class SystemLVEntity {
     private String type;
     private String content;
     private String time;
+    private String lessonID;
 
     public String getType() {
         return type;
@@ -31,5 +32,13 @@ public class SystemLVEntity {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getLessonID() {
+        return lessonID;
+    }
+
+    public void setLessonID(String lessonID) {
+        this.lessonID = lessonID;
     }
 }

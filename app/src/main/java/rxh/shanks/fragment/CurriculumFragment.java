@@ -3,6 +3,7 @@ package rxh.shanks.fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
     private ScrollView scrollView;
     private ListViewForScrollView lv;
     private TextView peopleandtime, more, club_name, club_profile, name, view_free_courses, booking_group_course;
-    private ImageView add, chat;
+    private ImageView add, dadianhua, chat;
     private CircleImageView head_portrait;
     private LinearLayout scan, check_to;
     private List<BrandGymPaidEntity> data = new ArrayList<>();
@@ -72,7 +74,6 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
 
     List<BrandInfoEntity> brandInfoEntityList = new ArrayList<>();
     ConsultantEntity consultantEntity = new ConsultantEntity();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
         lv = (ListViewForScrollView) view.findViewById(R.id.lv);
         lv.setFocusable(false);
         add = (ImageView) view.findViewById(R.id.add);
+        dadianhua = (ImageView) view.findViewById(R.id.dadianhua);
         chat = (ImageView) view.findViewById(R.id.chat);
         club_name = (TextView) view.findViewById(R.id.club_name);
         club_profile = (TextView) view.findViewById(R.id.club_profile);
@@ -102,6 +104,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
         view_free_courses = (TextView) view.findViewById(R.id.view_free_courses);
         booking_group_course = (TextView) view.findViewById(R.id.booking_group_course);
         add.setOnClickListener(this);
+        dadianhua.setOnClickListener(this);
         chat.setOnClickListener(this);
         more.setOnClickListener(this);
         view_free_courses.setOnClickListener(this);
@@ -136,7 +139,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        initdata();
     }
 
     @Override
@@ -178,6 +181,12 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
                 //启动会话界面
                 if (RongIM.getInstance() != null)
                     RongIM.getInstance().startPrivateChat(getActivity(), consultantEntity.getIdsales(), consultantEntity.getName());
+                break;
+            case R.id.dadianhua:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + consultantEntity.getPhone()));
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -248,7 +257,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
             if (CheckUtils.isinstallbyread("com.autonavi.minimap")) {
                 startActivity(intent); //启动调用
             } else {
-                Toast.makeText(getActivity(), "没有安装高德地图客户端", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "没有安装高德地图客户端", Toast.LENGTH_SHORT).show();
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -257,6 +266,8 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
 
     @Override
     public void getBrandGymPaid(List<BrandGymPaidEntity> brandGymPaidEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
+        data.clear();
         data = brandGymPaidEntityList;
         curriculumAdapter = new CurriculumAdapter(getActivity(), data);
         lv.setAdapter(curriculumAdapter);
@@ -266,18 +277,20 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
     @Override
     public void getConsultant(ConsultantEntity consultantEntity) {
         this.consultantEntity = consultantEntity;
-        Glide
-                .with(getActivity())
+        Picasso.with(getActivity())
                 .load(consultantEntity.getPic())
-                .centerCrop()
-//                .placeholder(R.drawable.ic_launcher)
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
+        name.setText(MyApplication.nickName);
+        club_name.setText(MyApplication.currentClubName);
         name.setText(consultantEntity.getName());
     }
 
     @Override
     public void getBrandInfo(List<BrandInfoEntity> brandInfoEntity) {
+        swipeToLoadLayout.setRefreshing(false);
+        brandInfoEntityList.clear();
         brandInfoEntityList = brandInfoEntity;
         club_name.setText(brandInfoEntityList.get(0).getClubName());
         if (brandInfoEntityList.get(0).getClubIntroduce() != null) {

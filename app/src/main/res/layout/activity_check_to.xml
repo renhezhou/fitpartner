@@ -13,14 +13,6 @@
         android:layout_marginBottom="60dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="30秒内有效"
-            android:textColor="@color/red"
-            android:textSize="14sp" />
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,15 +24,15 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_margin="20dp"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY" />
         </RelativeLayout>
 
         <Button
             android:id="@+id/click_refresh"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
             android:background="@drawable/activity_check_to_button_shape"
             android:text="点击刷新"
             android:textColor="@color/white" />

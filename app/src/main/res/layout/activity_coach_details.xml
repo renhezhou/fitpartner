@@ -65,9 +65,10 @@
             app:starCount="5"
             app:starEmpty="@drawable/ic_love_empty"
             app:starFill="@drawable/ic_love_fill"
-            app:starImageHeight="20dp"
-            app:starImagePadding="6dp"
-            app:starImageWidth="20dp" />
+            app:starHalf="@drawable/ic_love_empty"
+            app:starImageHeight="10dp"
+            app:starImagePadding="4dp"
+            app:starImageWidth="10dp" />
 
     </RelativeLayout>
 

@@ -33,12 +33,10 @@
             <rxh.shanks.customview.ListViewForScrollView
                 android:id="@+id/lv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:listSelector="@color/white" />
 
         </LinearLayout>
     </ScrollView>
 
-    <include
-        android:id="@id/swipe_load_more_footer"
-        layout="@layout/layout_google_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

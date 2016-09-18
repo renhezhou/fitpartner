@@ -56,9 +56,9 @@
                 app:starCount="5"
                 app:starEmpty="@drawable/ic_love_empty"
                 app:starFill="@drawable/ic_love_fill"
-                app:starImageHeight="40dp"
-                app:starImagePadding="20dp"
-                app:starImageWidth="40dp" />
+                app:starImageHeight="20dp"
+                app:starImagePadding="10dp"
+                app:starImageWidth="20dp" />
 
 
             <TextView
@@ -79,9 +79,9 @@
                 app:starCount="5"
                 app:starEmpty="@drawable/ic_love_empty"
                 app:starFill="@drawable/ic_love_fill"
-                app:starImageHeight="40dp"
-                app:starImagePadding="20dp"
-                app:starImageWidth="40dp" />
+                app:starImageHeight="20dp"
+                app:starImagePadding="10dp"
+                app:starImageWidth="20dp" />
 
 
             <TextView

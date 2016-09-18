@@ -10,7 +10,10 @@ import android.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import rxh.shanks.activity.R;
+import rxh.shanks.entity.CurriculumEventBusEntity;
+import rxh.shanks.entity.SystemEventBusEntity;
 
 /**
  * Created by Administrator on 2016/8/18.
@@ -22,13 +25,7 @@ public class SystemDialogFragment extends DialogFragment {
     @Bind(R.id.confirm)
     Button confirm;
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    public interface SystemDialogFragmentListener {
+    public interface SystemDialogFragmentSystemListener {
         void del(String position);
     }
 
@@ -43,6 +40,12 @@ public class SystemDialogFragment extends DialogFragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     public void initview() {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,8 +56,7 @@ public class SystemDialogFragment extends DialogFragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemDialogFragmentListener listener = (SystemDialogFragmentListener) getActivity();
-                listener.del("");
+                EventBus.getDefault().post(new SystemEventBusEntity(""));
                 dismiss();
             }
         });

@@ -44,7 +44,8 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
     String date;
     PrivateEducationCoursePresenter privateEducationCoursePresenter;
 
-    int positionflag = -1, restTime;
+    int positionflag = -1;
+    String time;
 
     List<DataSouceCoachEntity> data = new ArrayList<>();
     List<DataSouceCoachEntity> coachdata = new ArrayList<>();
@@ -55,9 +56,10 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
     }
 
 
-    public static PrivateEducationCourseFragment newInstance(String date) {
+    public static PrivateEducationCourseFragment newInstance(String date, String time) {
         Bundle args = new Bundle();
         args.putString("date", date);
+        args.putString("time", time);
         PrivateEducationCourseFragment pageFragment = new PrivateEducationCourseFragment();
         pageFragment.setArguments(args);
         return pageFragment;
@@ -68,6 +70,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
         view = inflater.inflate(R.layout.fragment_private_education_course, null);
         privateEducationCoursePresenter = new PrivateEducationCoursePresenter(this);
         date = getArguments().getString("date");
+        time = getArguments().getString("time");
         ButterKnife.bind(this, view);
         initview();
         initdata();
@@ -79,7 +82,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
             @Override
             public void onClick(View v) {
                 if (positionflag != -1) {
-                    privateEducationCoursePresenter.bespokeLesson(CreatTime.qingqiu(date, data.get(positionflag).getTime(), restTime));
+                    privateEducationCoursePresenter.bespokeLesson(CreatTime.qingqiu(date, data.get(positionflag).getTime(), Integer.parseInt(time)));
                 } else {
                     Toast.makeText(getActivity(), "请选择预约时间", Toast.LENGTH_LONG).show();
                 }
@@ -121,7 +124,6 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
         if (GetHoldingTimedata.get(0).getIsRest().equals("0")) {
             //教练工作日
             privateEducationCoursePresenter.getUserHoldingTime(date);
-            restTime = Integer.parseInt(GetHoldingTimedata.get(0).getRestTime());
         } else if (GetHoldingTimedata.get(0).getIsRest().equals("1")) {
             //教练休息日
         }
@@ -133,8 +135,10 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
         //教练工作时间表生成方式
         data = PrivateEducationCourseFragmentDataSouceUtils.creatcoachdata(GetHoldingTimedata.get(0).getWorkTime(), GetHoldingTimedata.get(0).getRestTime());
         //教练已被占时间表
-        for (int i = 0; i < GetHoldingTimedata.get(0).getHoldTime().size(); i++) {
-            coachdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(GetHoldingTimedata.get(0).getHoldTime().get(i), GetHoldingTimedata.get(0).getRestTime()));
+        if (GetHoldingTimedata.get(0).getHoldTime() != null) {
+            for (int i = 0; i < GetHoldingTimedata.get(0).getHoldTime().size(); i++) {
+                coachdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(GetHoldingTimedata.get(0).getHoldTime().get(i), GetHoldingTimedata.get(0).getRestTime()));
+            }
         }
 
         for (int i = 0; i < data.size(); i++) {
@@ -149,8 +153,10 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
 
         }
         //用户已被占用时间表
-        for (int i = 0; i < privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().size(); i++) {
-            userdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().get(i), "1"));
+        if (privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime() != null) {
+            for (int i = 0; i < privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().size(); i++) {
+                userdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().get(i), "1"));
+            }
         }
 
         for (int i = 0; i < data.size(); i++) {
@@ -230,7 +236,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
                 holder.time.setBackgroundColor(context.getResources().getColor(R.color.red));
                 holder.time.setTextColor(context.getResources().getColor(R.color.white));
             } else {
-                //0表示用户和教练都有空，1表示教练没空，2表示用户没空，3表示教练和用户都没空,4表示被选中
+                //0表示用户和教练都有空，1表示教练没空，2表示用户没空，3表示时间已经过去了,4表示被选中
                 if (data.get(position).getFlag() == 0) {
                     holder.time.setBackgroundColor(context.getResources().getColor(R.color.white));
                     holder.time.setTextColor(context.getResources().getColor(R.color.red));
@@ -238,6 +244,9 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
                     holder.time.setBackgroundColor(context.getResources().getColor(R.color.text_not_selected));
                     holder.time.setTextColor(context.getResources().getColor(R.color.white));
                 } else if (data.get(position).getFlag() == 2) {
+                    holder.time.setBackgroundColor(context.getResources().getColor(R.color.text_not_selected));
+                    holder.time.setTextColor(context.getResources().getColor(R.color.white));
+                } else if (data.get(position).getFlag() == 3) {
                     holder.time.setBackgroundColor(context.getResources().getColor(R.color.text_not_selected));
                     holder.time.setTextColor(context.getResources().getColor(R.color.white));
                 }

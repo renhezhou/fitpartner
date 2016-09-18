@@ -79,6 +79,7 @@ public class PrivateEducationFragment extends Fragment implements OnRefreshListe
 
     @Override
     public void getPrivateLessongetTeamLesson(List<CoachDetailsEntity> coachDetailsEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data = coachDetailsEntityList;
         coachDetailsAdapter = new CoachDetailsAdapter(getActivity(), data);
         lv.setAdapter(coachDetailsAdapter);
@@ -92,7 +93,7 @@ public class PrivateEducationFragment extends Fragment implements OnRefreshListe
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        initdata();
     }
 
 }

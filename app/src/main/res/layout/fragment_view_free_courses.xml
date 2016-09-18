@@ -38,7 +38,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <include
-        android:id="@id/swipe_load_more_footer"
-        layout="@layout/layout_google_footer" />
+
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

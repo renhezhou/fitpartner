@@ -9,6 +9,10 @@ import rxh.shanks.entity.SystemLVEntity;
  */
 public interface SystemNextView {
 
+    void show();
+
+    void hide();
+
 
     void getMsg(List<SystemLVEntity> systemLVEntityList);
 

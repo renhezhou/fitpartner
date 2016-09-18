@@ -10,12 +10,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/activity_system_second_lv_item_tv_item"
+        android:padding="2dp"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/activity_system_second_lv_item_shape"
+        android:padding="10dp"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
 </LinearLayout>

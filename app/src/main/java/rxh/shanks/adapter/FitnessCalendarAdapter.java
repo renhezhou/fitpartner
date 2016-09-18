@@ -77,7 +77,7 @@ public class FitnessCalendarAdapter extends BaseAdapter {
             holder.address.setText("");
             holder.dizhi.setVisibility(View.GONE);
         } else {
-            holder.time.setText(noteDatedata.get(position).getStartTime() + "-" + lessondata.get(position).getEndTime());
+            holder.time.setText(noteDatedata.get(position).getStartTime() + "-" + noteDatedata.get(position).getEndTime());
             holder.remarks.setText("时长:" + noteDatedata.get(position).getTimelong() + "分钟");
             holder.body_length.setText("");
             holder.address.setText(noteDatedata.get(position).getAddress());

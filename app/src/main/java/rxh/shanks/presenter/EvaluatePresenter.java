@@ -29,11 +29,11 @@ public class EvaluatePresenter {
 
     public void makeEvaluate(String coachID, String appointmentID, String lessonScore, String coachScore, String evaluate) {
 
-        if (lessonScore==null) {
+        if (lessonScore == null) {
             evaluateView.toast("课程评分不能为空");
             return;
         }
-        if (coachScore==null) {
+        if (coachScore == null) {
             evaluateView.toast("教练评分不能为空");
             return;
         }
@@ -46,9 +46,9 @@ public class EvaluatePresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("coachID", coachID);
-        params.addBodyParameter("AppointmentID", appointmentID);
-        params.addBodyParameter("lessonScore", lessonScore);
-        params.addBodyParameter("coachScore", coachScore);
+        params.addBodyParameter("appointmentID", appointmentID);
+        params.addBodyParameter("appointmentScore", lessonScore.substring(0, 1));
+        params.addBodyParameter("coachScore", coachScore.substring(0, 1));
         params.addBodyParameter("evaluate", evaluate);
         evaluateView.show();
         getInfo.getinfo(params, new Response() {

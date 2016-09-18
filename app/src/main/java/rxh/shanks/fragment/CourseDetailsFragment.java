@@ -90,6 +90,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
 
     @Override
     public void getFreeLesson(List<CourseDetailsEntity> courseDetailsEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data = courseDetailsEntityList;
         courseDetailsAdapter = new CourseDetailsAdapter(getActivity(), data);
         lv.setAdapter(courseDetailsAdapter);
@@ -103,7 +104,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        initdada();
     }
 
 }

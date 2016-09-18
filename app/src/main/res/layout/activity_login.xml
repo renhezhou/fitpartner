@@ -37,7 +37,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/user" />
 
             <EditText
                 android:id="@+id/user"
@@ -64,16 +64,16 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/password" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:inputType="textPassword"
                 android:background="@null"
-                android:hint="请输入密码" />
+                android:hint="请输入密码"
+                android:inputType="textPassword" />
 
         </LinearLayout>
 
@@ -92,7 +92,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/password" />
 
             <EditText
                 android:id="@+id/verification_code"

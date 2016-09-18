@@ -79,7 +79,7 @@ public class CoachDetailsActivity extends BaseActivity {
                 .with(getApplicationContext())
                 .load(HeadImageURL)
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher)
+               // .placeholder(R.drawable.ic_launcher)
                 .crossFade()
                 .into(head_portrait);
         coach_name.setText(name);

@@ -15,8 +15,7 @@
         <rxh.shanks.customview.CircleImageView
             android:id="@+id/head_portrait"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_launcher" />
+            android:layout_height="60dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -59,9 +58,10 @@
             app:starCount="5"
             app:starEmpty="@drawable/ic_love_empty"
             app:starFill="@drawable/ic_love_fill"
-            app:starImageHeight="20dp"
-            app:starImagePadding="6dp"
-            app:starImageWidth="20dp" />
+            app:starHalf="@drawable/ic_love_empty"
+            app:starImageHeight="10dp"
+            app:starImagePadding="4dp"
+            app:starImageWidth="10dp" />
 
     </RelativeLayout>
 

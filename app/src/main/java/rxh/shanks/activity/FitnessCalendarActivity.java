@@ -61,7 +61,8 @@ public class FitnessCalendarActivity extends BaseActivity implements FitnessCale
         ButterKnife.bind(this);
         title.setText("健身日历");
         back.setOnClickListener(this);
-        date_picker.setDate(2016, 8);
+        lv.setEmptyView(findViewById(R.id.prompt));
+        date_picker.setDate(2016, 9);
         date_picker.setMode(DPMode.SINGLE);
         fitnessCalendarPresenter.getFitCalender();
         date_picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {

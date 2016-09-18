@@ -74,7 +74,7 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
                 intent.putExtra("club_name", data.get(position).getClubName());
                 intent.putExtra("HeadImageURL", data.get(position).getHeadImageURL());
                 intent.putExtra("evaluate", data.get(position).getEvaluate());
-                intent.putExtra("descrip",data.get(position).getDescrip());
+                intent.putExtra("descrip", data.get(position).getDescrip());
                 startActivity(intent);
             }
         });
@@ -86,6 +86,7 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
 
     @Override
     public void getCoach(List<CoachEntity> coachEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data = coachEntityList;
         coachAdapter = new CoachAdapter(getActivity(), data);
         lv.setAdapter(coachAdapter);
@@ -99,7 +100,7 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        initdata();
     }
 
     @Override

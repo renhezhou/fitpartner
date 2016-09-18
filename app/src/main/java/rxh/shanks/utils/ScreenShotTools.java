@@ -66,10 +66,14 @@ public class ScreenShotTools {
         Date date = new Date(currentTime);
         String photoName = "sdcard/" + "Screenshot_" + format.format(date)
                 + ".png";
-        MediaStore.Images.Media.insertImage(activity.getContentResolver(),
-                takeScreenShot(activity), "a", "afd");
-        activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri
-                .parse("file://" + Environment.getExternalStorageDirectory())));
+        try {
+            MediaStore.Images.Media.insertImage(activity.getContentResolver(),
+                    takeScreenShot(activity), "a", "afd");
+            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri
+                    .parse("file://" + Environment.getExternalStorageDirectory())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ScreenShotTools.savePic(takeScreenShot(activity), photoName);
     }
 

@@ -1,14 +1,19 @@
 package rxh.shanks.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.multidex.MultiDex;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.xutils.BuildConfig;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
@@ -45,12 +50,17 @@ public class MyApplication extends Application {
     public static String imToken = null;
 
 
+    //所有activity
+    private List<Activity> mainActivity = new ArrayList<Activity>();
+
+    private SharedPreferences sp;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        sp = getSharedPreferences("user_info", 0);
+        initdata();
         MultiDex.install(this);
-
         x.Ext.init(this);
         x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
         //初始化Fresco
@@ -77,6 +87,60 @@ public class MyApplication extends Application {
         }
     }
 
+    public void initdata() {
+        if (sp.getString("token", null) != null) {
+            token = (sp.getString("password", null));
+        }
+        if (sp.getString("QNUPToken", null) != null) {
+            QNUPToken = (sp.getString("QNUPToken", null));
+        }
+        if (sp.getString("userID", null) != null) {
+            userID = (sp.getString("userID", null));
+        }
+        if (sp.getString("realName", null) != null) {
+            realName = (sp.getString("realName", null));
+        }
+        if (sp.getString("nickName", null) != null) {
+            nickName = (sp.getString("nickName", null));
+        }
+        if (sp.getString("headImageURL", null) != null) {
+            headImageURL = (sp.getString("headImageURL", null));
+        }
+        if (sp.getString("currentClubID", null) != null) {
+            currentClubID = (sp.getString("currentClubID", null));
+        }
+        if (sp.getString("currentClubName", null) != null) {
+            currentClubName = (sp.getString("currentClubName", null));
+        }
+        if (sp.getString("address", null) != null) {
+            address = (sp.getString("address", null));
+        }
+        if (sp.getString("age", null) != null) {
+            age = (sp.getString("age", null));
+        }
+        if (sp.getString("phoneNumber", null) != null) {
+            phoneNumber = (sp.getString("phoneNumber", null));
+        }
+        if (sp.getString("sex", null) != null) {
+            sex = (sp.getString("sex", null));
+        }
+        if (sp.getString("fitTarget", null) != null) {
+            fitTarget = (sp.getString("fitTarget", null));
+        }
+        if (sp.getString("defaultmembercard", null) != null) {
+            defaultmembercard = (sp.getString("defaultmembercard", null));
+        }
+        if (sp.getString("userName", null) != null) {
+            userName = (sp.getString("userName", null));
+        }
+        if (sp.getString("QNDownToken", null) != null) {
+            QNDownToken = (sp.getString("QNDownToken", null));
+        }
+        if (sp.getString("imToken", null) != null) {
+            imToken = (sp.getString("imToken", null));
+        }
+    }
+
     public static String getCurProcessName(Context context) {
 
         int pid = android.os.Process.myPid();
@@ -90,6 +154,24 @@ public class MyApplication extends Application {
             }
         }
         return null;
+    }
+
+
+    //操作activity的方法
+    public List<Activity> MainActivity() {
+        return mainActivity;
+    }
+
+    public void addActivity(Activity act) {
+        mainActivity.add(act);
+    }
+
+    public void finishAll() {
+        for (Activity act : mainActivity) {
+            if (!act.isFinishing()) {
+                act.finish();
+            }
+        }
     }
 
 }

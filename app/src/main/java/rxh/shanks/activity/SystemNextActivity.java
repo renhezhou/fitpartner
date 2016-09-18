@@ -1,5 +1,6 @@
 package rxh.shanks.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -7,6 +8,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +21,7 @@ import butterknife.ButterKnife;
 import rxh.shanks.adapter.IntformationAdapter;
 import rxh.shanks.adapter.SystemNextAdapter;
 import rxh.shanks.base.BaseActivity;
+import rxh.shanks.customview.ListViewForScrollView;
 import rxh.shanks.entity.SystemLVEntity;
 import rxh.shanks.fragment.SystemDialogFragment;
 import rxh.shanks.presenter.SystemNextPresenter;
@@ -25,19 +31,19 @@ import rxh.shanks.view.SystemNextView;
 /**
  * Created by Administrator on 2016/8/11.
  */
-public class SystemNextActivity extends BaseActivity implements SystemNextView, SystemDialogFragment.SystemDialogFragmentListener {
+public class SystemNextActivity extends BaseActivity implements SystemNextView, OnRefreshListener, OnLoadMoreListener {
 
     @Bind(R.id.back)
     LinearLayout back;
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.lv)
-    ListView lv;
+    ListViewForScrollView lv;
 
-    int delPosition;
+    private SwipeToLoadLayout swipeToLoadLayout;
+
     String type;
     private List<SystemLVEntity> data = new ArrayList<>();
-    SystemDialogFragment systemDialogFragment;
     SystemNextAdapter systemNextAdapter;
     SystemNextPresenter systemNextPresenter;
 
@@ -53,23 +59,15 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
     public void initview() {
         setContentView(R.layout.activity_system_next);
         ButterKnife.bind(this);
+        swipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
+        swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setOnLoadMoreListener(this);
         back.setOnClickListener(this);
-        title.setText(CheckUtils.gettype(type));
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                delPosition = position;
-                if (systemDialogFragment == null) {
-                    systemDialogFragment = new SystemDialogFragment();
-                }
-                systemDialogFragment.show(getSupportFragmentManager(), "systemDialogFragment");
-                return false;
-            }
-        });
+        title.setText(type);
     }
 
-    public void initdata(){
-        systemNextPresenter.getMsg(type);
+    public void initdata() {
+        systemNextPresenter.getMsg(CheckUtils.getbacktype(type));
     }
 
     @Override
@@ -84,7 +82,18 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
     }
 
     @Override
+    public void show() {
+        loading("加载中...", "true");
+    }
+
+    @Override
+    public void hide() {
+        dismiss();
+    }
+
+    @Override
     public void getMsg(List<SystemLVEntity> systemLVEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data = systemLVEntityList;
         systemNextAdapter = new SystemNextAdapter(getApplicationContext(), data);
         lv.setAdapter(systemNextAdapter);
@@ -99,10 +108,13 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
     public void delSuccess() {
 
     }
-
-    //
     @Override
-    public void del(String position) {
-        systemNextPresenter.delMsg(String.valueOf(delPosition));
+    public void onLoadMore() {
+        //swipeToLoadLayout.setLoadingMore(false);
+    }
+
+    @Override
+    public void onRefresh() {
+        initdata();
     }
 }

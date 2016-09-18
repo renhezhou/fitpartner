@@ -2,6 +2,7 @@ package rxh.shanks.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
     CheckToPresenter checkToPresenter;
 
     Bitmap mBitmap;
+    private TimeCount time;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
         setContentView(R.layout.activity_check_to);
         ButterKnife.bind(this);
         title.setText("签到");
+        time = new TimeCount(30000, 1000);// 构造CountDownTimer对象
         back.setOnClickListener(this);
         click_refresh.setOnClickListener(this);
         checkToPresenter.getFitCard();
@@ -61,6 +64,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
                 finish();
                 break;
             case R.id.click_refresh:
+                time.start();
                 checkToPresenter.getFitCard();
                 break;
             default:
@@ -91,6 +95,28 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
 
     @Override
     public void getFitCard(List<FitCardEntity> fitCardEntityList) {
-        checkToPresenter.generatedQR(fitCardEntityList.get(0).getCardID(),fitCardEntityList.get(0).getType());
+        checkToPresenter.generatedQR(fitCardEntityList.get(0).getCardID(), fitCardEntityList.get(0).getType());
     }
+
+
+    /* 定义一个倒计时的内部类 */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {// 计时完毕时触发
+            click_refresh.setText("点击刷新");
+            click_refresh.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {// 计时过程显示
+            click_refresh.setClickable(false);
+            click_refresh.setText(millisUntilFinished / 1000 + "秒有效");
+        }
+
+    }
+
 }

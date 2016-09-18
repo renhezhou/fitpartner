@@ -33,9 +33,11 @@ public class ViewFreeCoursesPresenter {
         params.addBodyParameter("clubID", clubID);
         params.addBodyParameter("freeTime", freeTime);
         params.addBodyParameter("type", "1");
+        viewFreeCoursesView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                viewFreeCoursesView.hide();
                 CourseDetailsCodeEntity courseDetailsCodeEntity = new CourseDetailsCodeEntity();
                 courseDetailsCodeEntity = JsonUtils.getFreeLesson(result);
                 if (courseDetailsCodeEntity.getCode().equals("0")) {
@@ -46,17 +48,17 @@ public class ViewFreeCoursesPresenter {
 
             @Override
             public void onError(Throwable ex) {
-
+                viewFreeCoursesView.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                viewFreeCoursesView.hide();
             }
 
             @Override
             public void onFinished() {
-
+                viewFreeCoursesView.hide();
             }
         });
     }

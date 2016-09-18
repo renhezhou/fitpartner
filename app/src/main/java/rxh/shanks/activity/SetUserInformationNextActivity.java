@@ -1,5 +1,6 @@
 package rxh.shanks.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -69,6 +70,7 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
         sex = "1";
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -77,9 +79,13 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
                 break;
             case R.id.male:
                 sex = "1";
+                male.setBackground(getResources().getDrawable(R.drawable.nandown));
+                NV.setBackground(getResources().getDrawable(R.drawable.nvup));
                 break;
             case R.id.NV:
                 sex = "0";
+                male.setBackground(getResources().getDrawable(R.drawable.nanup));
+                NV.setBackground(getResources().getDrawable(R.drawable.nvdown));
                 break;
             case R.id.muscle:
                 if (muscle_flag) {

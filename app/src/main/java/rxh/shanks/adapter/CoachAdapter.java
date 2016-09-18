@@ -74,7 +74,7 @@ public class CoachAdapter extends BaseAdapter {
                     .with(context)
                     .load(data.get(position).getCoverImageArray().get(0))
                     .centerCrop()
-                    .placeholder(R.drawable.ic_launcher)
+//                    .placeholder(R.drawable.ic_launcher)
                     .crossFade()
                     .into(holder.img);
         }

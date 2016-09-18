@@ -1,6 +1,5 @@
 package rxh.shanks.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -80,11 +79,29 @@ public class ViewFreeCoursesFragment extends Fragment implements OnRefreshListen
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        initdata();
+    }
+
+    @Override
+    public void show() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void getFreeLesson(List<CourseDetailsEntity> courseDetailsEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data = courseDetailsEntityList;
         fragmentViewFreeCoursesAdapter = new FragmentViewFreeCoursesAdapter(getActivity(), data);
         lv.setAdapter(fragmentViewFreeCoursesAdapter);

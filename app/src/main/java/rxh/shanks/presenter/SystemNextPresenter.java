@@ -34,9 +34,11 @@ public class SystemNextPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("jpush", "getMsg"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("alias", MyApplication.userID);
+        systemNextView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                systemNextView.hide();
                 SystemCodeEntity systemCodeEntity = new SystemCodeEntity();
                 systemCodeEntity = JsonUtils.getMsg(result);
                 if (systemCodeEntity.getCode().equals("0")) {
@@ -47,6 +49,7 @@ public class SystemNextPresenter {
                             SystemLVEntity systemLVEntity = new SystemLVEntity();
                             systemLVEntity.setTime(systemCodeEntity.getResult().get(i).getSendTime());
                             systemLVEntity.setContent(systemCodeEntity.getResult().get(i).getContent());
+                            systemLVEntity.setLessonID(systemCodeEntity.getResult().get(i).getLessonID());
                             systemLVEntityList.add(systemLVEntity);
                         }
                     }
@@ -56,17 +59,17 @@ public class SystemNextPresenter {
 
             @Override
             public void onError(Throwable ex) {
-
+                systemNextView.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                systemNextView.hide();
             }
 
             @Override
             public void onFinished() {
-
+                systemNextView.hide();
             }
         });
     }

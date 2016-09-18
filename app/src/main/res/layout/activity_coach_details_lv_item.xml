@@ -8,8 +8,7 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/coach_fragment_item" />
+        android:scaleType="fitXY" />
 
     <rxh.shanks.customview.RatingBar
         android:id="@+id/evaluate"
@@ -22,9 +21,10 @@
         app:starCount="5"
         app:starEmpty="@drawable/ic_love_empty"
         app:starFill="@drawable/ic_love_fill"
-        app:starImageHeight="20dp"
-        app:starImagePadding="10dp"
-        app:starImageWidth="20dp" />
+        app:starHalf="@drawable/ic_love_empty"
+        app:starImageHeight="10dp"
+        app:starImagePadding="4dp"
+        app:starImageWidth="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:padding="4dp"
                 android:background="@drawable/activity_coach_details_tv_shape"
+                android:padding="4dp"
                 android:text="55元/节"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

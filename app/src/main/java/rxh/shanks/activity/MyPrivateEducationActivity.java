@@ -1,7 +1,8 @@
 package rxh.shanks.activity;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import io.rong.imkit.RongIM;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
-import rxh.shanks.entity.CurriculumEventBusEntity;
 import rxh.shanks.entity.MyPrivateEducationEventBusEntity;
 import rxh.shanks.entity.MyPrivateEducationHeadEntity;
 import rxh.shanks.fragment.AlreadyMakeAnAppointmentFragment;
@@ -52,6 +54,10 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
     TextView coaching_years;
     @Bind(R.id.club_name)
     TextView club_name;
+    @Bind(R.id.dadianhua)
+    ImageView dadianhua;
+    @Bind(R.id.faduanxin)
+    ImageView faduanxin;
     @Bind(R.id.already_make_an_appointment)
     TextView already_make_an_appointment;
     @Bind(R.id.not_make_an_appointment)
@@ -95,6 +101,8 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
             title.setText("我的私教");
         }
         back.setOnClickListener(this);
+        dadianhua.setOnClickListener(this);
+        faduanxin.setOnClickListener(this);
         already_make_an_appointment.setOnClickListener(this);
         not_make_an_appointment.setOnClickListener(this);
         selected(0);
@@ -175,6 +183,17 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
                 selected(1);
                 viewpage.setCurrentItem(1);
                 break;
+            case R.id.dadianhua:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + data.get(selectNum).getNumOfServiced()));
+                startActivity(intent);
+                break;
+            case R.id.faduanxin:
+                //启动会话界面
+                if (RongIM.getInstance() != null)
+                    RongIM.getInstance().startPrivateChat(MyPrivateEducationActivity.this, data.get(selectNum).getCoachID(), data.get(selectNum).getName());
+                break;
             default:
                 break;
         }
@@ -183,6 +202,8 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
     public void selected(int i) {
         if (i == 0) {
             already_make_an_appointment_view.setBackgroundResource(R.color.red);
+            already_make_an_appointment_view.setAlpha(0.6f);
+            not_make_an_appointment_view.setAlpha(0.6f);
             not_make_an_appointment_view.setBackgroundResource(R.color.text_not_selected);
             already_make_an_appointment.setTextColor(getResources().getColor(R.color.red));
             not_make_an_appointment.setTextColor(getResources().getColor(R.color.black));
@@ -190,6 +211,8 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
             not_make_an_appointment_view.setBackgroundResource(R.color.red);
             already_make_an_appointment_view.setBackgroundResource(R.color.text_not_selected);
             already_make_an_appointment.setTextColor(getResources().getColor(R.color.black));
+            already_make_an_appointment_view.setAlpha(0.6f);
+            not_make_an_appointment_view.setAlpha(0.6f);
             not_make_an_appointment.setTextColor(getResources().getColor(R.color.red));
         }
     }
@@ -288,18 +311,15 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            Glide
-                    .with(ctx)
+            Picasso.with(ctx)
                     .load(list.get(position).getHeadImageURL())
-                    .centerCrop()
-                    .crossFade()
+                    .placeholder(R.drawable.loading_cort)
+                    .error(R.drawable.loading_cort)
                     .into(holder.image);
             if (selectNum == position) {
                 holder.image.setLayoutParams(new RelativeLayout.LayoutParams(210, 210));//如果被选择则放大显示
-                holder.image.setAlpha(250);
             } else {
                 holder.image.setLayoutParams(new RelativeLayout.LayoutParams(150, 150));//否则正常
-                holder.image.setAlpha(100);
             }
             return convertView;
         }

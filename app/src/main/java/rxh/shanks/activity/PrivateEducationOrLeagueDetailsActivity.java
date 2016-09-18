@@ -66,11 +66,16 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
                 .with(getApplicationContext())
                 .load(logo)
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher)
+                //.placeholder(R.drawable.ic_launcher)
                 .crossFade()
                 .into(img);
         project.setText(lessonName);
-        evaluate.setStar(Float.parseFloat(evaluates));
+        if (evaluates != null) {
+            evaluate.setStar(Float.parseFloat(evaluates));
+        } else {
+            evaluate.setStar(0f);
+        }
+
         coach_name.setText(coachName);
         when_long.setText("时长：" + time + "分钟");
         price.setText(prices + "元/节");
@@ -99,7 +104,7 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
             case R.id.consultation:
                 //启动会话界面
                 if (RongIM.getInstance() != null)
-                    RongIM.getInstance().startPrivateChat(getApplicationContext(), MyApplication.CoachID, coachName);
+                    RongIM.getInstance().startPrivateChat(PrivateEducationOrLeagueDetailsActivity.this, MyApplication.CoachID, coachName);
                 break;
             case R.id.purchase:
                 break;

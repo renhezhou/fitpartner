@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -16,10 +17,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import rxh.shanks.adapter.PrivateEducationCoursePageAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
 import rxh.shanks.customview.RatingBar;
+import rxh.shanks.entity.NotMakeAnAppointmentEventBusEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetHoldingTimeEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetUserHoldingTimeEntity;
 import rxh.shanks.fragment.CalendarFragment;
@@ -56,7 +59,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
     @Bind(R.id.viewpager)
     ViewPager viewpager;
 
-    String coachID, coachName, head_path, evaluate, club_name_tv, when_long;
+    String coachID, coachName, head_path, evaluate, club_name_tv, when_long, time;
     CalendarFragment calendarFragment;
     PrivateEducationCoursePageAdapter privateEducationCoursePageAdapter;
     private List<String> datelist = new ArrayList<>();
@@ -72,6 +75,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         evaluate = getIntent().getStringExtra("evaluate");
         club_name_tv = getIntent().getStringExtra("club_name");
         when_long = getIntent().getStringExtra("when_long");
+        time = getIntent().getStringExtra("time");
         initview();
     }
 
@@ -81,7 +85,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         title.setText("预约私教课程");
         datelist = CreatTime.creat(new Date());
         fragmentdatelist = CreatTime.creatfragment(new Date());
-        privateEducationCoursePageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
+        privateEducationCoursePageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
         viewpager.setAdapter(privateEducationCoursePageAdapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
@@ -98,7 +102,11 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
                 .crossFade()
                 .into(head_portrait);
         coach_name.setText(coachName);
-        coach_ratingbar.setStar(Float.parseFloat(evaluate));
+        if (evaluate == null) {
+            coach_ratingbar.setStar(0f);
+        } else {
+            coach_ratingbar.setStar(Float.parseFloat(evaluate));
+        }
         club_name.setText(club_name_tv);
         coaching_years.setText("执教" + when_long + "年");
     }
@@ -131,13 +139,16 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         fragmentdatelist.clear();
         datelist = CreatTime.creat(CreatTime.conversion(date));
         fragmentdatelist = CreatTime.creatfragment(CreatTime.conversion(date));
-        privateEducationCoursePageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
+        privateEducationCoursePageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
         viewpager.setAdapter(privateEducationCoursePageAdapter);
     }
 
     //预约私教课成功的回调
     @Override
     public void ConfirmAnAppointment() {
-
+        Toast.makeText(getApplicationContext(), "约课成功", Toast.LENGTH_LONG).show();
+        //用eb发送消息到上一级界面通知数据更新
+        EventBus.getDefault().post(new NotMakeAnAppointmentEventBusEntity(""));
+        finish();
     }
 }

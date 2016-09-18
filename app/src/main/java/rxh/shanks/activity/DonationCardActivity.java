@@ -55,8 +55,8 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
 
     View view;
     Dialog photochoosedialog;
-    private ImageView cancel, QR_code;
-    private TextView card_number, share, save;
+    private ImageView QR_code;
+    private TextView cancel, card_number, share, save;
 
 
     String cardID, clubID, cardType, totalCount;
@@ -172,7 +172,7 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
         photochoosedialog.setCanceledOnTouchOutside(true);
         photochoosedialog.show();
 
-        cancel = (ImageView) view.findViewById(R.id.cancel);
+        cancel = (TextView) view.findViewById(R.id.cancel);
         QR_code = (ImageView) view.findViewById(R.id.QR_code);
         card_number = (TextView) view.findViewById(R.id.card_number);
         share = (TextView) view.findViewById(R.id.share);

@@ -139,5 +139,18 @@ public class CreatTime {
         return result;
     }
 
+    //获取当前小时
+    public static int gethours() {
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        return hour;
+    }
+
+    //获取当前分钟
+    public static int getminutes() {
+        Calendar c = Calendar.getInstance();
+        int minute = c.get(Calendar.MINUTE);
+        return minute;
+    }
 }
 

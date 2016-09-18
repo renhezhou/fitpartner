@@ -11,7 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +35,7 @@ import rxh.shanks.utils.MyApplication;
 /**
  * Created by Administrator on 2016/7/29.
  */
-public class MyFragment extends Fragment implements View.OnClickListener {
+public class MyFragment extends Fragment implements View.OnClickListener, OnRefreshListener, OnLoadMoreListener {
 
     View view;
     @Bind(R.id.more)
@@ -57,6 +61,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.my_league)
     LinearLayout my_league;
 
+    private SwipeToLoadLayout swipeToLoadLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my, null);
@@ -68,6 +74,9 @@ public class MyFragment extends Fragment implements View.OnClickListener {
 
 
     public void initview() {
+        swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+        swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setOnLoadMoreListener(this);
         more.setOnClickListener(this);
         information.setOnClickListener(this);
         head_portrait.setOnClickListener(this);
@@ -80,12 +89,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initdata() {
-        Glide
-                .with(getActivity())
+        Picasso.with(getActivity())
                 .load(MyApplication.QNDownToken)
-                .centerCrop()
-//                .placeholder(R.drawable.ic_launcher)
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
         name.setText(MyApplication.nickName);
         club_name.setText(MyApplication.currentClubName);
@@ -126,7 +133,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.coupon:
                 //startActivity(new Intent(getActivity(), CouponActivity.class));
-                Toast.makeText(getActivity(), "功能暂未开放，敬请期待", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "功能暂未开放，敬请期待", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.my_private_education:
                 //我的团课和我的私教界面完全相同，故复用
@@ -145,5 +152,16 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onLoadMore() {
+        //swipeToLoadLayout.setLoadingMore(false);
+    }
+
+    @Override
+    public void onRefresh() {
+        initdata();
+        swipeToLoadLayout.setRefreshing(false);
     }
 }

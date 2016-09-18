@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import rxh.shanks.base.BaseActivity;
+import rxh.shanks.entity.LoginCodeEntity;
 import rxh.shanks.presenter.LoginPresenter;
 import rxh.shanks.utils.CheckUtils;
 import rxh.shanks.view.LoginView;
@@ -133,7 +134,7 @@ public class ForgetPasswordActivity extends BaseActivity implements LoginView {
     }
 
     @Override
-    public void onSuccess(String result) {
+    public void onSuccess(String result, LoginCodeEntity response) {
         startActivity(new Intent(getApplicationContext(), ResetPasswordActivity.class));
         finish();
 

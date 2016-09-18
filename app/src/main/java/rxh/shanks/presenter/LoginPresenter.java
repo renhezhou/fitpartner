@@ -1,5 +1,6 @@
 package rxh.shanks.presenter;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.xutils.common.Callback;
@@ -69,7 +70,7 @@ public class LoginPresenter {
                     MyApplication.userName = response.getResult().getUserName();
                     MyApplication.QNDownToken = response.getResult().getQNDownToken();
                     MyApplication.imToken = response.getResult().getImToken();
-                    loginView.onSuccess(response.getIsNew());
+                    loginView.onSuccess(response.getIsNew(), response);
                 }
 
             }
@@ -118,15 +119,15 @@ public class LoginPresenter {
                 if (response.getCode().equals("1")) {
                     loginView.check(response.getError());
                 } else {
-                    MyApplication.token = response.getToken();
-                    MyApplication.QNUPToken = response.getResult().getQNUPToken();
-                    MyApplication.userID = response.getResult().getUserID();
-                    MyApplication.realName = response.getResult().getRealName();
-                    MyApplication.nickName = response.getResult().getNickName();
-                    MyApplication.headImageURL = response.getResult().getHeadImageURL();
-                    MyApplication.currentClubID = response.getResult().getCurrentClubID();
-                    MyApplication.currentClubName = response.getResult().getCurrentClubName();
-                    loginView.onSuccess("");
+//                    MyApplication.token = response.getToken();
+//                    MyApplication.QNUPToken = response.getResult().getQNUPToken();
+//                    MyApplication.userID = response.getResult().getUserID();
+//                    MyApplication.realName = response.getResult().getRealName();
+//                    MyApplication.nickName = response.getResult().getNickName();
+//                    MyApplication.headImageURL = response.getResult().getHeadImageURL();
+//                    MyApplication.currentClubID = response.getResult().getCurrentClubID();
+//                    MyApplication.currentClubName = response.getResult().getCurrentClubName();
+                    loginView.onSuccess("", response);
                 }
 
             }
@@ -148,9 +149,6 @@ public class LoginPresenter {
             }
         });
     }
-
-
-
 
 
 }

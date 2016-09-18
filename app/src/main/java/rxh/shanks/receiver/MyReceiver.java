@@ -39,11 +39,11 @@ public class MyReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             //用户点击打开了通知
             //打开自定义的Activity
-            Intent i = new Intent(context, LoginActivity.class);
-            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+//            Intent i = new Intent(context, LoginActivity.class);
+//            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(i);
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            context.startActivity(i);
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
             Log.e(".....", "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));

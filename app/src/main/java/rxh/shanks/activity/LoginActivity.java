@@ -29,6 +29,7 @@ import io.rong.imlib.RongIMClient;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.ToggleButton;
 import rxh.shanks.entity.DataSouceCoachEntity;
+import rxh.shanks.entity.LoginCodeEntity;
 import rxh.shanks.presenter.LoginPresenter;
 import rxh.shanks.utils.CheckUtils;
 import rxh.shanks.utils.MyApplication;
@@ -212,11 +213,27 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @Override
-    public void onSuccess(String result) {
-
+    public void onSuccess(String result, LoginCodeEntity response) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("password", password.getText().toString());
         editor.putString("user", user.getText().toString());
+        editor.putString("token", response.getToken());
+        editor.putString("QNUPToken", response.getResult().getQNUPToken());
+        editor.putString("userID", response.getResult().getUserID());
+        editor.putString("realName", response.getResult().getRealName());
+        editor.putString("nickName", response.getResult().getNickName());
+        editor.putString("headImageURL", response.getResult().getHeadImageURL());
+        editor.putString("currentClubID", response.getResult().getCurrentClubID());
+        editor.putString("currentClubName", response.getResult().getCurrentClubName());
+        editor.putString("address", response.getResult().getAddress());
+        editor.putString("age", response.getResult().getAge());
+        editor.putString("phoneNumber", response.getResult().getPhoneNumber());
+        editor.putString("sex", response.getResult().getSex());
+        editor.putString("fitTarget", response.getResult().getFitTarget());
+        editor.putString("defaultmembercard", response.getResult().getDefaultmembercard());
+        editor.putString("userName", response.getResult().getUserName());
+        editor.putString("QNDownToken", response.getResult().getQNDownToken());
+        editor.putString("imToken", response.getResult().getImToken());
         editor.commit();
         if (result.equals("1")) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));

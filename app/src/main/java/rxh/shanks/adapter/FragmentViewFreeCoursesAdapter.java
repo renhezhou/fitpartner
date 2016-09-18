@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -66,17 +67,16 @@ public class FragmentViewFreeCoursesAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Glide
-                .with(context)
-                .load(data.get(position).getLogo())
-                .centerCrop()
-                .placeholder(R.drawable.ic_launcher)
-                .crossFade()
-                .into(holder.img);
-        holder.project.setText(data.get(position).getCoachName());
-        holder.introduce.setText(data.get(position).getLessonIntro());
-        holder.evaluate.setStar(2f);
-
+            Glide
+                    .with(context)
+                    .load(data.get(position).getLogo())
+                    .centerCrop()
+                    //  .placeholder(R.drawable.ic_launcher)
+                    .crossFade()
+                    .into(holder.img);
+            holder.project.setText(data.get(position).getCoachName());
+            holder.introduce.setText(data.get(position).getLessonIntro());
+            holder.evaluate.setStar(2f);
         return convertView;
     }
 

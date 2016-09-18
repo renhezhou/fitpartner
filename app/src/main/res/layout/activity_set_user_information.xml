@@ -15,7 +15,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/logo" />
 
         <ImageView
             android:id="@+id/select_head"
@@ -91,13 +91,13 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/set_user_info" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/set_user_info" />
         </LinearLayout>
 
         <View
@@ -134,13 +134,13 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/set_user_info" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/set_user_info" />
         </LinearLayout>
 
         <View

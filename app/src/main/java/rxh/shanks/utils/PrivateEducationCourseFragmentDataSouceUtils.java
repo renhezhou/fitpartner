@@ -34,20 +34,56 @@ public class PrivateEducationCourseFragmentDataSouceUtils {
         int Calculated_results_hour = start_hour, Calculated_results_minute = start_minute;
         //第一个数据
         DataSouceCoachEntity dataSouceCoachEntityone = new DataSouceCoachEntity();
-        dataSouceCoachEntityone.setFlag(0);
-        dataSouceCoachEntityone.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+        //检验这个时间段是否已经过去
+        //时间表时间小于系统时间
+        if (Calculated_results_hour < CreatTime.gethours()) {
+            dataSouceCoachEntityone.setFlag(3);
+            //时间表时间等于系统时间。判断分钟的大小
+        } else if (Calculated_results_hour == CreatTime.gethours()) {
+            if (Calculated_results_minute < CreatTime.getminutes()) {
+                dataSouceCoachEntityone.setFlag(3);
+            } else {
+                dataSouceCoachEntityone.setFlag(0);
+            }
+            //时间表时间大于系统时间
+        } else {
+            dataSouceCoachEntityone.setFlag(0);
+        }
+        if (Calculated_results_minute < 10) {
+            dataSouceCoachEntityone.setTime(Calculated_results_hour + ":0" + Calculated_results_minute);
+        } else {
+            dataSouceCoachEntityone.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+        }
         data.add(dataSouceCoachEntityone);
         //获取datasouce的个数
         int end = ((end_hour * 60 + end_minute) - (start_hour * 60 + start_minute)) / Integer.parseInt(restTime);
         for (int i = 0; i < end - 1; i++) {
             DataSouceCoachEntity dataSouceCoachEntity = new DataSouceCoachEntity();
-            dataSouceCoachEntity.setFlag(0);
             Calculated_results_minute = Calculated_results_minute + Integer.parseInt(restTime);
             if (Calculated_results_minute > 59) {
                 Calculated_results_minute = Calculated_results_minute - 60;
                 Calculated_results_hour = Calculated_results_hour + 1;
             }
-            dataSouceCoachEntity.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+            if (Calculated_results_minute < 10) {
+                dataSouceCoachEntity.setTime(Calculated_results_hour + ":0" + Calculated_results_minute);
+            } else {
+                dataSouceCoachEntity.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+            }
+            //检验这个时间段是否已经过去
+            //时间表时间小于系统时间
+            if (Calculated_results_hour < CreatTime.gethours()) {
+                dataSouceCoachEntity.setFlag(3);
+                //时间表时间等于系统时间。判断分钟的大小
+            } else if (Calculated_results_hour == CreatTime.gethours()) {
+                if (Calculated_results_minute < CreatTime.getminutes()) {
+                    dataSouceCoachEntity.setFlag(3);
+                } else {
+                    dataSouceCoachEntity.setFlag(0);
+                }
+                //时间表时间大于系统时间
+            } else {
+                dataSouceCoachEntity.setFlag(0);
+            }
             data.add(dataSouceCoachEntity);
         }
         return data;
@@ -73,8 +109,26 @@ public class PrivateEducationCourseFragmentDataSouceUtils {
         int Calculated_results_hour = start_hour, Calculated_results_minute = start_minute;
         //第一个数据
         DataSouceCoachEntity dataSouceCoachEntityone = new DataSouceCoachEntity();
-        dataSouceCoachEntityone.setFlag(0);
-        dataSouceCoachEntityone.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+        //检验这个时间段是否已经过去
+        //时间表时间小于系统时间
+        if (Calculated_results_hour < CreatTime.gethours()) {
+            dataSouceCoachEntityone.setFlag(3);
+            //时间表时间等于系统时间。判断分钟的大小
+        } else if (Calculated_results_hour == CreatTime.gethours()) {
+            if (Calculated_results_minute < CreatTime.getminutes()) {
+                dataSouceCoachEntityone.setFlag(3);
+            } else {
+                dataSouceCoachEntityone.setFlag(0);
+            }
+            //时间表时间大于系统时间
+        } else {
+            dataSouceCoachEntityone.setFlag(0);
+        }
+        if (Calculated_results_minute < 10) {
+            dataSouceCoachEntityone.setTime(Calculated_results_hour + ":0" + Calculated_results_minute);
+        } else {
+            dataSouceCoachEntityone.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+        }
         data.add(dataSouceCoachEntityone);
         //获取datasouce的个数
         int end = ((end_hour * 60 + end_minute) - (start_hour * 60 + start_minute)) / Integer.parseInt(restTime);
@@ -86,7 +140,11 @@ public class PrivateEducationCourseFragmentDataSouceUtils {
                 Calculated_results_minute = Calculated_results_minute - 60;
                 Calculated_results_hour = Calculated_results_hour + 1;
             }
-            dataSouceCoachEntity.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+            if (Calculated_results_minute < 10) {
+                dataSouceCoachEntity.setTime(Calculated_results_hour + ":0" + Calculated_results_minute);
+            } else {
+                dataSouceCoachEntity.setTime(Calculated_results_hour + ":" + Calculated_results_minute);
+            }
             data.add(dataSouceCoachEntity);
         }
         return data;

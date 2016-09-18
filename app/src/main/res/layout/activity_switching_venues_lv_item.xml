@@ -10,8 +10,7 @@
         android:id="@+id/img"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher" />
+        android:layout_centerVertical="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"

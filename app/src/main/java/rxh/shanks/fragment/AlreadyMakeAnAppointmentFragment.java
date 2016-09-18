@@ -98,11 +98,16 @@ public class AlreadyMakeAnAppointmentFragment extends Fragment implements OnRefr
 
     @Override
     public void onRefresh() {
-        swipeToLoadLayout.setRefreshing(false);
+        if (flag.equals("1")) {
+            alreadyMakeAnAppointmentPresenter.getMyOrderPrivateLesson(coachID);
+        } else {
+            alreadyMakeAnAppointmentPresenter.getMyOrderTeamLesson(coachID);
+        }
     }
 
     @Override
     public void getMyOrderPrivateLesson(List<AlreadyMakeAnAppointmentEntity> alreadyMakeAnAppointmentEntityList) {
+        swipeToLoadLayout.setRefreshing(false);
         data.clear();
         data = alreadyMakeAnAppointmentEntityList;
         alreadyMakeAnAppointmentAdapter = new AlreadyMakeAnAppointmentAdapter(getActivity(), data);
