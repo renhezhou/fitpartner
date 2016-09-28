@@ -8,8 +8,7 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/coach_fragment_item" />
+        android:scaleType="fitXY" />
 
     <rxh.shanks.customview.RatingBar
         android:id="@+id/evaluate"
@@ -38,9 +37,15 @@
             android:id="@+id/project"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登山"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
 
         <RelativeLayout
@@ -52,7 +57,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="马栏山登山活动"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 

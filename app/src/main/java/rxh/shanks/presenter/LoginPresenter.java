@@ -110,6 +110,7 @@ public class LoginPresenter {
         params.addBodyParameter("phoneNumber", phoneNumber);
         params.addBodyParameter("userName", userName);
         params.addBodyParameter("password", password);
+        params.addBodyParameter("type", "0");
         loginView.show();
         getInfo.getinfo(params, new Response() {
             @Override

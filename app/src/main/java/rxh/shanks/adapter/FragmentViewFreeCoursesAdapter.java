@@ -60,6 +60,7 @@ public class FragmentViewFreeCoursesAdapter extends BaseAdapter {
                     R.layout.fragment_view_free_courses_lv_item, null);
             holder.img = (ImageView) convertView.findViewById(R.id.img);
             holder.project = (TextView) convertView.findViewById(R.id.project);
+            holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.introduce = (TextView) convertView.findViewById(R.id.introduce);
             holder.evaluate = (RatingBar) convertView.findViewById(R.id.evaluate);
             // 将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
@@ -67,16 +68,21 @@ public class FragmentViewFreeCoursesAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-            Glide
-                    .with(context)
-                    .load(data.get(position).getLogo())
-                    .centerCrop()
-                    //  .placeholder(R.drawable.ic_launcher)
-                    .crossFade()
-                    .into(holder.img);
-            holder.project.setText(data.get(position).getCoachName());
-            holder.introduce.setText(data.get(position).getLessonIntro());
-            holder.evaluate.setStar(2f);
+        Glide
+                .with(context)
+                .load(data.get(position).getLogo())
+                .centerCrop()
+                //  .placeholder(R.drawable.ic_launcher)
+                .crossFade()
+                .into(holder.img);
+        holder.project.setText(data.get(position).getCoachName());
+        holder.time.setText("上课时间:" + data.get(position).getFreeStartTime() + "-" + data.get(position).getFreeEndTime());
+        holder.introduce.setText(data.get(position).getLessonIntro());
+        if (data.get(position).getEvaluate() != null) {
+            holder.evaluate.setStar(Float.parseFloat(data.get(position).getEvaluate()));
+        } else {
+            holder.evaluate.setStar(0f);
+        }
         return convertView;
     }
 
@@ -84,6 +90,7 @@ public class FragmentViewFreeCoursesAdapter extends BaseAdapter {
     static class ViewHolder {
         public ImageView img;
         public TextView project;
+        public TextView time;
         public TextView introduce;
         public RatingBar evaluate;
     }

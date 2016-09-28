@@ -1,6 +1,7 @@
 package rxh.shanks.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import rxh.shanks.activity.CouponActivity;
 import rxh.shanks.activity.FitnessCalendarActivity;
@@ -30,6 +32,7 @@ import rxh.shanks.activity.PersonalInformationEditorActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.activity.TestRecordActivity;
 import rxh.shanks.customview.CircleImageView;
+import rxh.shanks.eventity.PIEEBEntity;
 import rxh.shanks.utils.MyApplication;
 
 /**
@@ -67,11 +70,26 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my, null);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         initview();
         initdata();
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);// 反注册EventBus
+    }
+
+    public void onEventMainThread(PIEEBEntity pieebEntity) {
+        Glide.with(getActivity())
+                .load(pieebEntity.getImg_path())
+                .centerCrop()
+                .into(head_portrait);
+        name.setText(pieebEntity.getUsername());
+    }
 
     public void initview() {
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
@@ -98,12 +116,6 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
         club_name.setText(MyApplication.currentClubName);
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 
     @Override
     public void onClick(View v) {
@@ -161,7 +173,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
 
     @Override
     public void onRefresh() {
-        initdata();
+        //initdata();
         swipeToLoadLayout.setRefreshing(false);
     }
 }

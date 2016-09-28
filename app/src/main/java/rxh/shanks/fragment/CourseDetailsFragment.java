@@ -89,6 +89,23 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
     }
 
     @Override
+    public void show() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
     public void getFreeLesson(List<CourseDetailsEntity> courseDetailsEntityList) {
         swipeToLoadLayout.setRefreshing(false);
         data = courseDetailsEntityList;

@@ -1,6 +1,7 @@
 package rxh.shanks.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class CourseDetailsAdapter extends BaseAdapter {
                     R.layout.fragment_course_details_lv_item, null);
             holder.img = (ImageView) convertView.findViewById(R.id.img);
             holder.project = (TextView) convertView.findViewById(R.id.project);
+            holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.introduce = (TextView) convertView.findViewById(R.id.introduce);
             holder.price = (TextView) convertView.findViewById(R.id.price);
             holder.evaluate = (RatingBar) convertView.findViewById(R.id.evaluate);
@@ -72,13 +74,18 @@ public class CourseDetailsAdapter extends BaseAdapter {
                 .with(context)
                 .load(data.get(position).getLogo())
                 .centerCrop()
-              //  .placeholder(R.drawable.ic_launcher)
+                //  .placeholder(R.drawable.ic_launcher)
                 .crossFade()
                 .into(holder.img);
         holder.project.setText(data.get(position).getCoachName());
+        holder.time.setText("上课时长:" + data.get(position).getTime() + "分钟");
         holder.introduce.setText(data.get(position).getLessonIntro());
         holder.price.setText(data.get(position).getPrice() + "元/节");
-        holder.evaluate.setStar(Float.parseFloat(data.get(position).getEvaluate()));
+        if (data.get(position).getEvaluate() != null) {
+            holder.evaluate.setStar(Float.parseFloat(data.get(position).getEvaluate()));
+        } else {
+            holder.evaluate.setStar(0f);
+        }
 
         return convertView;
     }
@@ -87,6 +94,7 @@ public class CourseDetailsAdapter extends BaseAdapter {
     static class ViewHolder {
         public ImageView img;
         public TextView project;
+        public TextView time;
         public TextView introduce;
         public TextView price;
         public RatingBar evaluate;

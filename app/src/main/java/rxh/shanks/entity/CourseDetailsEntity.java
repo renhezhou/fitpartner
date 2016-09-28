@@ -15,6 +15,9 @@ public class CourseDetailsEntity {
     private String logo;
     private String price;
     private String time;
+    private String freeStartTime;
+    private String freeEndTime;
+
 
     public String getAddress() {
         return address;
@@ -94,5 +97,21 @@ public class CourseDetailsEntity {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getFreeStartTime() {
+        return freeStartTime;
+    }
+
+    public void setFreeStartTime(String freeStartTime) {
+        this.freeStartTime = freeStartTime;
+    }
+
+    public String getFreeEndTime() {
+        return freeEndTime;
+    }
+
+    public void setFreeEndTime(String freeEndTime) {
+        this.freeEndTime = freeEndTime;
     }
 }

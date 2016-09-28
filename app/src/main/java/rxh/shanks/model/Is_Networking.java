@@ -13,22 +13,26 @@ public class Is_Networking implements GetInfo {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-               response.onSuccess(result);
+                if (response != null) {
+                    response.onSuccess(result);
+                }
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                response.onError(ex);
+                if (response != null) {
+                    response.onError(ex);
+                }
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-               response.onCancelled(cex);
+
             }
 
             @Override
             public void onFinished() {
-                response.onFinished();
+
             }
         });
     }

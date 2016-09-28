@@ -6,8 +6,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.entity.LoginCodeEntity;
@@ -17,6 +19,7 @@ import rxh.shanks.view.GuidePageView;
 
 public class GuidePageActivity extends BaseActivity implements GuidePageView, GuidePageDialogFragment.GuidePageDialogFragmentListener {
 
+    private ImageView img;
     private SharedPreferences sp;
     GuidePagePresenter presenter;
     GuidePageDialogFragment fragment;
@@ -32,6 +35,10 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
 
     public void initview() {
         setContentView(R.layout.activity_guide_page);
+        img = (ImageView) findViewById(R.id.img);
+        Picasso.with(getApplicationContext())
+                .load(R.drawable.guidepage)
+                .into(img);
         if (sp.getString("token", null) != null) {
             presenter.login("2", null, sp.getString("user", null), sp.getString("password", null));
         } else {
@@ -54,7 +61,7 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
             editor.putString("userID", response.getResult().getUserID());
             editor.putString("realName", response.getResult().getRealName());
             editor.putString("nickName", response.getResult().getNickName());
-            editor.putString("headImageURL", response.getResult().getHeadImageURL());
+            editor.putString("headImageURL", response.getResult().getHeadImageURL()); 
             editor.putString("currentClubID", response.getResult().getCurrentClubID());
             editor.putString("currentClubName", response.getResult().getCurrentClubName());
             editor.putString("address", response.getResult().getAddress());

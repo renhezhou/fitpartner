@@ -9,6 +9,10 @@ import rxh.shanks.entity.CourseDetailsEntity;
  */
 public interface CourseDetailsView {
 
+    void show();
+
+    void hide();
+
     void getFreeLesson(List<CourseDetailsEntity> courseDetailsEntityList);
 
 }

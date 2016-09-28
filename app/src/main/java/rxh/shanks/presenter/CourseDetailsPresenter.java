@@ -18,11 +18,11 @@ import rxh.shanks.view.CourseDetailsView;
 public class CourseDetailsPresenter {
 
     private GetInfo getInfo;
-    private CourseDetailsView courseDetailsView;
+    private CourseDetailsView view;
 
-    public CourseDetailsPresenter(CourseDetailsView courseDetailsView) {
+    public CourseDetailsPresenter(CourseDetailsView view) {
         getInfo = new Is_Networking();
-        this.courseDetailsView = courseDetailsView;
+        this.view = view;
     }
 
     public void getFreeLesson(String freeTime) {
@@ -31,20 +31,22 @@ public class CourseDetailsPresenter {
         params.addBodyParameter("clubID", MyApplication.currentClubID);
         params.addBodyParameter("freeTime", freeTime);
         params.addBodyParameter("type", "0");
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 CourseDetailsCodeEntity courseDetailsCodeEntity = new CourseDetailsCodeEntity();
                 courseDetailsCodeEntity = JsonUtils.getFreeLesson(result);
                 if (courseDetailsCodeEntity.getCode().equals("0")) {
-                    courseDetailsView.getFreeLesson(courseDetailsCodeEntity.getResult());
+                    view.getFreeLesson(courseDetailsCodeEntity.getResult());
                 }
 
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide();
             }
 
             @Override

@@ -53,7 +53,8 @@
             android:gravity="left|center_vertical"
             android:padding="10dp"
             android:text="俱乐部名称"
-            android:textSize="18sp" />
+            android:textColor="@color/text_not_selected"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/more"

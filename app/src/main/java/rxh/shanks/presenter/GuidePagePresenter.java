@@ -32,6 +32,7 @@ public class GuidePagePresenter {
         params.addBodyParameter("phoneNumber", phoneNumber);
         params.addBodyParameter("userName", userName);
         params.addBodyParameter("password", password);
+        params.addBodyParameter("type", "0");
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {

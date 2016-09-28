@@ -37,9 +37,15 @@
             android:id="@+id/project"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登山"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
 
         <RelativeLayout
@@ -51,7 +57,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="马栏山登山活动"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -64,7 +69,6 @@
                 android:background="@drawable/fragment_course_details_tv_shape"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="马栏山登山活动"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </RelativeLayout>

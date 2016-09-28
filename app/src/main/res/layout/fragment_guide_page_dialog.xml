@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="用户你好，我们已经发布了最新的版本，请前往更新"
+        android:text="尊敬的用户，为了提升您的使用体验，我们更新了APP的部分功能，为避免在旧版本使用中出现不可预知的问题，请更新后再使用！"
         android:textSize="16sp" />
 
     <TextView

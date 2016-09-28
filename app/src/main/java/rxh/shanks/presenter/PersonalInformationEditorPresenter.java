@@ -66,7 +66,6 @@ public class PersonalInformationEditorPresenter {
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                personalInformationEditorView.hide();
                 SetUserInformationCodeEntity setUserInformationCodeEntity = JsonUtils.setuserinformation(result);
                 if (setUserInformationCodeEntity.getCode().equals("0")) {
                     personalInformationEditorView.success();
@@ -78,17 +77,16 @@ public class PersonalInformationEditorPresenter {
 
             @Override
             public void onError(Throwable ex) {
-                personalInformationEditorView.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                personalInformationEditorView.hide();
+
             }
 
             @Override
             public void onFinished() {
-                personalInformationEditorView.hide();
+
             }
         });
     }

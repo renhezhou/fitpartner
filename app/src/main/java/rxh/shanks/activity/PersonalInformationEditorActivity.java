@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -23,18 +24,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.yancy.imageselector.ImageConfig;
+import com.yancy.imageselector.ImageSelector;
+import com.yancy.imageselector.ImageSelectorActivity;
+
+import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
+import rxh.shanks.eventity.PIEEBEntity;
 import rxh.shanks.presenter.PersonalInformationEditorPresenter;
 import rxh.shanks.utils.MyApplication;
+import rxh.shanks.utils.PicassoLoader;
 import rxh.shanks.view.PersonalInformationEditorView;
 
 /**
@@ -75,14 +86,9 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
     //fitness_needs 1代表增肌，2代表减脂，3代表塑形
     String sex = null, fitness_needs = null;
     boolean muscle_flag = false, fat_flag = false, shaping_flag = false;
-
-    View view;
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/rxh/" + "head_img.jpg";
-    File imgFile;
-    Dialog photochoosedialog;
-    Button tuku, paizhao, quxiao;
-
     PersonalInformationEditorPresenter personalInformationEditorPresenter;
+
+    List<String> path = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -188,7 +194,22 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                 }
                 break;
             case R.id.head_portrait:
-                showphotochooseDialog();
+                if (edit.getText().toString().equals("提交")) {
+                    ImageConfig imageConfig
+                            = new ImageConfig.Builder(new PicassoLoader())
+                            .steepToolBarColor(getResources().getColor(R.color.red))
+                            .titleBgColor(getResources().getColor(R.color.red))
+                            .titleSubmitTextColor(getResources().getColor(R.color.white))
+                            .titleTextColor(getResources().getColor(R.color.white))
+                            // 开启单选   （默认为多选）
+                            .singleSelect()
+                            // 开启拍照功能 （默认关闭）
+                            .showCamera()
+                            // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
+                            .filePath("/ImageSelector/Pictures")
+                            .build();
+                    ImageSelector.open(PersonalInformationEditorActivity.this, imageConfig);   // 开启图片选择器
+                }
                 break;
             case R.id.boy:
                 sex = "1";
@@ -233,20 +254,6 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                     shaping.setTextColor(getResources().getColor(R.color.black));
                 }
                 break;
-            case R.id.tuku:
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");// 相片类型
-                startActivityForResult(intent, 2);
-                photochoosedialog.dismiss();
-                break;
-            case R.id.paizhao:
-                Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-                startActivityForResult(getImageByCamera, 3);
-                photochoosedialog.dismiss();
-                break;
-            case R.id.quxiao:
-                photochoosedialog.dismiss();
-                break;
             default:
                 break;
         }
@@ -255,36 +262,15 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 2) {
-            photochoosedialog.dismiss();
-            // 选择图片Uri
-            Uri uri = data.getData();
-            head_portrait.setImageBitmap(getDrawable(uri));
-            personalInformationEditorPresenter.uploadheadportrait(imgFile);
-        } else if (resultCode == RESULT_OK && requestCode == 3) {
-            photochoosedialog.dismiss();
-            Uri uri_camera = data.getData();
-            if (uri_camera == null) {
-                // use bundle to get data
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    Bitmap photo = (Bitmap) bundle.get("data"); // get
-                    try {
-                        saveMyBitmap(photo);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    head_portrait.setImageBitmap(photo);
-                    personalInformationEditorPresenter.uploadheadportrait(imgFile);
-                } else {
-                    Toast.makeText(getApplicationContext(), "发生未知错误", Toast.LENGTH_LONG).show();
-                    return;
-                }
-            } else {
-                head_portrait.setImageBitmap(getDrawable(uri_camera));
-                personalInformationEditorPresenter.uploadheadportrait(imgFile);
+        if (requestCode == ImageSelector.IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            // 获取返回的图片列表
+            path = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+            if (path.size() > 0) {
+                Glide.with(getApplicationContext())
+                        .load(path.get(0))
+                        .centerCrop()
+                        .into(head_portrait);
             }
-
         }
     }
 
@@ -303,7 +289,14 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
         MyApplication.fitTarget = fitness_needs;
         MyApplication.sex = sex;
         MyApplication.age = age.getText().toString();
-        finish();
+        if (path.size() > 0) {
+            uploadheadportrait(path.get(0));
+        } else {
+            dismiss();
+            Toast.makeText(getApplicationContext(), "资料上传成功", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
     }
 
     @Override
@@ -324,92 +317,23 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
         shaping.setClickable(flag);
     }
 
-
-    private void showphotochooseDialog() {
-        view = getLayoutInflater().inflate(R.layout.activity_set_user_information_head_portrait, null);
-        photochoosedialog = new Dialog(this, R.style.transparentFrameWindowStyle);
-        photochoosedialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        Window window = photochoosedialog.getWindow();
-        // 设置显示动画
-        window.setWindowAnimations(R.style.main_menu_animstyle);
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = getWindowManager().getDefaultDisplay().getHeight();
-        // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-        // 设置显示位置
-        photochoosedialog.onWindowAttributesChanged(wl);
-        // 设置点击外围解散
-        photochoosedialog.setCanceledOnTouchOutside(true);
-        photochoosedialog.show();
-
-        tuku = (Button) view.findViewById(R.id.tuku);
-        tuku.setOnClickListener(this);
-        paizhao = (Button) view.findViewById(R.id.paizhao);
-        paizhao.setOnClickListener(this);
-        quxiao = (Button) view.findViewById(R.id.quxiao);
-        quxiao.setOnClickListener(this);
-    }
-
-    /**
-     * Bitmap对象保存味图片文件
-     *
-     * @param mBitmap
-     * @throws IOException
-     */
-    public void saveMyBitmap(Bitmap mBitmap) throws IOException {
-        imgFile = new File(path);
-        imgFile.createNewFile();
-        FileOutputStream fOut = null;
-        try {
-            fOut = new FileOutputStream(imgFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-        try {
-            fOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * @param uri
-     * @return
-     */
-
-    private Bitmap getDrawable(Uri uri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor actualimagecursor = managedQuery(uri, proj, null, null, null);
-        int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        actualimagecursor.moveToFirst();
-        String img_path = actualimagecursor.getString(actual_image_column_index);
-        imgFile = new File(img_path);
-        Bitmap current_bitmap = BitmapFactory.decodeFile(img_path, getBitmapOption(2)); // 将图片的长和宽缩小味原来的1/2
-        return current_bitmap;
-    }
-
-    /**
-     * 剪切图片
-     *
-     * @param inSampleSize
-     * @return
-     */
-    private BitmapFactory.Options getBitmapOption(int inSampleSize) {
-        System.gc();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPurgeable = true;
-        options.inSampleSize = inSampleSize;
-        return options;
+    public void uploadheadportrait(final String path) {
+        File imgfile = new File(path);
+        UploadManager uploadManager = new UploadManager();
+        uploadManager.put(imgfile, MyApplication.headImageURL, MyApplication.QNUPToken,
+                new UpCompletionHandler() {
+                    @Override
+                    public void complete(String key, ResponseInfo info, JSONObject res) {
+                        dismiss();
+                        if (info.isOK()) {
+                            EventBus.getDefault().post(new PIEEBEntity(path, name.getText().toString()));
+                            Toast.makeText(getApplicationContext(), "头像上传成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "头像上传失败", Toast.LENGTH_SHORT).show();
+                        }
+                        finish();
+                    }
+                }, null);
     }
 
 }

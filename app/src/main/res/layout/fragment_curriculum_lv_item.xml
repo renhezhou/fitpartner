@@ -15,7 +15,7 @@
             android:id="@+id/club_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="俱乐部名称"
+            android:textColor="@color/text_not_selected"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="俱乐部地址成都市高新区天府大道新区天府大道"
+                android:textColor="@color/text_not_selected"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -48,8 +48,8 @@
 
     <ImageView
         android:id="@+id/dial_telephone"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:src="@drawable/dadianhua" />
