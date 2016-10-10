@@ -2,6 +2,7 @@ package rxh.shanks.view;
 
 import java.util.List;
 
+import rxh.shanks.entity.SwitchingVenuesAdapterEntity;
 import rxh.shanks.entity.SwitchingVenuesCodeEntity;
 
 /**
@@ -13,7 +14,7 @@ public interface SwitchingVenuesView {
 
     void hide();
 
-    void getallvenues(SwitchingVenuesCodeEntity switchingVenuesCodeEntity);
+    void getallvenues(List<SwitchingVenuesAdapterEntity> SwitchingVenuesAdapterEntitys);
 
     void switchingvenues();
 

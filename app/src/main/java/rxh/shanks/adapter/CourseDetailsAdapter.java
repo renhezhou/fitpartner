@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +77,11 @@ public class CourseDetailsAdapter extends BaseAdapter {
                 .centerCrop()
                 //  .placeholder(R.drawable.ic_launcher)
                 .crossFade()
+                .into(holder.img);
+        Picasso.with(context)
+                .load(data.get(position).getLogo())
+//                .placeholder(R.drawable.loading_cort)
+//                .error(R.drawable.loading_cort)
                 .into(holder.img);
         holder.project.setText(data.get(position).getCoachName());
         holder.time.setText("上课时长:" + data.get(position).getTime() + "分钟");

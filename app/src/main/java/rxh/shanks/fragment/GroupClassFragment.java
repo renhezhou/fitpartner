@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
@@ -32,15 +33,15 @@ public class GroupClassFragment extends Fragment implements OnRefreshListener, O
 
     View view;
     private SwipeToLoadLayout swipeToLoadLayout;
-    ListViewForScrollView lv;
+    ListView lv;
     private List<CoachDetailsEntity> data = new ArrayList<>();
-    CoachDetailsAdapter coachDetailsAdapter;
-    CoachDetailsPresenter coachDetailsPresenter;
+    CoachDetailsAdapter adapter;
+    CoachDetailsPresenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_group_class, null);
-        coachDetailsPresenter = new CoachDetailsPresenter(this);
+        presenter = new CoachDetailsPresenter(this);
         initview();
         initdata();
         return view;
@@ -51,7 +52,7 @@ public class GroupClassFragment extends Fragment implements OnRefreshListener, O
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        lv = (ListViewForScrollView) view.findViewById(R.id.lv);
+        lv = (ListView) view.findViewById(R.id.swipe_target);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -72,16 +73,33 @@ public class GroupClassFragment extends Fragment implements OnRefreshListener, O
     }
 
     public void initdata() {
-        coachDetailsPresenter.getTeamLesson();
+        presenter.getTeamLesson();
     }
 
 
     @Override
+    public void show() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
     public void getPrivateLessongetTeamLesson(List<CoachDetailsEntity> coachDetailsEntityList) {
-        swipeToLoadLayout.setRefreshing(false);
+        data.clear();
         data = coachDetailsEntityList;
-        coachDetailsAdapter = new CoachDetailsAdapter(getActivity(), data);
-        lv.setAdapter(coachDetailsAdapter);
+        adapter = new CoachDetailsAdapter(getActivity(), data);
+        lv.setAdapter(adapter);
     }
 
 

@@ -9,6 +9,10 @@ import rxh.shanks.entity.CoachEntity;
  */
 public interface CoachView {
 
+    void show();
+
+    void hide();
+
     void getCoach(List<CoachEntity> coachEntityList);
 
 }

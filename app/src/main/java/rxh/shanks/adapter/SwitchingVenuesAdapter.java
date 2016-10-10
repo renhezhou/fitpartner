@@ -10,6 +10,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 import rxh.shanks.activity.R;
 import rxh.shanks.customview.CircleImageView;
 import rxh.shanks.entity.AlreadyMakeAnAppointmentEntity;
+import rxh.shanks.entity.SwitchingVenuesAdapterEntity;
 import rxh.shanks.entity.SwitchingVenuesCodeEntity;
 import rxh.shanks.entity.SwitchingVenuesEntity;
 import rxh.shanks.utils.MyApplication;
@@ -28,10 +30,10 @@ public class SwitchingVenuesAdapter extends BaseExpandableListAdapter {
 
     Context context;
     private LayoutInflater mInflater = null;
-    SwitchingVenuesCodeEntity data = new SwitchingVenuesCodeEntity();
+    List<SwitchingVenuesAdapterEntity> data = new ArrayList<>();
 
     public SwitchingVenuesAdapter(
-            SwitchingVenuesCodeEntity data, Context context) {
+            List<SwitchingVenuesAdapterEntity> data, Context context) {
         this.data = data;
         this.context = context;
         mInflater = LayoutInflater.from(context);
@@ -41,7 +43,7 @@ public class SwitchingVenuesAdapter extends BaseExpandableListAdapter {
     // 得到子item需要关联的数据
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return data.getResult().get(groupPosition).get(childPosition).getClubName();
+        return data.get(groupPosition).getEntityList().get(childPosition);
     }
 
     // 得到子item的ID
@@ -73,21 +75,23 @@ public class SwitchingVenuesAdapter extends BaseExpandableListAdapter {
         } else {
             ih = (ItemHolder) convertView.getTag();
         }
-        Glide
-                .with(context)
-                .load(data.getResult().get(groupPosition).get(childPosition).getLogoImageURL())
-                .centerCrop()
-                //.placeholder(R.drawable.ic_launcher)
-                .crossFade()
+        Picasso.with(context)
+                .load(data.get(groupPosition).getEntityList().get(childPosition).getLogoImageURL())
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(ih.img);
         ih.children_name
-                .setText(data.getResult().get(groupPosition).get(childPosition).getClubName());
-        ih.address.setText(data.getResult().get(groupPosition).get(childPosition).getClubAddress());
-        ih.phone_num.setText(data.getResult().get(groupPosition).get(childPosition).getPhoneNumber());
-        if (MyApplication.currentClubID.equals(data.getResult().get(groupPosition).get(childPosition).getClubID())) {
+                .setText(data.get(groupPosition).getEntityList().get(childPosition).getClubName());
+        ih.address.setText(data.get(groupPosition).getEntityList().get(childPosition).getClubAddress());
+        ih.phone_num.setText(data.get(groupPosition).getEntityList().get(childPosition).getPhoneNumber());
+        if (MyApplication.currentClubID.equals(data.get(groupPosition).getEntityList().get(childPosition).getClubID())) {
             ih.state.setText("默认");
+            ih.state.setTextColor(context.getResources().getColor(R.color.red));
+            ih.state.setBackgroundColor(context.getResources().getColor(R.color.white));
         } else {
             ih.state.setText("切换");
+            ih.state.setBackground(context.getResources().getDrawable(R.drawable.yuan_tv));
+            ih.state.setTextColor(context.getResources().getColor(R.color.white));
         }
 
         return convertView;
@@ -96,18 +100,18 @@ public class SwitchingVenuesAdapter extends BaseExpandableListAdapter {
     // 获取当前父item下的子item的个数
     @Override
     public int getChildrenCount(int groupPosition) {
-        return data.getResult().get(groupPosition).size();
+        return data.get(groupPosition).getEntityList().size();
     }
 
     // 获取当前父item的数据
     @Override
     public Object getGroup(int groupPosition) {
-        return data.getResult().get(groupPosition).get(0).getBrandName();
+        return data.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return data.getResult().size();
+        return data.size();
     }
 
     @Override
@@ -130,7 +134,7 @@ public class SwitchingVenuesAdapter extends BaseExpandableListAdapter {
         } else {
             gh = (GroupHolder) convertView.getTag();
         }
-        gh.partent_name.setText(data.getResult().get(groupPosition).get(0).getBrandName());
+        gh.partent_name.setText(data.get(groupPosition).getBrandName());
         return convertView;
     }
 

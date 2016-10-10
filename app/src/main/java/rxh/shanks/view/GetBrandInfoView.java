@@ -9,6 +9,10 @@ import rxh.shanks.entity.BrandInfoEntity;
  */
 public interface GetBrandInfoView {
 
+    void show();
+
+    void hide();
+
     void getBrandInfo(List<BrandInfoEntity> brandInfoEntity);
 
 }

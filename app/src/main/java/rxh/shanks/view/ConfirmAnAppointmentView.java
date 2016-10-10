@@ -9,6 +9,10 @@ import rxh.shanks.entity.ConfirmAnAppointmentEntity;
  */
 public interface ConfirmAnAppointmentView {
 
+    void show(int flag);
+
+    void hide(int flag);
+
     void getTeamLessonFreeTime(List<ConfirmAnAppointmentEntity> data);
 
     void success();

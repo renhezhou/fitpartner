@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +71,10 @@ public class CoachAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (data.get(position).getCoverImageArray() != null) {
-            Glide
-                    .with(context)
+            Picasso.with(context)
                     .load(data.get(position).getCoverImageArray().get(0))
-                    .centerCrop()
-//                    .placeholder(R.drawable.ic_launcher)
-                    .crossFade()
+//                .placeholder(R.drawable.loading_cort)
+//                .error(R.drawable.loading_cort)
                     .into(holder.img);
         }
         holder.name.setText(data.get(position).getName());

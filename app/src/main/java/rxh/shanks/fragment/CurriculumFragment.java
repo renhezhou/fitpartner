@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
+import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.CheckToActivity;
 import rxh.shanks.activity.CourseDetailsActivity;
 import rxh.shanks.activity.R;
@@ -59,50 +61,61 @@ import rxh.shanks.view.GetConsultantView;
  */
 public class CurriculumFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener, View.OnClickListener, OnDismissListener, GetBrandGymPaidView, GetConsultantView, GetBrandInfoView {
 
-    View view, popView;
+    View view, popView, headView;
     private PopupWindow popupWindow;
     private SwipeToLoadLayout swipeToLoadLayout;
-    private ScrollView scrollView;
-    private ListViewForScrollView lv;
+    private ListView lv;
     private TextView peopleandtime, more, club_name, club_profile, name, view_free_courses, booking_group_course;
     private ImageView add, dadianhua, chat;
     private CircleImageView head_portrait;
     private LinearLayout scan, check_to;
+
     private List<BrandGymPaidEntity> data = new ArrayList<>();
-    CurriculumAdapter curriculumAdapter;
-    CurriculumPresenter curriculumPresenter;
+    CurriculumAdapter adapter;
+    CurriculumPresenter presenter;
 
     List<BrandInfoEntity> brandInfoEntityList = new ArrayList<>();
     ConsultantEntity consultantEntity = new ConsultantEntity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        curriculumPresenter = new CurriculumPresenter(this, this, this);
+        presenter = new CurriculumPresenter(this, this, this);
+        headView = inflater.inflate(R.layout.fragment_curriculum_header, null);
         view = inflater.inflate(R.layout.fragment_curriculum, null);
+        EventBus.getDefault().register(this);
         initview();
         initdata();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(SVAEntity svaEntity) {
+        initdata();
     }
 
     public void initview() {
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        scrollView = (ScrollView) view.findViewById(R.id.swipe_target);
-        scrollView.smoothScrollTo(0, 0);
-        lv = (ListViewForScrollView) view.findViewById(R.id.lv);
+        lv = (ListView) view.findViewById(R.id.swipe_target);
         lv.setFocusable(false);
+        lv.addHeaderView(headView);
         add = (ImageView) view.findViewById(R.id.add);
-        dadianhua = (ImageView) view.findViewById(R.id.dadianhua);
-        chat = (ImageView) view.findViewById(R.id.chat);
-        club_name = (TextView) view.findViewById(R.id.club_name);
-        club_profile = (TextView) view.findViewById(R.id.club_profile);
-        more = (TextView) view.findViewById(R.id.more);
-        peopleandtime = (TextView) view.findViewById(R.id.peopleandtime);
-        head_portrait = (CircleImageView) view.findViewById(R.id.head_portrait);
-        name = (TextView) view.findViewById(R.id.name);
-        view_free_courses = (TextView) view.findViewById(R.id.view_free_courses);
-        booking_group_course = (TextView) view.findViewById(R.id.booking_group_course);
+        dadianhua = (ImageView) headView.findViewById(R.id.dadianhua);
+        chat = (ImageView) headView.findViewById(R.id.chat);
+        club_name = (TextView) headView.findViewById(R.id.club_name);
+        club_profile = (TextView) headView.findViewById(R.id.club_profile);
+        more = (TextView) headView.findViewById(R.id.more);
+        peopleandtime = (TextView) headView.findViewById(R.id.peopleandtime);
+        head_portrait = (CircleImageView) headView.findViewById(R.id.head_portrait);
+        name = (TextView) headView.findViewById(R.id.name);
+        view_free_courses = (TextView) headView.findViewById(R.id.view_free_courses);
+        booking_group_course = (TextView) headView.findViewById(R.id.booking_group_course);
         add.setOnClickListener(this);
         dadianhua.setOnClickListener(this);
         chat.setOnClickListener(this);
@@ -126,11 +139,10 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
     }
 
     public void initdata() {
-        curriculumPresenter.getBrandGymPaid();
-        curriculumPresenter.getConsultant();
-        curriculumPresenter.getBrandInfo();
+        presenter.getBrandGymPaid();
+        presenter.getConsultant();
+        presenter.getBrandInfo();
     }
-
 
     @Override
     public void onLoadMore() {
@@ -193,6 +205,59 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
         }
     }
 
+    @Override
+    public void getBrandGymPaid(List<BrandGymPaidEntity> brandGymPaidEntityList) {
+        data.clear();
+        data = brandGymPaidEntityList;
+        adapter = new CurriculumAdapter(getActivity(), data);
+        lv.setAdapter(adapter);
+
+    }
+
+    //会计顾问
+    @Override
+    public void getConsultant(ConsultantEntity consultantEntity) {
+        this.consultantEntity = consultantEntity;
+        Picasso.with(getActivity())
+                .load(consultantEntity.getPic())
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
+                .into(head_portrait);
+        name.setText(MyApplication.nickName);
+        club_name.setText(MyApplication.currentClubName);
+        name.setText(consultantEntity.getName());
+    }
+
+    @Override
+    public void show() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void getBrandInfo(List<BrandInfoEntity> brandInfoEntity) {
+        brandInfoEntityList.clear();
+        brandInfoEntityList = brandInfoEntity;
+        club_name.setText(brandInfoEntityList.get(0).getClubName());
+        if (brandInfoEntityList.get(0).getClubIntroduce() != null) {
+            club_profile.setText(brandInfoEntityList.get(0).getClubIntroduce());
+        }
+        peopleandtime.setText(brandInfoEntityList.get(0).getOnlineNum() + "人  " + CheckUtils.timetodate(brandInfoEntityList.get(0).getNowTime()));
+        EventBus.getDefault().post(new CurriculumEventBusEntity(brandInfoEntityList.get(0).getImageArrayTrans()));
+    }
+
+
     /**
      * 初始化popupWindow
      */
@@ -236,67 +301,5 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
 
     }
 
-    //调起百度地图
-    private void openBaiDuMap() {
-        try {
-            Intent intent = Intent.getIntent("intent://map/marker?location=40.047669,116.313082&title=我的位置&content=美年广场&src=yourCompanyName|fitpartner#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
-            if (CheckUtils.isinstallbyread("com.baidu.BaiduMap")) {
-                startActivity(intent); //启动调用
-            } else {
-                Toast.makeText(getActivity(), "没有安装百度地图客户端", Toast.LENGTH_LONG).show();
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 
-    //调起高德地图
-    private void openGaoDeMap() {
-        try {
-            Intent intent = Intent.getIntent("androidamap://viewMap?sourceApplication=厦门通&poiname=百度奎科大厦&lat=40.047669&lon=116.313082&dev=0");
-            if (CheckUtils.isinstallbyread("com.autonavi.minimap")) {
-                startActivity(intent); //启动调用
-            } else {
-                Toast.makeText(getActivity(), "没有安装高德地图客户端", Toast.LENGTH_SHORT).show();
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void getBrandGymPaid(List<BrandGymPaidEntity> brandGymPaidEntityList) {
-        swipeToLoadLayout.setRefreshing(false);
-        data.clear();
-        data = brandGymPaidEntityList;
-        curriculumAdapter = new CurriculumAdapter(getActivity(), data);
-        lv.setAdapter(curriculumAdapter);
-    }
-
-    //会计顾问
-    @Override
-    public void getConsultant(ConsultantEntity consultantEntity) {
-        this.consultantEntity = consultantEntity;
-        Picasso.with(getActivity())
-                .load(consultantEntity.getPic())
-                .placeholder(R.drawable.loading_cort)
-                .error(R.drawable.loading_cort)
-                .into(head_portrait);
-        name.setText(MyApplication.nickName);
-        club_name.setText(MyApplication.currentClubName);
-        name.setText(consultantEntity.getName());
-    }
-
-    @Override
-    public void getBrandInfo(List<BrandInfoEntity> brandInfoEntity) {
-        swipeToLoadLayout.setRefreshing(false);
-        brandInfoEntityList.clear();
-        brandInfoEntityList = brandInfoEntity;
-        club_name.setText(brandInfoEntityList.get(0).getClubName());
-        if (brandInfoEntityList.get(0).getClubIntroduce() != null) {
-            club_profile.setText(brandInfoEntityList.get(0).getClubIntroduce());
-        }
-        peopleandtime.setText(brandInfoEntityList.get(0).getOnlineNum() + "人  " + CheckUtils.timetodate(brandInfoEntityList.get(0).getNowTime()));
-        EventBus.getDefault().post(new CurriculumEventBusEntity(brandInfoEntityList.get(0).getImageArrayTrans()));
-    }
 }

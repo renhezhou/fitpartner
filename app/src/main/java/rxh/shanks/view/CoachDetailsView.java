@@ -9,6 +9,10 @@ import rxh.shanks.entity.CoachDetailsEntity;
  */
 public interface CoachDetailsView {
 
+    void show();
+
+    void hide();
+
     void getPrivateLessongetTeamLesson(List<CoachDetailsEntity> coachDetailsEntityList);
 
 }

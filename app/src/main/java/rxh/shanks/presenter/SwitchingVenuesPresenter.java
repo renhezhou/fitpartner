@@ -3,6 +3,10 @@ package rxh.shanks.presenter;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import rxh.shanks.entity.SwitchingVenuesAdapterEntity;
 import rxh.shanks.entity.SwitchingVenuesCodeEntity;
 import rxh.shanks.entity.SwitchingVenuesSuccessCodeEntity;
 import rxh.shanks.model.GetInfo;
@@ -38,8 +42,15 @@ public class SwitchingVenuesPresenter {
                 switchingVenuesView.hide();
                 SwitchingVenuesCodeEntity switchingVenuesCodeEntity = new SwitchingVenuesCodeEntity();
                 switchingVenuesCodeEntity = JsonUtils.getClub(result);
+                List<SwitchingVenuesAdapterEntity> data = new ArrayList<>();
                 if (switchingVenuesCodeEntity.getCode().equals("0")) {
-                    switchingVenuesView.getallvenues(switchingVenuesCodeEntity);
+                    for (int i = 0; i < switchingVenuesCodeEntity.getResult().size(); i++) {
+                        SwitchingVenuesAdapterEntity entity = new SwitchingVenuesAdapterEntity();
+                        entity.setBrandName(switchingVenuesCodeEntity.getResult().get(i).get(0).getBrandName());
+                        entity.setEntityList(switchingVenuesCodeEntity.getResult().get(i));
+                        data.add(entity);
+                    }
+                    switchingVenuesView.getallvenues(data);
                 }
             }
 
@@ -67,11 +78,9 @@ public class SwitchingVenuesPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("currentClubID", clubID);
-        switchingVenuesView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                switchingVenuesView.hide();
                 SwitchingVenuesSuccessCodeEntity switchingVenuesSuccessCodeEntity = new SwitchingVenuesSuccessCodeEntity();
                 switchingVenuesSuccessCodeEntity = JsonUtils.switchingvenues(result);
                 if (switchingVenuesSuccessCodeEntity.getCode().equals("0")) {
@@ -82,17 +91,14 @@ public class SwitchingVenuesPresenter {
 
             @Override
             public void onError(Throwable ex) {
-                switchingVenuesView.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                switchingVenuesView.hide();
             }
 
             @Override
             public void onFinished() {
-                switchingVenuesView.hide();
             }
         });
 

@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import rxh.shanks.activity.R;
 import rxh.shanks.adapter.ConfirmAnAppointmentAdapter;
+import rxh.shanks.base.BaseFragment;
 import rxh.shanks.entity.ConfirmAnAppointmentEntity;
 import rxh.shanks.presenter.ConfirmAnAppointmentPresenter;
 import rxh.shanks.utils.MyApplication;
@@ -26,7 +27,7 @@ import rxh.shanks.view.ConfirmAnAppointmentView;
 /**
  * Created by Administrator on 2016/8/3.
  */
-public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnAppointmentView {
+public class ConfirmAnAppointmentFragment extends BaseFragment implements ConfirmAnAppointmentView {
 
     @Bind(R.id.lv)
     ListView lv;
@@ -36,8 +37,8 @@ public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnA
     List<ConfirmAnAppointmentEntity> datas = new ArrayList<>();
     List<String> checkboxflag = new ArrayList<>();
     List<String> planID = new ArrayList<>();
-    ConfirmAnAppointmentAdapter confirmAnAppointmentAdapter;
-    ConfirmAnAppointmentPresenter confirmAnAppointmentPresenter;
+    ConfirmAnAppointmentAdapter adapter;
+    ConfirmAnAppointmentPresenter presenter;
     String date;
 
     public interface ConfirmAnAppointmentFragmentListener {
@@ -57,10 +58,10 @@ public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnA
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_confirm_an_appointment, null);
-        confirmAnAppointmentPresenter = new ConfirmAnAppointmentPresenter(this);
+        presenter = new ConfirmAnAppointmentPresenter(this);
         date = getArguments().getString("date");
         ButterKnife.bind(this, view);
-        confirmAnAppointmentPresenter.getTeamLessonFreeTime(date);
+        presenter.getTeamLessonFreeTime(date);
         initview();
         return view;
     }
@@ -70,7 +71,7 @@ public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnA
         confirm_an_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmAnAppointmentPresenter.orderTeamLesson(MyApplication.lessonID, MyApplication.CoachID, planID);
+                presenter.orderTeamLesson(MyApplication.lessonID, MyApplication.CoachID, planID);
             }
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,7 +90,7 @@ public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnA
                     checkboxflag.set(position, "1");
                     planID.add(datas.get(position).getPlanID());
                 }
-                confirmAnAppointmentAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -102,6 +103,20 @@ public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnA
     }
 
     @Override
+    public void show(int flag) {
+        if (flag == 3) {
+            loading("预约中", "true");
+        }
+    }
+
+    @Override
+    public void hide(int flag) {
+        if (flag == 3) {
+            dismiss();
+        }
+    }
+
+    @Override
     public void getTeamLessonFreeTime(List<ConfirmAnAppointmentEntity> data) {
 //        datas.clear();
         //1表示选中，0表示未选中
@@ -109,8 +124,8 @@ public class ConfirmAnAppointmentFragment extends Fragment implements ConfirmAnA
             checkboxflag.add("0");
         }
         datas = data;
-        confirmAnAppointmentAdapter = new ConfirmAnAppointmentAdapter(getActivity(), datas, checkboxflag);
-        lv.setAdapter(confirmAnAppointmentAdapter);
+        adapter = new ConfirmAnAppointmentAdapter(getActivity(), datas, checkboxflag);
+        lv.setAdapter(adapter);
     }
 
     //预约团课成功

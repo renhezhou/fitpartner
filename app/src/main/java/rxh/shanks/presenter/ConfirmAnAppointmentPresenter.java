@@ -27,12 +27,12 @@ public class ConfirmAnAppointmentPresenter {
 
 
     private GetInfo getInfo;
-    private ConfirmAnAppointmentView confirmAnAppointmentView;
+    private ConfirmAnAppointmentView view;
     ConfirmAnAppointmentListCodeEntity confirmAnAppointmentListCodeEntity = new ConfirmAnAppointmentListCodeEntity();
 
-    public ConfirmAnAppointmentPresenter(ConfirmAnAppointmentView confirmAnAppointmentView) {
+    public ConfirmAnAppointmentPresenter(ConfirmAnAppointmentView view) {
         getInfo = new Is_Networking();
-        this.confirmAnAppointmentView = confirmAnAppointmentView;
+        this.view = view;
     }
 
     public void getTeamLessonFreeTime(String date) {
@@ -52,7 +52,7 @@ public class ConfirmAnAppointmentPresenter {
                 if (confirmAnAppointmentListCodeEntity.getCode().equals("0")) {
                     //下一步操作
                     if (confirmAnAppointmentListCodeEntity.getResult().get(0).getIsEmpty().equals("0")) {
-                        confirmAnAppointmentView.getTeamLessonFreeTime(confirmAnAppointmentListCodeEntity.getResult().get(0).getData());
+                        view.getTeamLessonFreeTime(confirmAnAppointmentListCodeEntity.getResult().get(0).getData());
                     }
 
                 }
@@ -86,31 +86,33 @@ public class ConfirmAnAppointmentPresenter {
         for (String planid : planID) {
             params.addBodyParameter("planID[]", planid);
         }
+        view.show(3);
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide(3);
                 ConfirmAnAppointmentActivityCodeEntity confirmAnAppointmentActivityCodeEntity = new ConfirmAnAppointmentActivityCodeEntity();
                 confirmAnAppointmentActivityCodeEntity = JsonUtils.orderTeamLesson(result);
                 if (confirmAnAppointmentActivityCodeEntity.getCode().equals("0")) {
-                    confirmAnAppointmentView.success();
+                    view.success();
                 } else {
-                    confirmAnAppointmentView.toast(confirmAnAppointmentActivityCodeEntity.getError());
+                    view.toast(confirmAnAppointmentActivityCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-                Log.e("...", ex.getMessage());
+                view.hide(3);
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                view.hide(3);
             }
 
             @Override
             public void onFinished() {
-
+                view.hide(3);
             }
         });
     }
@@ -121,7 +123,7 @@ public class ConfirmAnAppointmentPresenter {
         if (confirmAnAppointmentListCodeEntity.getResult() != null) {
             for (int i = 0; i < confirmAnAppointmentListCodeEntity.getResult().size(); i++) {
                 if (confirmAnAppointmentListCodeEntity.getResult().get(i).getDate().equals(CreatTime.creatfragment())) {
-                    confirmAnAppointmentView.getTeamLessonFreeTime(confirmAnAppointmentListCodeEntity.getResult().get(i).getData());
+                    view.getTeamLessonFreeTime(confirmAnAppointmentListCodeEntity.getResult().get(i).getData());
                     flag = false;
                 } else {
                     flag = true;

@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
@@ -20,6 +21,8 @@ import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.CheckToActivity;
 import rxh.shanks.activity.CoachDetailsActivity;
 import rxh.shanks.activity.R;
@@ -39,20 +42,31 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
     View view, popView;
     private PopupWindow popupWindow;
     private SwipeToLoadLayout swipeToLoadLayout;
-    ListViewForScrollView lv;
+    ListView lv;
     private ImageView add;
     private LinearLayout scan, check_to;
     private List<CoachEntity> data = new ArrayList<>();
-    CoachAdapter coachAdapter;
-    CoachPsesenter coachPsesenter;
+    CoachAdapter adapter;
+    CoachPsesenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_coach, null);
-        coachPsesenter = new CoachPsesenter(this);
+        presenter = new CoachPsesenter(this);
+        EventBus.getDefault().register(this);
         initview();
-        initdata();
+        presenter.getCoach();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(SVAEntity svaEntity) {
+        presenter.getCoach();
     }
 
     public void initview() {
@@ -61,7 +75,7 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
         add.setOnClickListener(this);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        lv = (ListViewForScrollView) view.findViewById(R.id.lv);
+        lv = (ListView) view.findViewById(R.id.swipe_target);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,16 +94,29 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
         });
     }
 
-    public void initdata() {
-        coachPsesenter.getCoach();
+    @Override
+    public void show() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void getCoach(List<CoachEntity> coachEntityList) {
-        swipeToLoadLayout.setRefreshing(false);
+        data.clear();
         data = coachEntityList;
-        coachAdapter = new CoachAdapter(getActivity(), data);
-        lv.setAdapter(coachAdapter);
+        adapter = new CoachAdapter(getActivity(), data);
+        lv.setAdapter(adapter);
     }
 
 
@@ -100,7 +127,7 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
 
     @Override
     public void onRefresh() {
-        initdata();
+        presenter.getCoach();
     }
 
     @Override

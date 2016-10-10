@@ -20,11 +20,11 @@ import rxh.shanks.view.CoachView;
 public class CoachDetailsPresenter {
 
     private GetInfo getInfo;
-    private CoachDetailsView coachDetailsView;
+    private CoachDetailsView view;
 
-    public CoachDetailsPresenter(CoachDetailsView coachDetailsView) {
+    public CoachDetailsPresenter(CoachDetailsView view) {
         getInfo = new Is_Networking();
-        this.coachDetailsView = coachDetailsView;
+        this.view = view;
     }
 
     //获取私教课程
@@ -33,30 +33,32 @@ public class CoachDetailsPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
         params.addBodyParameter("coachID", MyApplication.CoachID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 CoachDetailsCodeEntity coachDetailsCodeEntity = new CoachDetailsCodeEntity();
                 coachDetailsCodeEntity = JsonUtils.getPrivateLessongetTeamLesson(result);
                 if (coachDetailsCodeEntity.getCode().equals("0")) {
-                    coachDetailsView.getPrivateLessongetTeamLesson(coachDetailsCodeEntity.getResult());
+                    view.getPrivateLessongetTeamLesson(coachDetailsCodeEntity.getResult());
                 }
 
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                view.hide();
             }
 
             @Override
             public void onFinished() {
-
+                view.hide();
             }
         });
     }
@@ -67,30 +69,32 @@ public class CoachDetailsPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
         params.addBodyParameter("coachID", MyApplication.CoachID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 CoachDetailsCodeEntity coachDetailsCodeEntity = new CoachDetailsCodeEntity();
                 coachDetailsCodeEntity = JsonUtils.getPrivateLessongetTeamLesson(result);
                 if (coachDetailsCodeEntity.getCode().equals("0")) {
-                    coachDetailsView.getPrivateLessongetTeamLesson(coachDetailsCodeEntity.getResult());
+                    view.getPrivateLessongetTeamLesson(coachDetailsCodeEntity.getResult());
                 }
 
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                view.hide();
             }
 
             @Override
             public void onFinished() {
-
+                view.hide();
             }
         });
     }

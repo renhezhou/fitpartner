@@ -31,6 +31,7 @@ public class MyPrivateEducationPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("coach", "getMyPrivateCoach"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
         myPrivateEducationView.show();
         getInfo.getinfo(params, new Response() {
             @Override
@@ -65,6 +66,7 @@ public class MyPrivateEducationPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("coach", "getMyTeamCoach"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
         myPrivateEducationView.show();
         getInfo.getinfo(params, new Response() {
             @Override

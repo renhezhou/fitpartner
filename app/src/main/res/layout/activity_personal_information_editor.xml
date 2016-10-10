@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <FrameLayout
@@ -79,6 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="性别"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <ImageView
@@ -100,6 +103,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -111,6 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="年龄"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
@@ -120,6 +126,8 @@
             android:layout_alignParentRight="true"
             android:background="@null"
             android:text="22"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
     </RelativeLayout>
 
@@ -128,6 +136,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -139,6 +148,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="姓名"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
@@ -147,6 +158,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@null"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:text="任河洲"
             android:textSize="16sp" />
     </RelativeLayout>
@@ -156,6 +169,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -167,6 +181,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="用户名称"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
@@ -176,6 +192,8 @@
             android:layout_alignParentRight="true"
             android:background="@null"
             android:text="任河洲"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
     </RelativeLayout>
 
@@ -183,6 +201,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
+        android:alpha="0.6"
         android:layout_marginRight="10dp"
         android:background="@color/text_not_selected" />
 
@@ -195,6 +214,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="手机号码"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
@@ -203,6 +224,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@null"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:text="15928818892"
             android:textSize="16sp" />
     </RelativeLayout>
@@ -212,6 +235,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -226,6 +250,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:text="健身需求"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -268,6 +294,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -279,6 +306,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="联系地址"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
@@ -288,6 +317,8 @@
             android:layout_alignParentRight="true"
             android:background="@null"
             android:text="四川成都高新区"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="16sp" />
     </RelativeLayout>
 

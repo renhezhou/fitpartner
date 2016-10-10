@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rxh.shanks.activity.R;
+import rxh.shanks.base.BaseFragment;
 import rxh.shanks.entity.DataSouceCoachEntity;
 import rxh.shanks.entity.PrivateEducationCourseEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetHoldingTimeEntity;
@@ -32,17 +33,17 @@ import rxh.shanks.view.PrivateEducationCourseView;
 /**
  * Created by Administrator on 2016/8/3.
  */
-public class PrivateEducationCourseFragment extends Fragment implements PrivateEducationCourseView {
+public class PrivateEducationCourseFragment extends BaseFragment implements PrivateEducationCourseView {
 
     View view;
     @Bind(R.id.gv)
     GridView gv;
-    PrivateEducationCourseGVAdapter privateEducationCourseGVAdapter;
     @Bind(R.id.confirm_an_appointment)
     TextView confirm_an_appointment;
     List<PrivateEducationCourseGetHoldingTimeEntity> GetHoldingTimedata = new ArrayList<>();
     String date;
-    PrivateEducationCoursePresenter privateEducationCoursePresenter;
+    PrivateEducationCourseGVAdapter adapter;
+    PrivateEducationCoursePresenter presenter;
 
     int positionflag = -1;
     String time;
@@ -68,7 +69,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_private_education_course, null);
-        privateEducationCoursePresenter = new PrivateEducationCoursePresenter(this);
+        presenter = new PrivateEducationCoursePresenter(this);
         date = getArguments().getString("date");
         time = getArguments().getString("time");
         ButterKnife.bind(this, view);
@@ -82,7 +83,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
             @Override
             public void onClick(View v) {
                 if (positionflag != -1) {
-                    privateEducationCoursePresenter.bespokeLesson(CreatTime.qingqiu(date, data.get(positionflag).getTime(), Integer.parseInt(time)));
+                    presenter.bespokeLesson(CreatTime.qingqiu(date, data.get(positionflag).getTime(), Integer.parseInt(time)));
                 } else {
                     Toast.makeText(getActivity(), "请选择预约时间", Toast.LENGTH_LONG).show();
                 }
@@ -94,7 +95,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
                 //判断此项是否可以选中，0表示可以被选中
                 if (data.get(position).getFlag() == 0) {
                     positionflag = position;
-                    privateEducationCourseGVAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getActivity(), " 此时间段已被占用，无法排课", Toast.LENGTH_LONG).show();
                 }
@@ -104,7 +105,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
 
 
     public void initdata() {
-        privateEducationCoursePresenter.getHoldingTime(MyApplication.CoachID, date);
+        presenter.getHoldingTime(MyApplication.CoachID, date);
 
 //        privateEducationCourseGVAdapter = new PrivateEducationCourseGVAdapter(getActivity(), data);
 //        gv.setAdapter(privateEducationCourseGVAdapter);
@@ -117,13 +118,27 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void show(int flag) {
+        if (flag == 3) {
+            loading("预约中", "true");
+        }
+    }
+
+    @Override
+    public void hide(int flag) {
+        if (flag == 3) {
+            dismiss();
+        }
+    }
+
     //教练占用的时间
     @Override
     public void getHoldingTime(List<PrivateEducationCourseGetHoldingTimeEntity> privateEducationCourseGetHoldingTimeEntityList) {
         GetHoldingTimedata = privateEducationCourseGetHoldingTimeEntityList;
         if (GetHoldingTimedata.get(0).getIsRest().equals("0")) {
             //教练工作日
-            privateEducationCoursePresenter.getUserHoldingTime(date);
+            presenter.getUserHoldingTime(date);
         } else if (GetHoldingTimedata.get(0).getIsRest().equals("1")) {
             //教练休息日
         }
@@ -133,11 +148,11 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
     @Override
     public void getUserHoldingTime(List<PrivateEducationCourseGetUserHoldingTimeEntity> privateEducationCourseGetUserHoldingTimeEntityList) {
         //教练工作时间表生成方式
-        data = PrivateEducationCourseFragmentDataSouceUtils.creatcoachdata(GetHoldingTimedata.get(0).getWorkTime(), GetHoldingTimedata.get(0).getRestTime());
+        data = PrivateEducationCourseFragmentDataSouceUtils.creatcoachdata(GetHoldingTimedata.get(0).getWorkTime(), GetHoldingTimedata.get(0).getRestTime(), GetHoldingTimedata.get(0).getDate());
         //教练已被占时间表
         if (GetHoldingTimedata.get(0).getHoldTime() != null) {
             for (int i = 0; i < GetHoldingTimedata.get(0).getHoldTime().size(); i++) {
-                coachdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(GetHoldingTimedata.get(0).getHoldTime().get(i), GetHoldingTimedata.get(0).getRestTime()));
+                coachdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(GetHoldingTimedata.get(0).getHoldTime().get(i), GetHoldingTimedata.get(0).getRestTime(), GetHoldingTimedata.get(0).getDate()));
             }
         }
 
@@ -155,7 +170,7 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
         //用户已被占用时间表
         if (privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime() != null) {
             for (int i = 0; i < privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().size(); i++) {
-                userdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().get(i), "1"));
+                userdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().get(i), "1", privateEducationCourseGetUserHoldingTimeEntityList.get(0).getDate()));
             }
         }
 
@@ -170,8 +185,8 @@ public class PrivateEducationCourseFragment extends Fragment implements PrivateE
             }
 
         }
-        privateEducationCourseGVAdapter = new PrivateEducationCourseGVAdapter(getActivity(), data);
-        gv.setAdapter(privateEducationCourseGVAdapter);
+        adapter = new PrivateEducationCourseGVAdapter(getActivity(), data);
+        gv.setAdapter(adapter);
     }
 
     //预约私教课成功的回调

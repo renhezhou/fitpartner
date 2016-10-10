@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,12 +102,18 @@ public class BannerFragment extends Fragment {
         @Override
         public void UpdateUI(Context context, int position, String data) {
             //在这儿对imageview进行加载
-            Glide
-                    .with(context)
+//            Glide
+//                    .with(context)
+//                    .load(urls.get(position))
+//                    .centerCrop()
+//                    // .placeholder(R.drawable.ic_launcher)
+//                    .crossFade()
+//                    .into(imageView);
+            Picasso.with(context)
                     .load(urls.get(position))
-                    .centerCrop()
-                    // .placeholder(R.drawable.ic_launcher)
-                    .crossFade()
+//                    .placeholder(R.drawable.loading_cort)
+//                    .error(R.drawable.loading_cort)
+                    .fit()
                     .into(imageView);
         }
     }

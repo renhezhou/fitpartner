@@ -10,6 +10,10 @@ import rxh.shanks.entity.PrivateEducationCourseGetUserHoldingTimeEntity;
  */
 public interface PrivateEducationCourseView {
 
+    void show(int flag);
+
+    void hide(int flag);
+
     void getHoldingTime(List<PrivateEducationCourseGetHoldingTimeEntity> privateEducationCourseGetHoldingTimeEntityList);
 
     void getUserHoldingTime(List<PrivateEducationCourseGetUserHoldingTimeEntity> privateEducationCourseGetUserHoldingTimeEntityList);

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,13 +68,13 @@ public class CoachDetailsAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Glide
-                .with(context)
-                .load(data.get(position).getLogo())
-                .centerCrop()
-                //.placeholder(R.drawable.ic_launcher)
-                .crossFade()
-                .into(holder.img);
+        if (data.get(position).getLogo() != null && !data.get(position).getLogo().equals("")) {
+            Picasso.with(context)
+                    .load(data.get(position).getLogo())
+//                .placeholder(R.drawable.loading_cort)
+//                .error(R.drawable.loading_cort)
+                    .into(holder.img);
+        }
         holder.project.setText(data.get(position).getCoachName());
         holder.introduce.setText(data.get(position).getLessonIntro());
         holder.price.setText("¥" + data.get(position).getPrice() + "元/节");

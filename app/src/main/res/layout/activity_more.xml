@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/top" />
@@ -17,6 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="清除应用缓存"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="18sp" />
 
         <TextView
@@ -24,6 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="0.00M"
+            android:alpha="0.4"
+            android:textColor="@color/black"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -32,6 +37,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -44,12 +50,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="场馆协议"
+            android:alpha="0.6"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
+            android:alpha="0.6"
             android:src="@drawable/go" />
     </RelativeLayout>
 
@@ -58,6 +67,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -70,11 +80,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="切换场馆"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="18sp" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:alpha="0.6"
             android:layout_alignParentRight="true"
             android:src="@drawable/go" />
     </RelativeLayout>
@@ -84,6 +97,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout
@@ -96,12 +110,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="意见反馈"
+            android:textColor="@color/black"
+            android:alpha="0.6"
             android:textSize="18sp" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
+            android:alpha="0.6"
             android:src="@drawable/go" />
     </RelativeLayout>
 
@@ -110,6 +127,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
     <RelativeLayout

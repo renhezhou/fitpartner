@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,14 +40,19 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
         Picasso.with(getApplicationContext())
                 .load(R.drawable.guidepage)
                 .into(img);
-        if (sp.getString("token", null) != null) {
-            presenter.login("2", null, sp.getString("user", null), sp.getString("password", null));
-        } else {
-            Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
-            startActivity(intent);
-            GuidePageActivity.this.finish();
-            finish();
-        }
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                if (sp.getString("token", null) != null) {
+                    presenter.login("2", null, sp.getString("user", null), sp.getString("password", null));
+                } else {
+                    Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    GuidePageActivity.this.finish();
+                    finish();
+                }
+            }
+        }, 2000); //延迟2秒跳转
+
     }
 
     @Override
@@ -61,7 +67,7 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
             editor.putString("userID", response.getResult().getUserID());
             editor.putString("realName", response.getResult().getRealName());
             editor.putString("nickName", response.getResult().getNickName());
-            editor.putString("headImageURL", response.getResult().getHeadImageURL()); 
+            editor.putString("headImageURL", response.getResult().getHeadImageURL());
             editor.putString("currentClubID", response.getResult().getCurrentClubID());
             editor.putString("currentClubName", response.getResult().getCurrentClubName());
             editor.putString("address", response.getResult().getAddress());

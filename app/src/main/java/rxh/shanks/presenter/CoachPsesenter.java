@@ -20,41 +20,43 @@ import rxh.shanks.view.CourseDetailsView;
 public class CoachPsesenter {
 
     private GetInfo getInfo;
-    private CoachView coachView;
+    private CoachView view;
 
-    public CoachPsesenter(CoachView coachView) {
+    public CoachPsesenter(CoachView view) {
         getInfo = new Is_Networking();
-        this.coachView = coachView;
+        this.view = view;
     }
 
     public void getCoach() {
         RequestParams params = new RequestParams(CreatUrl.creaturl("coach", "GetCoach"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 CoachCodeEntity coachCodeEntity = new CoachCodeEntity();
                 coachCodeEntity = JsonUtils.getCoach(result);
                 if (coachCodeEntity.getCode().equals("0")) {
-                    coachView.getCoach(coachCodeEntity.getResult());
+                    view.getCoach(coachCodeEntity.getResult());
                 }
 
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                view.hide();
             }
 
             @Override
             public void onFinished() {
-
+                view.hide();
             }
         });
     }

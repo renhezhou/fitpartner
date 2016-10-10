@@ -51,7 +51,23 @@ public class MembershipCardFragment extends Fragment {
     }
 
     public void onEventMainThread(MembershipCardEventBusEntity membershipCardEventBusEntity) {
+//        convenientBanner.notifyDataSetChanged();
         datas = membershipCardEventBusEntity.getMembershipCardEntityList();
+        for (int i = 0; i < datas.size(); i++) {
+            if (datas.get(i).getCardID().equals(MyApplication.defaultmembercard)) {
+                MembershipCardEntity entity = new MembershipCardEntity();
+                entity.setCardID(datas.get(0).getCardID());
+                entity.setClubID(datas.get(0).getClubID());
+                entity.setClubName(datas.get(0).getClubName());
+                entity.setRemaindCount(datas.get(0).getRemaindCount());
+                entity.setRemainingTimeOff(datas.get(0).getRemainingTimeOff());
+                entity.setTotalCount(datas.get(0).getTotalCount());
+                entity.setType(datas.get(0).getType());
+                entity.setValidiPeriod(datas.get(0).getValidiPeriod());
+                datas.set(0, datas.get(i));
+                datas.set(i, entity);
+            }
+        }
         initview();
     }
 

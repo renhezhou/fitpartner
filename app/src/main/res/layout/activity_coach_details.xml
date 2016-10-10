@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <include layout="@layout/top" />
 
@@ -34,21 +35,23 @@
                 android:id="@+id/coach_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="阿三教练"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/coaching_years"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="执教20年"
+                android:textColor="@color/black"
+                android:alpha="0.4"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/club_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="美年一点"
+                android:textColor="@color/black"
+                android:alpha="0.4"
                 android:textSize="14sp" />
 
         </LinearLayout>

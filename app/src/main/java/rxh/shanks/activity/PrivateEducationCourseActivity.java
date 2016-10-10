@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,11 +96,10 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
     }
 
     public void initdata() {
-        Glide
-                .with(getApplicationContext())
+        Picasso.with(getApplicationContext())
                 .load(head_path)
-                .centerCrop()
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
         coach_name.setText(coachName);
         if (evaluate == null) {

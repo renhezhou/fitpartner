@@ -35,7 +35,6 @@ public class CheckToPresenter {
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("cardID", cardID);
         params.addBodyParameter("cardType", cardType);
-        checkToView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
@@ -74,7 +73,6 @@ public class CheckToPresenter {
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                checkToView.hide();
                 FitCardCodeEntity fitCardCodeEntity = new FitCardCodeEntity();
                 fitCardCodeEntity = JsonUtils.getFitCard(result);
                 if (fitCardCodeEntity.getCode().equals("0")) {

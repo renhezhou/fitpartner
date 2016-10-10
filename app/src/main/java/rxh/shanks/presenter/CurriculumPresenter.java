@@ -105,9 +105,11 @@ public class CurriculumPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("gym", "getBrandInfo"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
+        getBrandInfoView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                getBrandInfoView.hide();
                 BrandInfoCodeEntity brandInfoCodeEntity = new BrandInfoCodeEntity();
                 brandInfoCodeEntity = JsonUtils.getBrandInfo(result);
                 if (brandInfoCodeEntity.getCode().equals("0")) {
@@ -118,17 +120,17 @@ public class CurriculumPresenter {
 
             @Override
             public void onError(Throwable ex) {
-
+                getBrandInfoView.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                getBrandInfoView.hide();
             }
 
             @Override
             public void onFinished() {
-
+                getBrandInfoView.hide();
             }
         });
     }

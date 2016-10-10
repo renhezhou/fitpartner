@@ -139,6 +139,27 @@ public class CreatTime {
         return result;
     }
 
+    //获取当前年
+    public static int getyear() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        return year;
+    }
+
+    //获取当前月
+    public static int getmonth() {
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH);
+        return month;
+    }
+
+    //获取当前日
+    public static int getday() {
+        Calendar c = Calendar.getInstance();
+        int day = c.get(Calendar.DATE);
+        return day;
+    }
+
     //获取当前小时
     public static int gethours() {
         Calendar c = Calendar.getInstance();

@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,13 +63,20 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
         back.setOnClickListener(this);
         consultation.setOnClickListener(this);
         purchase.setOnClickListener(this);
-        Glide
-                .with(getApplicationContext())
-                .load(logo)
-                .centerCrop()
-                //.placeholder(R.drawable.ic_launcher)
-                .crossFade()
-                .into(img);
+//        Glide
+//                .with(getApplicationContext())
+//                .load(logo)
+//                .centerCrop()
+//                //.placeholder(R.drawable.ic_launcher)
+//                .crossFade()
+//                .into(img);
+        if (logo != null && !logo.equals("")) {
+            Picasso.with(getApplicationContext())
+                    .load(logo)
+//                .placeholder(R.drawable.loading_cort)
+//                .error(R.drawable.loading_cort)
+                    .into(img);
+        }
         project.setText(lessonName);
         if (evaluates != null) {
             evaluate.setStar(Float.parseFloat(evaluates));

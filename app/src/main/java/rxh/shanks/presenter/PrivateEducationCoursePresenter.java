@@ -20,11 +20,11 @@ import rxh.shanks.view.PrivateEducationCourseView;
 public class PrivateEducationCoursePresenter {
 
     private GetInfo getInfo;
-    private PrivateEducationCourseView privateEducationCourseView;
+    private PrivateEducationCourseView view;
 
-    public PrivateEducationCoursePresenter(PrivateEducationCourseView privateEducationCourseView) {
+    public PrivateEducationCoursePresenter(PrivateEducationCourseView view) {
         getInfo = new Is_Networking();
-        this.privateEducationCourseView = privateEducationCourseView;
+        this.view = view;
     }
 
     //获取教练占用的时间  ：日期 例：2016.08.04
@@ -39,9 +39,9 @@ public class PrivateEducationCoursePresenter {
                 PrivateEducationCourseGetHoldingTimeCodeEntity privateEducationCourseGetHoldingTimeCodeEntity = new PrivateEducationCourseGetHoldingTimeCodeEntity();
                 privateEducationCourseGetHoldingTimeCodeEntity = JsonUtils.getHoldingTime(result);
                 if (privateEducationCourseGetHoldingTimeCodeEntity.getCode().equals("0")) {
-                    privateEducationCourseView.getHoldingTime(privateEducationCourseGetHoldingTimeCodeEntity.getResult());
+                    view.getHoldingTime(privateEducationCourseGetHoldingTimeCodeEntity.getResult());
                 } else {
-                    privateEducationCourseView.toast(privateEducationCourseGetHoldingTimeCodeEntity.getError());
+                    view.toast(privateEducationCourseGetHoldingTimeCodeEntity.getError());
                 }
             }
 
@@ -76,9 +76,9 @@ public class PrivateEducationCoursePresenter {
                 PrivateEducationCourseGetUserHoldingTimeCodeEntity privateEducationCourseGetUserHoldingTimeCodeEntity = new PrivateEducationCourseGetUserHoldingTimeCodeEntity();
                 privateEducationCourseGetUserHoldingTimeCodeEntity = JsonUtils.getUserHoldingTime(result);
                 if (privateEducationCourseGetUserHoldingTimeCodeEntity.getCode().equals("0")) {
-                    privateEducationCourseView.getUserHoldingTime(privateEducationCourseGetUserHoldingTimeCodeEntity.getResult());
+                    view.getUserHoldingTime(privateEducationCourseGetUserHoldingTimeCodeEntity.getResult());
                 } else {
-                    privateEducationCourseView.toast(privateEducationCourseGetUserHoldingTimeCodeEntity.getError());
+                    view.toast(privateEducationCourseGetUserHoldingTimeCodeEntity.getError());
                 }
             }
 
@@ -107,31 +107,33 @@ public class PrivateEducationCoursePresenter {
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("lessonID", MyApplication.lessonID);
         params.addBodyParameter("time", orderTime);
+        view.show(3);
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide(3);
                 PrivateEducationCourseBespokeLessonEntity privateEducationCourseBespokeLessonEntity = new PrivateEducationCourseBespokeLessonEntity();
                 privateEducationCourseBespokeLessonEntity = JsonUtils.bespokeLesson(result);
                 if (privateEducationCourseBespokeLessonEntity.getCode().equals("0")) {
-                    privateEducationCourseView.bespokeLesson();
+                    view.bespokeLesson();
                 } else {
-                    privateEducationCourseView.toast(privateEducationCourseBespokeLessonEntity.getError());
+                    view.toast(privateEducationCourseBespokeLessonEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide(3);
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-
+                view.hide(3);
             }
 
             @Override
             public void onFinished() {
-
+                view.hide(3);
             }
         });
 

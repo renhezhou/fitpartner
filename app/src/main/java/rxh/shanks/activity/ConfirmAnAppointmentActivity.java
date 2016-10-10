@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,11 +98,10 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     }
 
     public void initdata() {
-        Glide
-                .with(getApplicationContext())
+        Picasso.with(getApplicationContext())
                 .load(head_path)
-                .centerCrop()
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
         title.setText(titletv);
         coach_name.setText(coachName);

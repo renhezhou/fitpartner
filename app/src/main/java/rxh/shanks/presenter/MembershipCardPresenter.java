@@ -31,6 +31,7 @@ public class MembershipCardPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("card", "getFitCard"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
         membershipCardView.show();
         getInfo.getinfo(params, new Response() {
             @Override
@@ -67,11 +68,9 @@ public class MembershipCardPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("cardID", cardID);
-        membershipCardView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                membershipCardView.hide();
                 MembershipCardCodeEntity membershipCardCodeEntity = new MembershipCardCodeEntity();
                 membershipCardCodeEntity = JsonUtils.getmyFitCard(result);
                 if (membershipCardCodeEntity.getCode().equals("0")) {
@@ -84,17 +83,14 @@ public class MembershipCardPresenter {
 
             @Override
             public void onError(Throwable ex) {
-                membershipCardView.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                membershipCardView.hide();
             }
 
             @Override
             public void onFinished() {
-                membershipCardView.hide();
             }
         });
     }

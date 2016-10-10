@@ -43,6 +43,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    //解决问题的方法之一，重写dialogfragment的show方法
+//    public void show(FragmentManager manager, String tag) {
+//        mDismissed = false;
+//        mShownByMe = true;
+//        FragmentTransaction ft = manager.beginTransaction();
+//        ft.add(this, tag);
+//        ft.commitAllowingStateLoss();
+//    }
+
 
     // 显示进度条,flag==ture表示点击dialog外部，dialog不会消失。flag==false表示点击dialog外部，dialog会消失
     public void loading(String title, String flag) {
@@ -53,7 +62,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putString("flag", flag);
             loadingFragment.setArguments(bundle);
         }
-        loadingFragment.show(getSupportFragmentManager(), "loadingFragment");
+        if (!loadingFragment.isAdded()) {
+            loadingFragment.show(getSupportFragmentManager(), "loadingFragment");
+        }
     }
 
     public void loading(String flag) {
@@ -63,7 +74,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putString("flag", flag);
             loadingNoPromptFragment.setArguments(bundle);
         }
-        loadingNoPromptFragment.show(getSupportFragmentManager(), "loadingNoPromptFragment");
+        if (!loadingNoPromptFragment.isAdded()) {
+            loadingNoPromptFragment.show(getSupportFragmentManager(), "loadingNoPromptFragment");
+        }
     }
 
     public void showpopupfragment() {

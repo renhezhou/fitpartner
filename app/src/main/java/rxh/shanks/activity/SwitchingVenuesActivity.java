@@ -13,10 +13,15 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.adapter.SwitchingVenuesAdapter;
 import rxh.shanks.base.BaseActivity;
+import rxh.shanks.entity.SwitchingVenuesAdapterEntity;
 import rxh.shanks.entity.SwitchingVenuesCodeEntity;
+import rxh.shanks.entity.SwitchingVenuesEntity;
 import rxh.shanks.presenter.SwitchingVenuesPresenter;
+import rxh.shanks.utils.MyApplication;
 import rxh.shanks.view.SwitchingVenuesView;
 
 /**
@@ -30,15 +35,15 @@ public class SwitchingVenuesActivity extends BaseActivity implements SwitchingVe
     TextView title;
     @Bind(R.id.lv)
     ExpandableListView lv;
-    SwitchingVenuesAdapter switchingVenuesAdapter;
-    SwitchingVenuesCodeEntity data = new SwitchingVenuesCodeEntity();
-    SwitchingVenuesPresenter switchingVenuesPresenter;
+    SwitchingVenuesAdapter adapter;
+    List<SwitchingVenuesAdapterEntity> data = new ArrayList<>();
+    SwitchingVenuesPresenter presenter;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switchingVenuesPresenter = new SwitchingVenuesPresenter(this);
+        presenter = new SwitchingVenuesPresenter(this);
         initview();
     }
 
@@ -48,11 +53,11 @@ public class SwitchingVenuesActivity extends BaseActivity implements SwitchingVe
         title.setText("切换场馆");
         back.setOnClickListener(this);
         lv.setGroupIndicator(null);
-        switchingVenuesPresenter.getClub();
+        presenter.getClub();
         lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                switchingVenuesPresenter.switchingvenues(data.getResult().get(groupPosition).get(childPosition).getClubID());
+                presenter.switchingvenues(data.get(groupPosition).getEntityList().get(childPosition).getClubID());
                 return false;
             }
         });
@@ -80,12 +85,25 @@ public class SwitchingVenuesActivity extends BaseActivity implements SwitchingVe
     }
 
     @Override
-    public void getallvenues(SwitchingVenuesCodeEntity switchingVenuesCodeEntity) {
-        data = null;
-        data = switchingVenuesCodeEntity;
-        switchingVenuesAdapter = new SwitchingVenuesAdapter(data, getApplicationContext());
-        lv.setAdapter(switchingVenuesAdapter);
-        for (int i = 0; i < switchingVenuesCodeEntity.getResult().size(); i++) {
+    public void getallvenues(List<SwitchingVenuesAdapterEntity> SwitchingVenuesAdapterEntitys) {
+        data.clear();
+        data.addAll(SwitchingVenuesAdapterEntitys);
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getEntityList().get(0).getClubID().equals(MyApplication.currentClubID)) {
+                SwitchingVenuesAdapterEntity entity = new SwitchingVenuesAdapterEntity();
+                entity.setBrandName(data.get(0).getBrandName());
+                entity.setEntityList(data.get(0).getEntityList());
+                data.set(0, data.get(i));
+                data.set(i, entity);
+            }
+        }
+        if (adapter == null) {
+            adapter = new SwitchingVenuesAdapter(data, getApplicationContext());
+            lv.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+        for (int i = 0; i < data.size(); i++) {
             lv.expandGroup(i);
         }
         lv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -100,7 +118,8 @@ public class SwitchingVenuesActivity extends BaseActivity implements SwitchingVe
 
     @Override
     public void switchingvenues() {
-        switchingVenuesPresenter.getClub();
+        EventBus.getDefault().post(new SVAEntity());
+        presenter.getClub();
     }
 
 }

@@ -1,6 +1,5 @@
 package rxh.shanks.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class CoachDetailsActivity extends BaseActivity {
     private List<String> CoverImageArray = new ArrayList<>();
 
     private List<Fragment> fragments = new ArrayList<>();
-    CoachDetailsPageAdapter coachDetailsPageAdapter;
+    CoachDetailsPageAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,14 +73,12 @@ public class CoachDetailsActivity extends BaseActivity {
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
         title.setText("教练详情");
         back.setOnClickListener(this);
-        coachDetailsPageAdapter = new CoachDetailsPageAdapter(getSupportFragmentManager(), fragments);
-        viewpager.setAdapter(coachDetailsPageAdapter);
-        Glide
-                .with(getApplicationContext())
+        adapter = new CoachDetailsPageAdapter(getSupportFragmentManager(), fragments);
+        viewpager.setAdapter(adapter);
+        Picasso.with(getApplicationContext())
                 .load(HeadImageURL)
-                .centerCrop()
-               // .placeholder(R.drawable.ic_launcher)
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
         coach_name.setText(name);
         coaching_years.setText("执教" + teachtime + "年");
