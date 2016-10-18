@@ -61,7 +61,6 @@ public class ConfirmAnAppointmentPresenter {
 
             @Override
             public void onError(Throwable ex) {
-
             }
 
             @Override

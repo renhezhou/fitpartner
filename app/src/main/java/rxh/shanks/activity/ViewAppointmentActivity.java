@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.EAEntity;
+import rxh.shanks.EBEntity.ReadMsgEntity;
 import rxh.shanks.adapter.ViewAppointmentAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.ListViewForScrollView;
@@ -35,20 +39,32 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
     @Bind(R.id.title)
     TextView title;
     private SwipeToLoadLayout swipeToLoadLayout;
-    ListViewForScrollView lv;
+    ListView swipe_target;
     List<ViewAppointmentEntity> data = new ArrayList<>();
-    ViewAppointmentAdapter viewAppointmentAdapter;
+    ViewAppointmentAdapter adapter;
     String coachID, lessonID, head_path;//教练ID,课程ID
-    ViewAppointmentPresenter viewAppointmentPresenter;
+    ViewAppointmentPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewAppointmentPresenter = new ViewAppointmentPresenter(this);
+        presenter = new ViewAppointmentPresenter(this);
+        EventBus.getDefault().register(this);
         coachID = getIntent().getStringExtra("coachID");
         lessonID = getIntent().getStringExtra("lessonID");
         head_path = getIntent().getStringExtra("head_path");
         initview();
+        presenter.getOrderLesson(lessonID);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(EAEntity eaEntity) {
+        presenter.getOrderLesson(lessonID);
     }
 
     public void initview() {
@@ -59,9 +75,8 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
         swipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        lv = (ListViewForScrollView) findViewById(R.id.lv);
-        viewAppointmentPresenter.getOrderLesson(lessonID);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        swipe_target = (ListView) findViewById(R.id.swipe_target);
+        swipe_target.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //00:完成未评价  01:完成已评价  10:预约中 11:代约中
@@ -76,9 +91,9 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
                         startActivity(intent);
                     }
                 } else if (data.get(position).getState().equals("10")) {
-                    viewAppointmentPresenter.cancelBespokeLesson(data.get(position).getAppointmentID());
+                    presenter.cancelBespokeLesson(data.get(position).getAppointmentID());
                 } else if (data.get(position).getState().equals("11")) {
-                    viewAppointmentPresenter.confirmOrderLesson(data.get(position).getAppointmentID());
+                    presenter.confirmOrderLesson(data.get(position).getAppointmentID());
                 }
             }
         });
@@ -102,26 +117,33 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
 
     @Override
     public void onRefresh() {
-        viewAppointmentPresenter.getOrderLesson(lessonID);
+        presenter.getOrderLesson(lessonID);
     }
 
     @Override
     public void show() {
-        loading("加载中...", "true");
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
     }
 
     @Override
     public void hide() {
-        dismiss();
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void getOrderLesson(List<ViewAppointmentEntity> viewAppointmentEntityList) {
-        swipeToLoadLayout.setRefreshing(false);
+        EventBus.getDefault().post(new ReadMsgEntity());
         data.clear();
-        data = viewAppointmentEntityList;
-        viewAppointmentAdapter = new ViewAppointmentAdapter(ViewAppointmentActivity.this, data);
-        lv.setAdapter(viewAppointmentAdapter);
+        data.addAll(viewAppointmentEntityList);
+        adapter = new ViewAppointmentAdapter(ViewAppointmentActivity.this, data);
+        swipe_target.setAdapter(adapter);
 
     }
 
@@ -132,6 +154,6 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
 
     @Override
     public void success() {
-        viewAppointmentPresenter.getOrderLesson(lessonID);
+        presenter.getOrderLesson(lessonID);
     }
 }

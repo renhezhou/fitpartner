@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
             if (result == SMSSDK.RESULT_COMPLETE) {
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                     String phone = data.toString().substring(7, 18);
-                    loginPresenter.login("1", null, phone, null);
+                    loginPresenter.login("1", phone, null, null);
                 }
             } else {
                 ((Throwable) data).printStackTrace();

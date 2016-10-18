@@ -102,7 +102,7 @@ public class MembershipCardFragment extends Fragment {
         //donation_card转赠次卡
         private LinearLayout donation_card;
         private ImageView flag;
-        private TextView club_name, set_default_card, due_time, totalCount, remaindCount, remainingTimeOff, card_renewal;
+        private TextView club_name, set_default_card, card_name, due_time, totalCount, remaindCount, remainingTimeOff, card_renewal;
 
         @Override
         public View createView(Context context) {
@@ -112,6 +112,7 @@ public class MembershipCardFragment extends Fragment {
             donation_card = (LinearLayout) item_view.findViewById(R.id.donation_card);
             club_name = (TextView) item_view.findViewById(R.id.club_name);
             set_default_card = (TextView) item_view.findViewById(R.id.set_default_card);
+            card_name = (TextView) item_view.findViewById(R.id.card_name);
             due_time = (TextView) item_view.findViewById(R.id.due_time);
             totalCount = (TextView) item_view.findViewById(R.id.totalCount);
             remaindCount = (TextView) item_view.findViewById(R.id.remaindCount);
@@ -137,6 +138,7 @@ public class MembershipCardFragment extends Fragment {
             } else {
                 flag.setVisibility(View.GONE);
             }
+            card_name.setText(datas.get(position).getCardName());
             club_name.setText(datas.get(position).getClubName());
             due_time.setText("会员到期日期:" + CheckUtils.timetodate(datas.get(position).getValidiPeriod()));
             String endday = CheckUtils.timetodate(datas.get(position).getValidiPeriod());

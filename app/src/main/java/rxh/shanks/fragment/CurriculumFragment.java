@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
@@ -66,9 +67,10 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
     private SwipeToLoadLayout swipeToLoadLayout;
     private ListView lv;
     private TextView peopleandtime, more, club_name, club_profile, name, view_free_courses, booking_group_course;
-    private ImageView add, dadianhua, chat;
+    private ImageView add;
     private CircleImageView head_portrait;
     private LinearLayout scan, check_to;
+    private RelativeLayout dadianhua, chat;
 
     private List<BrandGymPaidEntity> data = new ArrayList<>();
     CurriculumAdapter adapter;
@@ -106,8 +108,8 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
         lv.setFocusable(false);
         lv.addHeaderView(headView);
         add = (ImageView) view.findViewById(R.id.add);
-        dadianhua = (ImageView) headView.findViewById(R.id.dadianhua);
-        chat = (ImageView) headView.findViewById(R.id.chat);
+        dadianhua = (RelativeLayout) headView.findViewById(R.id.dadianhua);
+        chat = (RelativeLayout) headView.findViewById(R.id.chat);
         club_name = (TextView) headView.findViewById(R.id.club_name);
         club_profile = (TextView) headView.findViewById(R.id.club_profile);
         more = (TextView) headView.findViewById(R.id.more);
@@ -195,10 +197,9 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
                     RongIM.getInstance().startPrivateChat(getActivity(), consultantEntity.getIdsales(), consultantEntity.getName());
                 break;
             case R.id.dadianhua:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + consultantEntity.getPhone()));
-                startActivity(intent);
+                Intent intentNO = new Intent(Intent.ACTION_DIAL, Uri
+                        .parse("tel:" + consultantEntity.getPhone()));
+                startActivity(intentNO);
                 break;
             default:
                 break;
@@ -208,7 +209,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
     @Override
     public void getBrandGymPaid(List<BrandGymPaidEntity> brandGymPaidEntityList) {
         data.clear();
-        data = brandGymPaidEntityList;
+        data.addAll(brandGymPaidEntityList);
         adapter = new CurriculumAdapter(getActivity(), data);
         lv.setAdapter(adapter);
 

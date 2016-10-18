@@ -2,21 +2,9 @@ package rxh.shanks.activity;
 
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
+import com.squareup.picasso.Picasso;
 import com.yancy.imageselector.ImageConfig;
 import com.yancy.imageselector.ImageSelector;
 import com.yancy.imageselector.ImageSelectorActivity;
@@ -68,7 +57,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
     @Bind(R.id.age)
     EditText age;
     @Bind(R.id.name)
-    EditText name;
+    TextView name;
     @Bind(R.id.nickname)
     EditText nickname;
     @Bind(R.id.phone_num)
@@ -81,6 +70,8 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
     TextView shaping;
     @Bind(R.id.address)
     EditText address;
+    @Bind(R.id.head_portrait_bg)
+    ImageView head_portrait_bg;
 
     //sex 1代表男，0代表女；
     //fitness_needs 1代表增肌，2代表减脂，3代表塑形
@@ -114,15 +105,17 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
 
     @SuppressLint("NewApi")
     public void initdata() {
-        Glide
-                .with(getApplicationContext())
+        Picasso.with(getApplicationContext())
+                .load(R.drawable.personal_information_editor_bg)
+                .into(head_portrait_bg);
+        Picasso.with(getApplicationContext())
                 .load(MyApplication.QNDownToken)
-                .centerCrop()
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
         title.setText(MyApplication.realName);
         age.setText(MyApplication.age);
-        name.setText(MyApplication.userName);
+        name.setText(MyApplication.realName);
         nickname.setText(MyApplication.nickName);
         phone_num.setText(MyApplication.phoneNumber);
         address.setText(MyApplication.address);
@@ -135,6 +128,12 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
             boy.setBackground(getResources().getDrawable(R.drawable.nanup));
             girl.setBackground(getResources().getDrawable(R.drawable.nvdown));
         }
+        muscle.setBackground(getResources().getDrawable(R.drawable.muscle_flag_up));
+        muscle.setTextColor(getResources().getColor(R.color.black));
+        fat.setBackground(getResources().getDrawable(R.drawable.fat_up));
+        fat.setTextColor(getResources().getColor(R.color.black));
+        shaping.setBackground(getResources().getDrawable(R.drawable.shaping_up));
+        shaping.setTextColor(getResources().getColor(R.color.black));
         //fitTarget格式为1_4类型的
         String str = MyApplication.fitTarget;
         if (str != null) {
@@ -293,6 +292,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
             uploadheadportrait(path.get(0));
         } else {
             dismiss();
+            EventBus.getDefault().post(new PIEEBEntity(null, nickname.getText().toString()));
             Toast.makeText(getApplicationContext(), "资料上传成功", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -306,7 +306,6 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
 
     public void setenabled(boolean flag) {
         age.setEnabled(flag);
-        name.setEnabled(flag);
         nickname.setEnabled(flag);
         phone_num.setEnabled(flag);
         address.setEnabled(flag);
@@ -326,7 +325,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                     public void complete(String key, ResponseInfo info, JSONObject res) {
                         dismiss();
                         if (info.isOK()) {
-                            EventBus.getDefault().post(new PIEEBEntity(path, name.getText().toString()));
+                            EventBus.getDefault().post(new PIEEBEntity(path, nickname.getText().toString()));
                             Toast.makeText(getApplicationContext(), "头像上传成功", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "头像上传失败", Toast.LENGTH_SHORT).show();

@@ -184,10 +184,9 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
                 viewpage.setCurrentItem(1);
                 break;
             case R.id.dadianhua:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + data.get(selectNum).getNumOfServiced()));
-                startActivity(intent);
+                Intent intentNO = new Intent(Intent.ACTION_DIAL, Uri
+                        .parse("tel:" + data.get(selectNum).getNumOfServiced()));
+                startActivity(intentNO);
                 break;
             case R.id.faduanxin:
                 //启动会话界面
@@ -230,7 +229,27 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
     @Override
     public void getMyPrivateCoach(List<MyPrivateEducationHeadEntity> myPrivateEducationHeadEntityList) {
         data = myPrivateEducationHeadEntityList;
-        initdata();
+        if (data.size() > 0) {
+            initdata();
+        } else {
+            setContentView(R.layout.activity_my_no_private_education);
+            TextView details = (TextView) findViewById(R.id.details);
+            title = (TextView) findViewById(R.id.title);
+            back = (LinearLayout) findViewById(R.id.back);
+            if (flag.equals("0")) {
+                title.setText("我的团课");
+                details.setText("当前场馆中你暂时还没有团课教练");
+            } else {
+                title.setText("我的私教");
+                details.setText("当前场馆中你暂时还没有私人教练");
+            }
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
 

@@ -41,7 +41,6 @@ public class EvaluatePresenter {
             evaluateView.toast("评价内容不能为空");
             return;
         }
-
         RequestParams params = new RequestParams(CreatUrl.creaturl("evaluate", "makeEvaluate"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);

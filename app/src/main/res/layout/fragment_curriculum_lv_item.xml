@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_not_selected"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -39,6 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:lines="1"
+                android:alpha="0.4"
                 android:textColor="@color/text_not_selected"
                 android:textSize="14sp" />
 
@@ -46,14 +47,20 @@
 
     </LinearLayout>
 
-
-    <ImageView
+    <RelativeLayout
         android:id="@+id/dial_telephone"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/dadianhua" />
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/dadianhua" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

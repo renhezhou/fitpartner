@@ -27,6 +27,7 @@ import rxh.shanks.activity.FitnessCalendarActivity;
 import rxh.shanks.activity.InformationActivity;
 import rxh.shanks.activity.MembershipCardActivity;
 import rxh.shanks.activity.MoreActivity;
+import rxh.shanks.activity.MyIntegralActivity;
 import rxh.shanks.activity.MyPrivateEducationActivity;
 import rxh.shanks.activity.PersonalInformationEditorActivity;
 import rxh.shanks.activity.R;
@@ -84,10 +85,12 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
     }
 
     public void onEventMainThread(PIEEBEntity pieebEntity) {
-        Glide.with(getActivity())
-                .load(pieebEntity.getImg_path())
-                .centerCrop()
-                .into(head_portrait);
+        if (pieebEntity.getImg_path() != null) {
+            Glide.with(getActivity())
+                    .load(pieebEntity.getImg_path())
+                    .centerCrop()
+                    .into(head_portrait);
+        }
         name.setText(pieebEntity.getUsername());
     }
 
@@ -133,6 +136,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
                 break;
             case R.id.head_portrait:
                 startActivity(new Intent(getActivity(), PersonalInformationEditorActivity.class));
+                // startActivity(new Intent(getActivity(), MyIntegralActivity.class));
                 break;
             case R.id.fitness_calendar:
                 startActivity(new Intent(getActivity(), FitnessCalendarActivity.class));

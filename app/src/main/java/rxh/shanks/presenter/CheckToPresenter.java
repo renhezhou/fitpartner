@@ -69,6 +69,7 @@ public class CheckToPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("card", "getFitCard"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
         checkToView.show();
         getInfo.getinfo(params, new Response() {
             @Override

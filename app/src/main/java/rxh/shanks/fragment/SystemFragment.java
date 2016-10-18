@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.ReadMsgEntity;
 import rxh.shanks.activity.R;
 import rxh.shanks.activity.SystemNextActivity;
 import rxh.shanks.activity.SystemSecondActivity;
@@ -41,13 +42,13 @@ public class SystemFragment extends Fragment implements SystemView {
     private List<SystemLVEntity> data = new ArrayList<>();
     IntformationAdapter intformationAdapter;
     SystemDialogFragment systemDialogFragment;
-    SystemPresenter systemPresenter;
-    int delPosition;
+    SystemPresenter presenter;
+    int delPosition, readPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_system, null);
-        systemPresenter = new SystemPresenter(this);
+        presenter = new SystemPresenter(this);
         // 注册EventBus
         EventBus.getDefault().register(this);
         initview();
@@ -61,11 +62,18 @@ public class SystemFragment extends Fragment implements SystemView {
     }
 
     public void onEventMainThread(SystemEventBusEntity systemEventBusEntity) {
-        systemPresenter.delMsg(CheckUtils.getbacktype(data.get(delPosition).getType()));
+        presenter.delMsg(CheckUtils.getbacktype(data.get(delPosition).getType()));
+    }
+
+    public void onEventMainThread(ReadMsgEntity readMsgEntity) {
+        presenter.readMsg(CheckUtils.getbacktype(data.get(readPosition).getType()));
+        data.remove(delPosition);
+        intformationAdapter.notifyDataSetChanged();
     }
 
     public void initview() {
         lv = (ListView) view.findViewById(R.id.lv);
+        lv.setEmptyView(view.findViewById(R.id.empty));
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,6 +88,7 @@ public class SystemFragment extends Fragment implements SystemView {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                readPosition = position;
                 if (data.get(position).getType().equals("教练代约团课") || data.get(position).getType().equals("教练代约私教课")) {
                     Intent intent = new Intent();
                     intent.putExtra("type", data.get(position).getType());
@@ -93,7 +102,7 @@ public class SystemFragment extends Fragment implements SystemView {
                 }
             }
         });
-        systemPresenter.getMsg();
+        presenter.getMsg();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
                 .into(img);
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                if (sp.getString("token", null) != null) {
+                if (sp.getString("user", null) != null && sp.getString("password", null) != null && !sp.getString("password", null).equals("")) {
                     presenter.login("2", null, sp.getString("user", null), sp.getString("password", null));
                 } else {
                     Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
@@ -95,7 +95,10 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
 
     @Override
     public void check(String check) {
-        Toast.makeText(getApplicationContext(), check, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
+        startActivity(intent);
+        GuidePageActivity.this.finish();
+        finish();
     }
 
     @Override

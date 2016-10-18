@@ -18,6 +18,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.ReadMsgEntity;
 import rxh.shanks.adapter.IntformationAdapter;
 import rxh.shanks.adapter.SystemNextAdapter;
 import rxh.shanks.base.BaseActivity;
@@ -31,16 +33,15 @@ import rxh.shanks.view.SystemNextView;
 /**
  * Created by Administrator on 2016/8/11.
  */
-public class SystemNextActivity extends BaseActivity implements SystemNextView, OnRefreshListener, OnLoadMoreListener {
+public class SystemNextActivity extends BaseActivity implements SystemNextView {
 
     @Bind(R.id.back)
     LinearLayout back;
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.lv)
-    ListViewForScrollView lv;
+    ListView lv;
 
-    private SwipeToLoadLayout swipeToLoadLayout;
 
     String type;
     private List<SystemLVEntity> data = new ArrayList<>();
@@ -59,9 +60,6 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
     public void initview() {
         setContentView(R.layout.activity_system_next);
         ButterKnife.bind(this);
-        swipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
         back.setOnClickListener(this);
         title.setText(type);
     }
@@ -83,7 +81,7 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
 
     @Override
     public void show() {
-        loading("加载中...", "true");
+        loading("加载中", "true");
     }
 
     @Override
@@ -93,7 +91,6 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
 
     @Override
     public void getMsg(List<SystemLVEntity> systemLVEntityList) {
-        swipeToLoadLayout.setRefreshing(false);
         data = systemLVEntityList;
         systemNextAdapter = new SystemNextAdapter(getApplicationContext(), data);
         lv.setAdapter(systemNextAdapter);
@@ -108,13 +105,5 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView, 
     public void delSuccess() {
 
     }
-    @Override
-    public void onLoadMore() {
-        //swipeToLoadLayout.setLoadingMore(false);
-    }
 
-    @Override
-    public void onRefresh() {
-        initdata();
-    }
 }

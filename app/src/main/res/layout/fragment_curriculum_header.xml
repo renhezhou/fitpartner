@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textColor="@color/text_not_selected"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/club_profile"
@@ -42,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.4"
         android:ellipsize="end"
         android:maxLines="6"
         android:textColor="@color/text_not_selected"
@@ -54,6 +55,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:alpha="0.4"
         android:gravity="right"
         android:text="更多"
         android:textColor="@color/red"
@@ -87,6 +89,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha="0.4"
                 android:text="我的会籍顾问"
                 android:textColor="@color/text_not_selected" />
 
@@ -95,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_not_selected"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -107,24 +110,39 @@
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/dadianhua"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/dadianhua" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/dadianhua" />
+
+            </RelativeLayout>
+
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="10dp"
                 android:background="@color/red" />
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/chat"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/faduanxin" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/faduanxin" />
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 
@@ -197,14 +215,5 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="联系我们"
-        android:textColor="@color/text_not_selected" />
 
 </LinearLayout>

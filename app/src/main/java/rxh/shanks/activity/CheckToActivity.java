@@ -35,7 +35,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
     ImageView QR_code;
     @Bind(R.id.click_refresh)
     Button click_refresh;
-    CheckToPresenter checkToPresenter;
+    CheckToPresenter presenter;
 
     Bitmap mBitmap;
     private TimeCount time;
@@ -43,7 +43,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkToPresenter = new CheckToPresenter(this);
+        presenter = new CheckToPresenter(this);
         initview();
     }
 
@@ -54,7 +54,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
         time = new TimeCount(30000, 1000);// 构造CountDownTimer对象
         back.setOnClickListener(this);
         click_refresh.setOnClickListener(this);
-        checkToPresenter.getFitCard();
+        presenter.getFitCard();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
                 break;
             case R.id.click_refresh:
                 time.start();
-                checkToPresenter.getFitCard();
+                presenter.getFitCard();
                 break;
             default:
                 break;
@@ -95,7 +95,7 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
 
     @Override
     public void getFitCard(List<FitCardEntity> fitCardEntityList) {
-        checkToPresenter.generatedQR(fitCardEntityList.get(0).getCardID(), fitCardEntityList.get(0).getType());
+        presenter.generatedQR(fitCardEntityList.get(0).getCardID(), fitCardEntityList.get(0).getType());
     }
 
 

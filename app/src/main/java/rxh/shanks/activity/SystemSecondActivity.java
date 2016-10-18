@@ -13,6 +13,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.ReadMsgEntity;
 import rxh.shanks.adapter.SystemNextAdapter;
 import rxh.shanks.adapter.SystemSecondAdapter;
 import rxh.shanks.base.BaseActivity;
@@ -82,6 +84,7 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
 
     @Override
     public void getMsg(List<SystemLVEntity> systemLVEntityList) {
+        EventBus.getDefault().post(new ReadMsgEntity());
         data = systemLVEntityList;
         systemSecondAdapter = new SystemSecondAdapter(getApplicationContext(), data);
         lv.setAdapter(systemSecondAdapter);

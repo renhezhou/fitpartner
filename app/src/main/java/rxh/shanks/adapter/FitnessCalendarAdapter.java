@@ -73,13 +73,12 @@ public class FitnessCalendarAdapter extends BaseAdapter {
         if (noteDatedata == null) {
             holder.time.setText(lessondata.get(position).getStartTime() + "-" + lessondata.get(position).getEndTime());
             holder.remarks.setText(lessondata.get(position).getCoachName());
-            holder.body_length.setText(lessondata.get(position).getLessonName());
-            holder.address.setText("");
-            holder.dizhi.setVisibility(View.GONE);
+            holder.body_length.setText(lessondata.get(position).getLessonName() + "\n" + lessondata.get(position).getClubName());
+            holder.address.setText(lessondata.get(position).getAddress());
         } else {
             holder.time.setText(noteDatedata.get(position).getStartTime() + "-" + noteDatedata.get(position).getEndTime());
             holder.remarks.setText("时长:" + noteDatedata.get(position).getTimelong() + "分钟");
-            holder.body_length.setText("");
+            holder.body_length.setText(noteDatedata.get(position).getClubName() + "\n" + noteDatedata.get(position).getClubName());
             holder.address.setText(noteDatedata.get(position).getAddress());
         }
 

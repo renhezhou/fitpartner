@@ -8,8 +8,8 @@ android {
         applicationId "rxh.shanks.activity"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.7"
+        versionCode 5
+        versionName "1.9"
         multiDexEnabled true
     }
     buildTypes {

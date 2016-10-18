@@ -9,6 +9,8 @@ public class FitnessCalendarLessonEntity {
     private String startTime;
     private String endTime;
     private String lessonName;
+    private String clubName;
+    private String address;
 
     public String getCoachName() {
         return coachName;
@@ -40,5 +42,21 @@ public class FitnessCalendarLessonEntity {
 
     public void setLessonName(String lessonName) {
         this.lessonName = lessonName;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

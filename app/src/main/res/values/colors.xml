@@ -29,6 +29,7 @@
     <color name="background">#F7F7F7</color>
     <color name="text_not_selected">#646464</color>
     <color name="text_is_selected">#FB6006</color>
+    <color name="textcolor">#646464</color>
 
 
 </resources>

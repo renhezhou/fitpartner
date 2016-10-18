@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class CurriculumAdapter extends BaseAdapter {
             // 根据自定义的Item布局加载布局
             convertView = mInflater.inflate(
                     R.layout.fragment_curriculum_lv_item, null);
-            holder.dial_telephone = (ImageView) convertView.findViewById(R.id.dial_telephone);
+            holder.dial_telephone = (RelativeLayout) convertView.findViewById(R.id.dial_telephone);
             holder.club_name = (TextView) convertView.findViewById(R.id.club_name);
             holder.address = (TextView) convertView.findViewById(R.id.address);
             // 将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
@@ -71,10 +72,9 @@ public class CurriculumAdapter extends BaseAdapter {
         holder.dial_telephone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + data.get(position).getPhoneNumber()));
-                context.startActivity(intent);
+                Intent intentNO = new Intent(Intent.ACTION_DIAL, Uri
+                        .parse("tel:" + data.get(position).getPhoneNumber()));
+                context.startActivity(intentNO);
             }
         });
 
@@ -83,7 +83,7 @@ public class CurriculumAdapter extends BaseAdapter {
 
     // ViewHolder静态类
     static class ViewHolder {
-        public ImageView dial_telephone;
+        public RelativeLayout dial_telephone;
         public TextView club_name;
         public TextView address;
     }

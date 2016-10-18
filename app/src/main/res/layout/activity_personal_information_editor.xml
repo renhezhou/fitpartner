@@ -10,10 +10,10 @@
         android:layout_height="150dp">
 
         <ImageView
+            android:id="@+id/head_portrait_bg"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/personal_information_editor_bg" />
+            android:scaleType="fitXY" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -79,9 +79,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0.6"
             android:text="性别"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
 
         <ImageView
@@ -106,30 +106,32 @@
         android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0.6"
             android:text="年龄"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/age"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:alpha="0.6"
             android:background="@null"
+            android:gravity="center_vertical|right"
             android:text="22"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -139,30 +141,32 @@
         android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0.6"
             android:text="姓名"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@null"
-            android:textColor="@color/black"
+            android:layout_weight="1"
             android:alpha="0.6"
+            android:background="@null"
+            android:gravity="center_vertical|right"
             android:text="任河洲"
+            android:textColor="@color/black"
             android:textSize="16sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -172,63 +176,67 @@
         android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名称"
-            android:textColor="@color/black"
             android:alpha="0.6"
+            android:text="用户昵称"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/nickname"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:alpha="0.6"
             android:background="@null"
+            android:gravity="center_vertical|right"
             android:text="任河洲"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
-        android:alpha="0.6"
         android:layout_marginRight="10dp"
+        android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0.6"
             android:text="手机号码"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/phone_num"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@null"
-            android:textColor="@color/black"
+            android:layout_weight="1"
             android:alpha="0.6"
+            android:background="@null"
+            android:gravity="center_vertical|right"
             android:text="15928818892"
+            android:textColor="@color/black"
             android:textSize="16sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -249,9 +257,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:alpha="0.6"
             android:text="健身需求"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -297,30 +305,32 @@
         android:alpha="0.6"
         android:background="@color/text_not_selected" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="0.6"
             android:text="联系地址"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/address"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:alpha="0.6"
             android:background="@null"
+            android:gravity="center_vertical|right"
             android:text="四川成都高新区"
             android:textColor="@color/black"
-            android:alpha="0.6"
             android:textSize="16sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

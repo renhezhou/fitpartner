@@ -8,6 +8,7 @@ public class FitnessCalendarEntity {
     private String timelong;
     private String startTime;
     private String endTime;
+    private String clubName;
     private String address;
 
     public String getTimelong() {
@@ -32,6 +33,14 @@ public class FitnessCalendarEntity {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
     }
 
     public String getAddress() {

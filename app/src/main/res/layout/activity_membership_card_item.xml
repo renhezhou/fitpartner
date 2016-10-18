@@ -37,6 +37,18 @@
             android:layout_centerHorizontal="true"
             android:text="设为首选会员卡" />
 
+        <TextView
+            android:id="@+id/card_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/set_default_card"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="美年健身一号店"
+            android:textColor="@color/red"
+            android:textSize="20sp" />
+
+
         <LinearLayout
             android:id="@+id/donation_card"
             android:layout_width="wrap_content"
@@ -55,9 +67,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
                 android:text="转赠次卡"
                 android:textColor="@color/red"
-                android:layout_marginTop="4dp"
                 android:textSize="12sp" />
 
 

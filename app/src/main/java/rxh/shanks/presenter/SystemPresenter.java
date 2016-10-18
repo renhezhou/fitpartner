@@ -199,4 +199,39 @@ public class SystemPresenter {
         });
     }
 
+
+    public void readMsg(String type) {
+        RequestParams params = new RequestParams(CreatUrl.creaturl("jpush", "readMsg"));
+        params.addBodyParameter("token", MyApplication.token);
+        params.addBodyParameter("alias", MyApplication.userID);
+        params.addBodyParameter("type", type);
+        getInfo.getinfo(params, new Response() {
+            @Override
+            public void onSuccess(String result) {
+                SystemDelCodeEntity systemDelCodeEntity = new SystemDelCodeEntity();
+                systemDelCodeEntity = JsonUtils.delMsg(result);
+                if (systemDelCodeEntity.getCode().equals("0")) {
+
+                } else {
+                    systemView.delMsg(systemDelCodeEntity.getError());
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex) {
+
+            }
+
+            @Override
+            public void onCancelled(Callback.CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
 }

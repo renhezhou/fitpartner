@@ -13,6 +13,7 @@ public class MembershipCardEntity {
     private String totalCount;
     private String type;
     private String validiPeriod;
+    private String cardName;
 
     public String getCardID() {
         return cardID;
@@ -76,5 +77,13 @@ public class MembershipCardEntity {
 
     public void setValidiPeriod(String validiPeriod) {
         this.validiPeriod = validiPeriod;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
     }
 }

@@ -1,5 +1,9 @@
 package rxh.shanks.activity;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +17,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.aigestudio.datepicker.bizs.calendars.DPCManager;
+import cn.aigestudio.datepicker.bizs.decors.DPDecor;
 import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
 import rxh.shanks.adapter.FitnessCalendarAdapter;
@@ -23,6 +29,7 @@ import rxh.shanks.entity.FitnessCalendarLessonEntity;
 import rxh.shanks.entity.FitnessCalendarTimeEntity;
 import rxh.shanks.presenter.FitnessCalendarPresenter;
 import rxh.shanks.utils.CheckUtils;
+import rxh.shanks.utils.CreatTime;
 import rxh.shanks.view.FitnessCalendarView;
 
 /**
@@ -41,6 +48,7 @@ public class FitnessCalendarActivity extends BaseActivity implements FitnessCale
     @Bind(R.id.lv)
     ListView lv;
 
+    List<String> tmpTR = new ArrayList<>();
 
     String check_date = null;
     private List<FitnessCalendarEntity> noteDatedata = new ArrayList<>();
@@ -53,7 +61,8 @@ public class FitnessCalendarActivity extends BaseActivity implements FitnessCale
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fitnessCalendarPresenter = new FitnessCalendarPresenter(this);
-        initview();
+        setContentView(R.layout.activity_first);
+        fitnessCalendarPresenter.getFitCalender();
     }
 
     public void initview() {
@@ -62,9 +71,16 @@ public class FitnessCalendarActivity extends BaseActivity implements FitnessCale
         title.setText("健身日历");
         back.setOnClickListener(this);
         lv.setEmptyView(findViewById(R.id.prompt));
-        date_picker.setDate(2016, 9);
+        date_picker.setDate(CreatTime.getyear(), CreatTime.getmonth() + 1);
         date_picker.setMode(DPMode.SINGLE);
-        fitnessCalendarPresenter.getFitCalender();
+        DPCManager.getInstance().setDecorTR(tmpTR);
+        date_picker.setDPDecor(new DPDecor() {
+            @Override
+            public void drawDecorTR(Canvas canvas, Rect rect, Paint paint) {
+                paint.setColor(getResources().getColor(R.color.red));
+                canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
+            }
+        });
         date_picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
@@ -126,11 +142,27 @@ public class FitnessCalendarActivity extends BaseActivity implements FitnessCale
             lessondata.clear();
         }
         for (int i = 0; i < fitnessCalendarTimeEntityLists.size(); i++) {
+            if (fitnessCalendarTimeEntityLists.get(i).getNoteDate() != null || fitnessCalendarTimeEntityLists.get(i).getLesson() != null) {
+                String month = null, day = null;
+                String ab[] = fitnessCalendarTimeEntityLists.get(i).getNoteTime().split("\\.");
+                if (ab[1].substring(0, 1).equals("0")) {
+                    month = ab[1].replace("0", "");
+                } else {
+                    month = ab[1];
+                }
+                if (ab[2].substring(0, 1).equals("0")) {
+                    day = ab[2].replace("0", "");
+                } else {
+                    day = ab[2];
+                }
+                tmpTR.add(ab[0] + "-" + month + "-" + day);
+            }
             if (time.equals(fitnessCalendarTimeEntityLists.get(i).getNoteTime())) {
                 noteDatedata = fitnessCalendarTimeEntityLists.get(i).getNoteDate();
                 lessondata = fitnessCalendarTimeEntityLists.get(i).getLesson();
             }
         }
+        initview();
         fitnessCalendarAdapter = new FitnessCalendarAdapter(FitnessCalendarActivity.this, noteDatedata, lessondata);
         lv.setAdapter(fitnessCalendarAdapter);
     }

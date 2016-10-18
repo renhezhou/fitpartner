@@ -9,9 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.EAEntity;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
 import rxh.shanks.customview.RatingBar;
@@ -32,8 +35,6 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
     CircleImageView head_portrait;
     @Bind(R.id.project)
     TextView project;
-    @Bind(R.id.name)
-    TextView name;
     @Bind(R.id.submit_evaluation)
     Button submit_evaluation;
     @Bind(R.id.curriculum_ratingbar)
@@ -41,7 +42,7 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
     @Bind(R.id.coach_ratingbar)
     RatingBar coach_ratingbar;
     String coachID, appointmentID;//教练ID,预约ID\
-    EvaluatePresenter evaluatePresenter;
+    EvaluatePresenter presenter;
     String curriculum_num = null, coach_num = null, head_path, nametv;
     @Bind(R.id.pingjia)
     EditText pingjia;
@@ -49,7 +50,7 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        evaluatePresenter = new EvaluatePresenter(this);
+        presenter = new EvaluatePresenter(this);
         coachID = getIntent().getStringExtra("coachID");
         appointmentID = getIntent().getStringExtra("appointmentID");
         head_path = getIntent().getStringExtra("head_path");
@@ -61,13 +62,12 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
         setContentView(R.layout.activity_evaluate);
         ButterKnife.bind(this);
         title.setText("评价");
-        Glide
-                .with(getApplicationContext())
+        Picasso.with(getApplicationContext())
                 .load(head_path)
-                .centerCrop()
-                .crossFade()
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
                 .into(head_portrait);
-        name.setText(nametv);
+        project.setText(nametv);
         back.setOnClickListener(this);
         submit_evaluation.setOnClickListener(this);
         //课程评分
@@ -98,7 +98,7 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
                 finish();
                 break;
             case R.id.submit_evaluation:
-                evaluatePresenter.makeEvaluate(coachID, appointmentID, curriculum_num, coach_num, pingjia.getText().toString());
+                presenter.makeEvaluate(coachID, appointmentID, curriculum_num, coach_num, pingjia.getText().toString());
                 break;
             default:
                 break;
@@ -107,7 +107,7 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
 
     @Override
     public void show() {
-        loading("上传中...", "true");
+        loading("提交中...", "true");
     }
 
     @Override
@@ -122,6 +122,7 @@ public class EvaluateActivity extends BaseActivity implements EvaluateView {
 
     @Override
     public void success() {
+        EventBus.getDefault().post(new EAEntity());
         finish();
     }
 }

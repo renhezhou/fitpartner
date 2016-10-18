@@ -176,6 +176,9 @@
         <activity
             android:name=".PhotoViewActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyIntegralActivity"
+            android:screenOrientation="portrait" />
 
         <!--融云会话界面-->
         <!--会话页面-->
