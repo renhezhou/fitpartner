@@ -57,7 +57,7 @@ public class SwitchingVenuesActivity extends BaseActivity implements SwitchingVe
         lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                presenter.switchingvenues(data.get(groupPosition).getEntityList().get(childPosition).getClubID());
+                presenter.switchingvenues(data.get(groupPosition).getEntityList().get(childPosition).getClubID(), data.get(groupPosition).getEntityList().get(childPosition).getClubName());
                 return false;
             }
         });

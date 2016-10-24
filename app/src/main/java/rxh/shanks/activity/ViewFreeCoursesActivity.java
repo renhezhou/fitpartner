@@ -1,6 +1,6 @@
 package rxh.shanks.activity;
 
-import android.content.Context;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
+import android.widget.PopupWindow.OnDismissListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,12 +25,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rxh.shanks.adapter.CourseDetailsPageAdapter;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.VFCEntity;
 import rxh.shanks.adapter.ViewFreeCoursesPageAdapter;
 import rxh.shanks.base.BaseActivity;
-import rxh.shanks.customview.RatingBar;
-import rxh.shanks.customview.SmoothCheckBox;
-import rxh.shanks.entity.CoachEntity;
 import rxh.shanks.entity.ViewFreeCoursesEntity;
 import rxh.shanks.fragment.CalendarFragment;
 import rxh.shanks.presenter.ViewFreeCoursesActivityPresenter;
@@ -42,7 +40,7 @@ import rxh.shanks.view.ViewFreeCoursesActivityView;
  * Created by Administrator on 2016/8/16.
  * 免费课程
  */
-public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFragment.CalendarFragmentListener, ViewFreeCoursesActivityView {
+public class ViewFreeCoursesActivity extends BaseActivity implements OnDismissListener, CalendarFragment.CalendarFragmentListener, ViewFreeCoursesActivityView {
 
     @Bind(R.id.back)
     LinearLayout back;
@@ -55,7 +53,7 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
     @Bind(R.id.club_name)
     TextView club_name;
     @Bind(R.id.more)
-    ImageView more;
+    RelativeLayout more;
     @Bind(R.id.viewpager)
     ViewPager viewpager;
 
@@ -67,7 +65,7 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
     CalendarFragment calendarFragment;
     ViewFreeCoursesPageAdapter viewFreeCoursesPageAdapter;
     ViewFreeCoursesAdapter viewFreeCoursesAdapter;
-    ViewFreeCoursesActivityPresenter viewFreeCoursesActivityPresenter;
+    ViewFreeCoursesActivityPresenter presenter;
     private List<ViewFreeCoursesEntity> data = new ArrayList<>();
     private List<String> datelist = new ArrayList<>();
     private List<String> seclet = new ArrayList<>();
@@ -75,13 +73,14 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewFreeCoursesActivityPresenter = new ViewFreeCoursesActivityPresenter(this);
+        presenter = new ViewFreeCoursesActivityPresenter(this);
         initview();
     }
 
     public void initview() {
         setContentView(R.layout.activity_view_free_courses);
         ButterKnife.bind(this);
+        initPopupWindow();
         title.setText("免费课程");
         club_name.setText(MyApplication.currentClubName);
         club_name_flag = MyApplication.currentClubName;
@@ -95,17 +94,14 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
         viewpager.setAdapter(viewFreeCoursesPageAdapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
-        initPopupWindow();
         pop_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //这个方法有问题,无法刷新ViewFreeCoursesFragment中的数据
                 popupWindow.dismiss();
                 club_name_flag = data.get(position).getClubName();
                 club_name.setText(data.get(position).getClubName());
                 club_id = data.get(position).getClubID();
-                viewFreeCoursesPageAdapter = new ViewFreeCoursesPageAdapter(getSupportFragmentManager(), ViewFreeCoursesActivity.this, datelist, seclet, club_id);
-                viewpager.setAdapter(viewFreeCoursesPageAdapter);
+                EventBus.getDefault().post(new VFCEntity(club_id));
             }
         });
     }
@@ -120,7 +116,7 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
                 showcalendar();
                 break;
             case R.id.more:
-                viewFreeCoursesActivityPresenter.getBortherClubShop();
+                presenter.getBortherClubShop();
                 break;
             default:
                 break;
@@ -146,31 +142,18 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
         viewpager.setAdapter(viewFreeCoursesPageAdapter);
     }
 
-    /**
-     * 初始化popupWindow
-     */
-    private void initPopupWindow() {
-        popView = getLayoutInflater().inflate(R.layout.activity_view_free_courses_pop_window,
-                null);
-        pop_lv = (ListView) popView.findViewById(R.id.pop_lv);
-        popupWindow = new PopupWindow(popView,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setOutsideTouchable(true);
-    }
-
     @Override
     public void getBortherClubShop(List<ViewFreeCoursesEntity> viewFreeCoursesEntityList) {
         // 为popWindow添加动画效果
         // 点击弹出泡泡窗口
+        backgroundAlpha(0.5f);
         popupWindow.showAsDropDown(more);
         data.clear();
         data = viewFreeCoursesEntityList;
         viewFreeCoursesAdapter = new ViewFreeCoursesAdapter();
         pop_lv.setAdapter(viewFreeCoursesAdapter);
     }
+
 
     public class ViewFreeCoursesAdapter extends BaseAdapter {
 
@@ -206,7 +189,7 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
                 convertView = mInflater.inflate(
                         R.layout.activity_view_free_courses_pop_window_lv_item, null);
                 holder.club_name = (TextView) convertView.findViewById(R.id.club_name);
-                holder.checkbox = (SmoothCheckBox) convertView.findViewById(R.id.checkbox);
+                holder.select = (ImageView) convertView.findViewById(R.id.select);
                 // 将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
                 convertView.setTag(holder);
             } else {
@@ -214,9 +197,9 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
             }
             holder.club_name.setText(data.get(position).getClubName());
             if (club_name_flag.equals(data.get(position).getClubName())) {
-                holder.checkbox.setChecked(true);
+                holder.select.setVisibility(View.VISIBLE);
             } else {
-                holder.checkbox.setChecked(false);
+                holder.select.setVisibility(View.GONE);
             }
 
             return convertView;
@@ -225,10 +208,48 @@ public class ViewFreeCoursesActivity extends BaseActivity implements CalendarFra
         // ViewHolder静态类
         class ViewHolder {
             public TextView club_name;
-            public SmoothCheckBox checkbox;
+            public ImageView select;
         }
-
     }
 
+    /**
+     * 初始化popupWindow
+     */
+    private void initPopupWindow() {
+        popView = getLayoutInflater().inflate(R.layout.activity_view_free_courses_pop_window,
+                null);
+        pop_lv = (ListView) popView.findViewById(R.id.pop_lv);
+        popupWindow = new PopupWindow(popView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setOnDismissListener(this);
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     *
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; // 0.0-1.0
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 添加新笔记时弹出的popWin关闭的事件，主要是为了将背景透明度改回来
+     *
+     * @author cg
+     */
+
+    @Override
+    public void onDismiss() {
+        backgroundAlpha(1f);
+
+    }
 
 }

@@ -58,6 +58,7 @@ public class MembershipCardFragment extends Fragment {
                 MembershipCardEntity entity = new MembershipCardEntity();
                 entity.setCardID(datas.get(0).getCardID());
                 entity.setClubID(datas.get(0).getClubID());
+                entity.setCardName(datas.get(0).getCardName());
                 entity.setClubName(datas.get(0).getClubName());
                 entity.setRemaindCount(datas.get(0).getRemaindCount());
                 entity.setRemainingTimeOff(datas.get(0).getRemainingTimeOff());

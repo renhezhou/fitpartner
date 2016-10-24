@@ -1,7 +1,6 @@
 package rxh.shanks.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,9 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
@@ -22,9 +18,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
-import rxh.shanks.activity.CouponActivity;
+import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.FitnessCalendarActivity;
-import rxh.shanks.activity.InformationActivity;
 import rxh.shanks.activity.MembershipCardActivity;
 import rxh.shanks.activity.MoreActivity;
 import rxh.shanks.activity.MyIntegralActivity;
@@ -32,6 +27,7 @@ import rxh.shanks.activity.MyPrivateEducationActivity;
 import rxh.shanks.activity.PersonalInformationEditorActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.activity.TestRecordActivity;
+import rxh.shanks.customview.BlurImageView;
 import rxh.shanks.customview.CircleImageView;
 import rxh.shanks.eventity.PIEEBEntity;
 import rxh.shanks.utils.MyApplication;
@@ -39,7 +35,7 @@ import rxh.shanks.utils.MyApplication;
 /**
  * Created by Administrator on 2016/7/29.
  */
-public class MyFragment extends Fragment implements View.OnClickListener, OnRefreshListener, OnLoadMoreListener {
+public class MyFragment extends Fragment implements View.OnClickListener {
 
     View view;
     @Bind(R.id.more)
@@ -64,8 +60,13 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
     LinearLayout my_private_education;
     @Bind(R.id.my_league)
     LinearLayout my_league;
+    @Bind(R.id.rl_bg)
+    BlurImageView rl_bg;
+    @Bind(R.id.integral)
+    TextView integral;
+    @Bind(R.id.integral_exchange)
+    TextView integral_exchange;
 
-    private SwipeToLoadLayout swipeToLoadLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
         EventBus.getDefault().unregister(this);// 反注册EventBus
     }
 
+    //修改了用户信息通知这个界面更新
     public void onEventMainThread(PIEEBEntity pieebEntity) {
         if (pieebEntity.getImg_path() != null) {
             Glide.with(getActivity())
@@ -94,10 +96,12 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
         name.setText(pieebEntity.getUsername());
     }
 
+    //切换了场馆通知这个界面更新
+    public void onEventMainThread(SVAEntity svaEntity) {
+        club_name.setText(MyApplication.currentClubName);
+    }
+
     public void initview() {
-        swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
         more.setOnClickListener(this);
         information.setOnClickListener(this);
         head_portrait.setOnClickListener(this);
@@ -107,9 +111,12 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
         coupon.setOnClickListener(this);
         my_private_education.setOnClickListener(this);
         my_league.setOnClickListener(this);
+        integral_exchange.setOnClickListener(this);
     }
 
     public void initdata() {
+        rl_bg.setBlurFactor(100);
+        rl_bg.setBlurImageByUrl(MyApplication.QNDownToken);
         Picasso.with(getActivity())
                 .load(MyApplication.QNDownToken)
                 .placeholder(R.drawable.loading_cort)
@@ -136,7 +143,6 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
                 break;
             case R.id.head_portrait:
                 startActivity(new Intent(getActivity(), PersonalInformationEditorActivity.class));
-                // startActivity(new Intent(getActivity(), MyIntegralActivity.class));
                 break;
             case R.id.fitness_calendar:
                 startActivity(new Intent(getActivity(), FitnessCalendarActivity.class));
@@ -165,19 +171,12 @@ public class MyFragment extends Fragment implements View.OnClickListener, OnRefr
                 intent2.putExtra("flag", "0");
                 startActivity(intent2);
                 break;
+            case R.id.integral_exchange:
+                //startActivity(new Intent(getActivity(), MyIntegralActivity.class));
+                Toast.makeText(getActivity(), "功能暂未开放，敬请期待", Toast.LENGTH_SHORT).show();
+                break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onLoadMore() {
-        //swipeToLoadLayout.setLoadingMore(false);
-    }
-
-    @Override
-    public void onRefresh() {
-        //initdata();
-        swipeToLoadLayout.setRefreshing(false);
     }
 }

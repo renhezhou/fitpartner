@@ -7,8 +7,8 @@
 
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:src="@drawable/dizhi" />
@@ -21,15 +21,16 @@
         android:gravity="left|center_vertical"
         android:padding="10dp"
         android:text="俱乐部名称"
+        android:textColor="@color/textcolor"
         android:textSize="18sp" />
 
-    <rxh.shanks.customview.SmoothCheckBox
-        android:id="@+id/checkbox"
+    <ImageView
+        android:id="@+id/select"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
-        android:src="@drawable/dizhi" />
+        android:src="@drawable/selecte" />
 
 </LinearLayout>
 

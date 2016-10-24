@@ -9,6 +9,12 @@ import rxh.shanks.entity.AlreadyMakeAnAppointmentEntity;
  */
 public interface AlreadyMakeAnAppointmentView {
 
+    void show();
+
+    void hide();
+
+    void toast(String msg);
+
     void getMyOrderPrivateLesson(List<AlreadyMakeAnAppointmentEntity> alreadyMakeAnAppointmentEntityList);
 
 }

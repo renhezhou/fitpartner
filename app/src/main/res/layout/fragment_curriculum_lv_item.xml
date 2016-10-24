@@ -16,7 +16,7 @@
             android:id="@+id/club_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_not_selected"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -39,8 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:lines="1"
-                android:alpha="0.4"
-                android:textColor="@color/text_not_selected"
+                android:textColor="@color/textcolor"
                 android:textSize="14sp" />
 
         </LinearLayout>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
@@ -37,18 +38,18 @@ public class AlreadyMakeAnAppointmentFragment extends Fragment implements OnRefr
 
     View view;
     private SwipeToLoadLayout swipeToLoadLayout;
-    ListViewForScrollView lv;
+    ListView lv;
     List<AlreadyMakeAnAppointmentEntity> data = new ArrayList<>();
-    AlreadyMakeAnAppointmentAdapter alreadyMakeAnAppointmentAdapter;
+    AlreadyMakeAnAppointmentAdapter adapter;
     String coachID, head_path;
     public String flag;//1表示是从我的私教跳转过来的 ，0表示从我的团课跳转过来的
-    AlreadyMakeAnAppointmentPresenter alreadyMakeAnAppointmentPresenter;
+    AlreadyMakeAnAppointmentPresenter presenter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_already_make_an_appointment, null);
-        alreadyMakeAnAppointmentPresenter = new AlreadyMakeAnAppointmentPresenter(this);
+        presenter = new AlreadyMakeAnAppointmentPresenter(this);
         // 注册EventBus
         EventBus.getDefault().register(this);
         return view;
@@ -66,9 +67,9 @@ public class AlreadyMakeAnAppointmentFragment extends Fragment implements OnRefr
         head_path = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getHeadImageURL();
         initview();
         if (flag.equals("1")) {
-            alreadyMakeAnAppointmentPresenter.getMyOrderPrivateLesson(coachID);
+            presenter.getMyOrderPrivateLesson(coachID);
         } else {
-            alreadyMakeAnAppointmentPresenter.getMyOrderTeamLesson(coachID);
+            presenter.getMyOrderTeamLesson(coachID);
         }
     }
 
@@ -76,7 +77,7 @@ public class AlreadyMakeAnAppointmentFragment extends Fragment implements OnRefr
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        lv = (ListViewForScrollView) view.findViewById(R.id.lv);
+        lv = (ListView) view.findViewById(R.id.swipe_target);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,18 +100,39 @@ public class AlreadyMakeAnAppointmentFragment extends Fragment implements OnRefr
     @Override
     public void onRefresh() {
         if (flag.equals("1")) {
-            alreadyMakeAnAppointmentPresenter.getMyOrderPrivateLesson(coachID);
+            presenter.getMyOrderPrivateLesson(coachID);
         } else {
-            alreadyMakeAnAppointmentPresenter.getMyOrderTeamLesson(coachID);
+            presenter.getMyOrderTeamLesson(coachID);
         }
     }
 
     @Override
+    public void show() {
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void hide() {
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void toast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void getMyOrderPrivateLesson(List<AlreadyMakeAnAppointmentEntity> alreadyMakeAnAppointmentEntityList) {
-        swipeToLoadLayout.setRefreshing(false);
         data.clear();
         data = alreadyMakeAnAppointmentEntityList;
-        alreadyMakeAnAppointmentAdapter = new AlreadyMakeAnAppointmentAdapter(getActivity(), data);
-        lv.setAdapter(alreadyMakeAnAppointmentAdapter);
+        adapter = new AlreadyMakeAnAppointmentAdapter(getActivity(), data);
+        lv.setAdapter(adapter);
     }
 }

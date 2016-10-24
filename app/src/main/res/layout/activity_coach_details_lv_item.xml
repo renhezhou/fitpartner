@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="登山"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
 
         <RelativeLayout
@@ -54,7 +54,7 @@
                 android:layout_centerVertical="true"
                 android:text="马栏山登山活动"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/price"
@@ -66,7 +66,7 @@
                 android:padding="4dp"
                 android:text="55元/节"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </RelativeLayout>
 
     </LinearLayout>

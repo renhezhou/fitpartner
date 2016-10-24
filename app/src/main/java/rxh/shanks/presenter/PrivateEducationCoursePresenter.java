@@ -105,6 +105,7 @@ public class PrivateEducationCoursePresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "bespokeLesson"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
+        params.addBodyParameter("coachID", MyApplication.CoachID);
         params.addBodyParameter("lessonID", MyApplication.lessonID);
         params.addBodyParameter("time", orderTime);
         view.show(3);

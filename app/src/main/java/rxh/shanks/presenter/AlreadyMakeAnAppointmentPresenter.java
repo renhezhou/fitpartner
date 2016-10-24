@@ -21,11 +21,11 @@ public class AlreadyMakeAnAppointmentPresenter {
 
 
     private GetInfo getInfo;
-    private AlreadyMakeAnAppointmentView alreadyMakeAnAppointmentView;
+    private AlreadyMakeAnAppointmentView view;
 
-    public AlreadyMakeAnAppointmentPresenter(AlreadyMakeAnAppointmentView alreadyMakeAnAppointmentView) {
+    public AlreadyMakeAnAppointmentPresenter(AlreadyMakeAnAppointmentView view) {
         getInfo = new Is_Networking();
-        this.alreadyMakeAnAppointmentView = alreadyMakeAnAppointmentView;
+        this.view = view;
     }
 
     public void getMyOrderPrivateLesson(String coachID) {
@@ -33,19 +33,23 @@ public class AlreadyMakeAnAppointmentPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("coachID", coachID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 AlreadyMakeAnAppointmentCodeEntity alreadyMakeAnAppointmentCodeEntity = new AlreadyMakeAnAppointmentCodeEntity();
                 alreadyMakeAnAppointmentCodeEntity = JsonUtils.getMyOrderPrivateLesson(result);
                 if (alreadyMakeAnAppointmentCodeEntity.getCode().equals("0")) {
-                    alreadyMakeAnAppointmentView.getMyOrderPrivateLesson(alreadyMakeAnAppointmentCodeEntity.getResult());
+                    view.getMyOrderPrivateLesson(alreadyMakeAnAppointmentCodeEntity.getResult());
+                } else {
+                    view.toast(alreadyMakeAnAppointmentCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide();
             }
 
             @Override
@@ -66,19 +70,23 @@ public class AlreadyMakeAnAppointmentPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("coachID", coachID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 AlreadyMakeAnAppointmentCodeEntity alreadyMakeAnAppointmentCodeEntity = new AlreadyMakeAnAppointmentCodeEntity();
                 alreadyMakeAnAppointmentCodeEntity = JsonUtils.getMyOrderPrivateLesson(result);
                 if (alreadyMakeAnAppointmentCodeEntity.getCode().equals("0")) {
-                    alreadyMakeAnAppointmentView.getMyOrderPrivateLesson(alreadyMakeAnAppointmentCodeEntity.getResult());
+                    view.getMyOrderPrivateLesson(alreadyMakeAnAppointmentCodeEntity.getResult());
+                } else {
+                    view.toast(alreadyMakeAnAppointmentCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-
+                view.hide();
             }
 
             @Override

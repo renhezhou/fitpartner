@@ -11,7 +11,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import rxh.shanks.base.BaseActivity;
-import rxh.shanks.entity.CurriculumEventBusEntity;
 import rxh.shanks.entity.TestRecordEntity;
 import rxh.shanks.entity.TestRecordEventBusEntity;
 import rxh.shanks.presenter.TestRecordPresenter;
@@ -27,12 +26,14 @@ public class TestRecordActivity extends BaseActivity implements TestRecordView {
     LinearLayout back;
     @Bind(R.id.title)
     TextView title;
-    TestRecordPresenter testRecordPresenter;
+    TestRecordPresenter presenter;
+    @Bind(R.id.empty)
+    TextView empty;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        testRecordPresenter = new TestRecordPresenter(this);
+        presenter = new TestRecordPresenter(this);
         initview();
     }
 
@@ -41,7 +42,7 @@ public class TestRecordActivity extends BaseActivity implements TestRecordView {
         ButterKnife.bind(this);
         title.setText("体测记录");
         back.setOnClickListener(this);
-        testRecordPresenter.getBodyTestRecord();
+        presenter.getBodyTestRecord();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class TestRecordActivity extends BaseActivity implements TestRecordView {
 
     @Override
     public void show() {
-        loading("加载中...", "false");
+        loading("加载中...", "true");
     }
 
     @Override
@@ -67,6 +68,11 @@ public class TestRecordActivity extends BaseActivity implements TestRecordView {
 
     @Override
     public void getBodyTestRecord(List<TestRecordEntity> testRecordEntityList) {
-        EventBus.getDefault().post(new TestRecordEventBusEntity(testRecordEntityList));
+        if (testRecordEntityList.size() > 0) {
+            empty.setVisibility(View.GONE);
+            EventBus.getDefault().post(new TestRecordEventBusEntity(testRecordEntityList));
+        } else {
+            empty.setVisibility(View.VISIBLE);
+        }
     }
 }

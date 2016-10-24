@@ -68,9 +68,9 @@ public class ViewAppointmentAdapter extends BaseAdapter {
         holder.project.setText(data.get(position).getLessonName());
         //00:完成未评价  01:完成已评价  10:预约中 11:代约中
         if (data.get(position).getState().equals("00")) {
-            holder.state.setText("完成未评价");
+            holder.state.setText("去评价");
         } else if (data.get(position).getState().equals("01")) {
-            holder.state.setText("完成已评价");
+            holder.state.setText("已完成");
         } else if (data.get(position).getState().equals("10")) {
             holder.state.setText("预约中");
         } else if (data.get(position).getState().equals("11")) {

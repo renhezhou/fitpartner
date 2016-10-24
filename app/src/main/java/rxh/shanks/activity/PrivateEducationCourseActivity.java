@@ -62,7 +62,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
 
     String coachID, coachName, head_path, evaluate, club_name_tv, when_long, time;
     CalendarFragment calendarFragment;
-    PrivateEducationCoursePageAdapter privateEducationCoursePageAdapter;
+    PrivateEducationCoursePageAdapter pageAdapter;
     private List<String> datelist = new ArrayList<>();
     private List<String> fragmentdatelist = new ArrayList<>();
 
@@ -86,8 +86,8 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         title.setText("预约私教课程");
         datelist = CreatTime.creat(new Date());
         fragmentdatelist = CreatTime.creatfragment(new Date());
-        privateEducationCoursePageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
-        viewpager.setAdapter(privateEducationCoursePageAdapter);
+        pageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
+        viewpager.setAdapter(pageAdapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
         back.setOnClickListener(this);
@@ -139,8 +139,8 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         fragmentdatelist.clear();
         datelist = CreatTime.creat(CreatTime.conversion(date));
         fragmentdatelist = CreatTime.creatfragment(CreatTime.conversion(date));
-        privateEducationCoursePageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
-        viewpager.setAdapter(privateEducationCoursePageAdapter);
+        pageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
+        viewpager.setAdapter(pageAdapter);
     }
 
     //预约私教课成功的回调

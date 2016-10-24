@@ -21,11 +21,11 @@ import rxh.shanks.view.NotMakeAnAppointmentView;
 public class NotMakeAnAppointmentPresenter {
 
     private GetInfo getInfo;
-    private NotMakeAnAppointmentView notMakeAnAppointmentView;
+    private NotMakeAnAppointmentView view;
 
-    public NotMakeAnAppointmentPresenter(NotMakeAnAppointmentView notMakeAnAppointmentView) {
+    public NotMakeAnAppointmentPresenter(NotMakeAnAppointmentView view) {
         getInfo = new Is_Networking();
-        this.notMakeAnAppointmentView = notMakeAnAppointmentView;
+        this.view = view;
     }
 
     public void getMyUnorderPrivateLesson(String coachID) {
@@ -33,18 +33,23 @@ public class NotMakeAnAppointmentPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("coachID", coachID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 NotMakeAnAppointmentCodeEntity notMakeAnAppointmentCodeEntity = new NotMakeAnAppointmentCodeEntity();
                 notMakeAnAppointmentCodeEntity = JsonUtils.getMyUnorderPrivateLesson(result);
                 if (notMakeAnAppointmentCodeEntity.getCode().equals("0")) {
-                    notMakeAnAppointmentView.getMyUnorderPrivateLesson(notMakeAnAppointmentCodeEntity.getResult());
+                    view.getMyUnorderPrivateLesson(notMakeAnAppointmentCodeEntity.getResult());
+                } else {
+                    view.toast(notMakeAnAppointmentCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
+                view.hide();
             }
 
             @Override
@@ -65,18 +70,23 @@ public class NotMakeAnAppointmentPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("coachID", coachID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 NotMakeAnAppointmentCodeEntity notMakeAnAppointmentCodeEntity = new NotMakeAnAppointmentCodeEntity();
                 notMakeAnAppointmentCodeEntity = JsonUtils.getMyUnorderPrivateLesson(result);
                 if (notMakeAnAppointmentCodeEntity.getCode().equals("0")) {
-                    notMakeAnAppointmentView.getMyUnorderPrivateLesson(notMakeAnAppointmentCodeEntity.getResult());
+                    view.getMyUnorderPrivateLesson(notMakeAnAppointmentCodeEntity.getResult());
+                } else {
+                    view.toast(notMakeAnAppointmentCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
+                view.hide();
             }
 
             @Override

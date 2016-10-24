@@ -9,9 +9,9 @@ import rxh.shanks.entity.ViewAppointmentEntity;
  */
 public interface ViewAppointmentView {
 
-    void show();
+    void show(int flag);
 
-    void hide();
+    void hide(int flag);
 
     void getOrderLesson(List<ViewAppointmentEntity> viewAppointmentEntityList);
 

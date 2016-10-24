@@ -40,7 +40,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:textColor="@color/text_not_selected"
+        android:text="1115651"
+        android:textColor="@color/textcolor"
         android:textSize="14sp" />
 
 

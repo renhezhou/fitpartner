@@ -49,6 +49,16 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="暂无体测记录"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
         <fragment
             android:id="@+id/fragment"
             class="rxh.shanks.fragment.TestRecordFragment"

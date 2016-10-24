@@ -73,7 +73,7 @@ public class SwitchingVenuesPresenter {
     }
 
 
-    public void switchingvenues(final String clubID) {
+    public void switchingvenues(final String clubID, final String clubName) {
         RequestParams params = new RequestParams(CreatUrl.creaturl("user", "completeUserInfo"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
@@ -85,6 +85,7 @@ public class SwitchingVenuesPresenter {
                 switchingVenuesSuccessCodeEntity = JsonUtils.switchingvenues(result);
                 if (switchingVenuesSuccessCodeEntity.getCode().equals("0")) {
                     MyApplication.currentClubID = clubID;
+                    MyApplication.currentClubName = clubName;
                     switchingVenuesView.switchingvenues();
                 }
             }

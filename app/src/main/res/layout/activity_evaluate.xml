@@ -15,6 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
 
@@ -22,9 +24,9 @@
                 android:id="@+id/head_portrait"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20sp"
-                android:src="@drawable/loading_cort"
-                android:layout_gravity="center_horizontal" />
+                android:src="@drawable/loading_cort" />
 
             <TextView
                 android:id="@+id/project"

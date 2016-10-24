@@ -35,7 +35,7 @@ import rxh.shanks.view.ConfirmAnAppointmentActivityView;
 
 /**
  * Created by Administrator on 2016/8/3.
- * 开始预约项目的Activity
+ * 我的团课
  */
 public class ConfirmAnAppointmentActivity extends BaseActivity implements CalendarFragment.CalendarFragmentListener, ConfirmAnAppointmentFragment.ConfirmAnAppointmentFragmentListener {
 
@@ -63,7 +63,7 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     String titletv, lessonID, coachID, coachName, head_path, evaluate, club_name_tv, when_long;
 
     CalendarFragment calendarFragment;
-    ConfirmAnAppointmentPageAdapter confirmAnAppointmentPageAdapter;
+    ConfirmAnAppointmentPageAdapter pageAdapter;
     private List<String> datelist = new ArrayList<>();
     private List<String> fragmentdatelist = new ArrayList<>();
 
@@ -88,8 +88,8 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
         ButterKnife.bind(this);
         datelist = CreatTime.creat(new Date());
         fragmentdatelist = CreatTime.creatfragment(new Date());
-        confirmAnAppointmentPageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
-        viewpager.setAdapter(confirmAnAppointmentPageAdapter);
+        pageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
+        viewpager.setAdapter(pageAdapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
         back.setOnClickListener(this);
@@ -138,8 +138,8 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
         fragmentdatelist.clear();
         datelist = CreatTime.creat(CreatTime.conversion(date));
         fragmentdatelist = CreatTime.creatfragment(CreatTime.conversion(date));
-        confirmAnAppointmentPageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
-        viewpager.setAdapter(confirmAnAppointmentPageAdapter);
+        pageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
+        viewpager.setAdapter(pageAdapter);
     }
 
     //从fragment传回来的预约的IDs

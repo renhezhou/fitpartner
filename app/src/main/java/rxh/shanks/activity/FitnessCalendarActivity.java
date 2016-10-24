@@ -78,7 +78,7 @@ public class FitnessCalendarActivity extends BaseActivity implements FitnessCale
             @Override
             public void drawDecorTR(Canvas canvas, Rect rect, Paint paint) {
                 paint.setColor(getResources().getColor(R.color.red));
-                canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
+                canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 4, paint);
             }
         });
         date_picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {

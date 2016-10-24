@@ -53,11 +53,12 @@
 
     </LinearLayout>
 
-    <rxh.shanks.customview.SmoothCheckBox
-        android:id="@+id/checkbox"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+    <ImageView
+        android:id="@+id/select"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/selecte" />
 
 </RelativeLayout>

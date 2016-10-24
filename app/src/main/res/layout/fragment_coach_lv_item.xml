@@ -23,17 +23,15 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="姓名"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="职称"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/project_name"
@@ -41,9 +39,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLength="10"
-            android:text="项目名"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -59,9 +56,8 @@
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
         android:paddingTop="2dp"
-        android:text="300起"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
 
     <rxh.shanks.customview.RatingBar

@@ -9,6 +9,12 @@ import rxh.shanks.entity.NotMakeAnAppointmentEntity;
  */
 public interface NotMakeAnAppointmentView {
 
+    void show();
+
+    void hide();
+
+    void toast(String msg);
+
     void getMyUnorderPrivateLesson(List<NotMakeAnAppointmentEntity> notMakeAnAppointmentEntityList);
 
 }

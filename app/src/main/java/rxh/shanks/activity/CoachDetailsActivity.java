@@ -73,7 +73,7 @@ public class CoachDetailsActivity extends BaseActivity {
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
         title.setText("教练详情");
         back.setOnClickListener(this);
-        adapter = new CoachDetailsPageAdapter(getSupportFragmentManager(), fragments);
+        adapter = new CoachDetailsPageAdapter(getSupportFragmentManager(), fragments, descrip);
         viewpager.setAdapter(adapter);
         Picasso.with(getApplicationContext())
                 .load(HeadImageURL)
@@ -102,7 +102,7 @@ public class CoachDetailsActivity extends BaseActivity {
         fragments.add(new DataFragment());
         fragments.add(new PrivateEducationFragment());
         fragments.add(new GroupClassFragment());
-        EventBus.getDefault().post(new DataEventBusEntity(descrip));
+        //EventBus.getDefault().post(new DataEventBusEntity(descrip));
     }
 
     @Override

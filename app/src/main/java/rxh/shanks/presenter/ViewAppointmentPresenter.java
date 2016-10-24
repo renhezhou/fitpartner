@@ -23,11 +23,11 @@ import rxh.shanks.view.ViewAppointmentView;
 public class ViewAppointmentPresenter {
 
     private GetInfo getInfo;
-    private ViewAppointmentView viewAppointmentView;
+    private ViewAppointmentView view;
 
-    public ViewAppointmentPresenter(ViewAppointmentView viewAppointmentView) {
+    public ViewAppointmentPresenter(ViewAppointmentView view) {
         getInfo = new Is_Networking();
-        this.viewAppointmentView = viewAppointmentView;
+        this.view = view;
     }
 
     public void getOrderLesson(String lessonID) {
@@ -35,31 +35,33 @@ public class ViewAppointmentPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("lessonID", lessonID);
         params.addBodyParameter("userID", MyApplication.userID);
-        viewAppointmentView.show();
+        view.show(0);
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                viewAppointmentView.hide();
+                view.hide(0);
                 ViewAppointmentCodeEntity viewAppointmentCodeEntity = new ViewAppointmentCodeEntity();
                 viewAppointmentCodeEntity = JsonUtils.getOrderLesson(result);
                 if (viewAppointmentCodeEntity.getCode().equals("0")) {
-                    viewAppointmentView.getOrderLesson(viewAppointmentCodeEntity.getResult());
+                    view.getOrderLesson(viewAppointmentCodeEntity.getResult());
+                } else {
+                    view.toast(viewAppointmentCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-                viewAppointmentView.hide();
+                view.hide(0);
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                viewAppointmentView.hide();
+                view.hide(0);
             }
 
             @Override
             public void onFinished() {
-                viewAppointmentView.hide();
+                view.hide(0);
             }
         });
     }
@@ -70,33 +72,35 @@ public class ViewAppointmentPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "confirmOrderLesson"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("appointmentID", appointmentID);
-        viewAppointmentView.show();
+        view.show(11);
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                viewAppointmentView.hide();
+                view.hide(11);
                 ViewAppointmentState viewAppointmentState = new ViewAppointmentState();
                 viewAppointmentState = JsonUtils.viewAppointmentState(result);
                 if (viewAppointmentState.getCode().equals("0")) {
                     //操作成功
-                    viewAppointmentView.toast("操作已成功");
-                    viewAppointmentView.success();
+                    view.toast("操作已成功");
+                    view.success();
+                } else {
+                    view.toast(viewAppointmentState.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-                viewAppointmentView.hide();
+                view.hide(11);
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                viewAppointmentView.hide();
+                view.hide(11);
             }
 
             @Override
             public void onFinished() {
-                viewAppointmentView.hide();
+                view.hide(11);
             }
         });
     }
@@ -107,35 +111,35 @@ public class ViewAppointmentPresenter {
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "cancelBespokeLesson"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("appointmentID", appointmentID);
-        viewAppointmentView.show();
+        view.show(10);
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                viewAppointmentView.hide();
+                view.hide(10);
                 ViewAppointmentState viewAppointmentState = new ViewAppointmentState();
                 viewAppointmentState = JsonUtils.viewAppointmentState(result);
                 if (viewAppointmentState.getCode().equals("0")) {
                     //操作成功
-                    viewAppointmentView.toast("操作已成功");
-                    viewAppointmentView.success();
-                }else {
-                    viewAppointmentView.toast(viewAppointmentState.getError());
+                    view.toast("操作已成功");
+                    view.success();
+                } else {
+                    view.toast(viewAppointmentState.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-                viewAppointmentView.hide();
+                view.hide(10);
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                viewAppointmentView.hide();
+                view.hide(10);
             }
 
             @Override
             public void onFinished() {
-                viewAppointmentView.hide();
+                view.hide(10);
             }
         });
     }

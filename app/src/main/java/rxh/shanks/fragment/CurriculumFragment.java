@@ -96,6 +96,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
         EventBus.getDefault().unregister(this);
     }
 
+    //切换场馆后通知界面更新数据
     public void onEventMainThread(SVAEntity svaEntity) {
         initdata();
     }

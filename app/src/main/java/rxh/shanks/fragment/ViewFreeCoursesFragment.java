@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
@@ -16,6 +17,8 @@ import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.VFCEntity;
 import rxh.shanks.activity.PrivateEducationOrLeagueDetailsActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.adapter.CourseDetailsAdapter;
@@ -33,7 +36,7 @@ public class ViewFreeCoursesFragment extends Fragment implements OnRefreshListen
 
     View view;
     private SwipeToLoadLayout swipeToLoadLayout;
-    ListViewForScrollView lv;
+    ListView lv;
 
     String date, clubID;
     private List<CourseDetailsEntity> data = new ArrayList<>();
@@ -53,6 +56,7 @@ public class ViewFreeCoursesFragment extends Fragment implements OnRefreshListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_view_free_courses, null);
         viewFreeCoursesPresenter = new ViewFreeCoursesPresenter(this);
+        EventBus.getDefault().register(this);
         date = getArguments().getString("date");
         clubID = getArguments().getString("clubID");
         initview();
@@ -60,11 +64,22 @@ public class ViewFreeCoursesFragment extends Fragment implements OnRefreshListen
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(VFCEntity vfcEntity) {
+        clubID = vfcEntity.getClubID();
+        viewFreeCoursesPresenter.getFreeLesson(clubID, date);
+    }
+
     public void initview() {
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        lv = (ListViewForScrollView) view.findViewById(R.id.lv);
+        lv = (ListView) view.findViewById(R.id.swipe_target);
 
     }
 

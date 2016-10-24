@@ -25,6 +25,8 @@ import rxh.shanks.adapter.ViewAppointmentAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.ListViewForScrollView;
 import rxh.shanks.entity.ViewAppointmentEntity;
+import rxh.shanks.fragment.ViewAppointmentDialogFragment;
+import rxh.shanks.fragment.ViewAppointmentDialogFragment.ViewAppointmentDialogFragmentListener;
 import rxh.shanks.presenter.ViewAppointmentPresenter;
 import rxh.shanks.view.ViewAppointmentView;
 
@@ -32,7 +34,7 @@ import rxh.shanks.view.ViewAppointmentView;
  * Created by Administrator on 2016/8/2.
  * 已下的预约
  */
-public class ViewAppointmentActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, ViewAppointmentView {
+public class ViewAppointmentActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, ViewAppointmentView, ViewAppointmentDialogFragmentListener {
 
     @Bind(R.id.back)
     LinearLayout back;
@@ -44,6 +46,7 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
     ViewAppointmentAdapter adapter;
     String coachID, lessonID, head_path;//教练ID,课程ID
     ViewAppointmentPresenter presenter;
+    ViewAppointmentDialogFragment dialogFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +94,11 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
                         startActivity(intent);
                     }
                 } else if (data.get(position).getState().equals("10")) {
-                    presenter.cancelBespokeLesson(data.get(position).getAppointmentID());
+//                    presenter.cancelBespokeLesson(data.get(position).getAppointmentID());
+                    showdialog(10, position, "尊敬的用户你好。你点击的项目正处于预约中。如想取消此次预约，请点击确定按钮");
                 } else if (data.get(position).getState().equals("11")) {
-                    presenter.confirmOrderLesson(data.get(position).getAppointmentID());
+                    //presenter.confirmOrderLesson(data.get(position).getAppointmentID());
+                    showdialog(11, position, "尊敬的用户你好。你点击的项目正处于代约中。请点击确定按钮确认此次代约");
                 }
             }
         });
@@ -121,19 +126,31 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
     }
 
     @Override
-    public void show() {
-        swipeToLoadLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeToLoadLayout.setRefreshing(true);
-            }
-        });
+    public void show(int flag) {
+        if (flag == 0) {
+            swipeToLoadLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeToLoadLayout.setRefreshing(true);
+                }
+            });
+        } else if (flag == 10) {
+            loading("取消中", "true");
+        } else if (flag == 11) {
+            loading("确认中", "true");
+        }
     }
 
     @Override
-    public void hide() {
-        if (swipeToLoadLayout.isRefreshing()) {
-            swipeToLoadLayout.setRefreshing(false);
+    public void hide(int flag) {
+        if (flag == 0) {
+            if (swipeToLoadLayout.isRefreshing()) {
+                swipeToLoadLayout.setRefreshing(false);
+            }
+        } else if (flag == 10) {
+            dismiss();
+        } else if (flag == 11) {
+            dismiss();
         }
     }
 
@@ -155,5 +172,29 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
     @Override
     public void success() {
         presenter.getOrderLesson(lessonID);
+    }
+
+    //10:预约中 11:代约中
+    @Override
+    public void sure(int flag, int position) {
+        if (flag == 10) {
+            presenter.cancelBespokeLesson(data.get(position).getAppointmentID());
+        } else if (flag == 11) {
+            presenter.confirmOrderLesson(data.get(position).getAppointmentID());
+        }
+    }
+
+    public void showdialog(int flag, int position, String ts) {
+        dialogFragment = new ViewAppointmentDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("flag", flag);
+        bundle.putInt("position", position);
+        bundle.putString("ts", ts);
+        dialogFragment.setArguments(bundle);
+        //这句代码用于解决频繁点击时发生的崩溃现象，未测试
+        getSupportFragmentManager().executePendingTransactions();
+        if (!dialogFragment.isAdded()) {
+            dialogFragment.show(getSupportFragmentManager(), "dialogFragment");
+        }
     }
 }

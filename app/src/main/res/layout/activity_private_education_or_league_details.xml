@@ -25,8 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="增肌"
-            android:alpha="0.4"
-            android:textColor="@color/black"
+            android:textColor="@color/textcolor"
             android:textSize="18sp" />
 
         <rxh.shanks.customview.RatingBar
@@ -52,10 +51,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:padding="10dp"
         android:text="阿三教练"
-        android:alpha="0.4"
-        android:textColor="@color/black"
+        android:textColor="@color/textcolor"
+        android:layout_marginLeft="10dp"
         android:textSize="18sp" />
 
     <RelativeLayout
@@ -69,8 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="时长：30分钟"
-            android:alpha="0.4"
-            android:textColor="@color/black"
+            android:textColor="@color/textcolor"
             android:textSize="18sp" />
 
         <TextView
@@ -80,8 +77,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="98元/节"
-            android:textColor="@color/black"
-            android:alpha="0.4"
+            android:textColor="@color/textcolor"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -90,10 +86,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:padding="10dp"
+        android:layout_marginLeft="10dp"
         android:text="美年广场"
-        android:textColor="@color/black"
-        android:alpha="0.4"
+        android:textColor="@color/textcolor"
         android:textSize="18sp" />
 
     <TextView
@@ -103,8 +98,7 @@
         android:layout_centerVertical="true"
         android:layout_weight="1"
         android:padding="10dp"
-        android:textColor="@color/black"
-        android:alpha="0.4"
+        android:textColor="@color/textcolor"
         android:text="增肌增肌哦哦哦"
         android:textSize="18sp" />
 

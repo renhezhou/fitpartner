@@ -35,7 +35,7 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
     TextView confirm_an_appointment;
     View view;
     List<ConfirmAnAppointmentEntity> datas = new ArrayList<>();
-    List<String> checkboxflag = new ArrayList<>();
+    List<String> selectflag = new ArrayList<>();
     List<String> planID = new ArrayList<>();
     ConfirmAnAppointmentAdapter adapter;
     ConfirmAnAppointmentPresenter presenter;
@@ -66,28 +66,37 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 
     public void initview() {
         confirm_an_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.orderTeamLesson(MyApplication.lessonID, MyApplication.CoachID, planID);
+                if (planID.size() > 0) {
+                    presenter.orderTeamLesson(MyApplication.lessonID, MyApplication.CoachID, planID);
+                } else {
+                    Toast.makeText(getActivity(), "请选择预约时间", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (checkboxflag.get(position).equals("1")) {
+                if (selectflag.get(position).equals("1")) {
                     //表示这行已被选中,点击了表示取消
-                    checkboxflag.set(position, "0");
+                    selectflag.set(position, "0");
                     for (int i = 0; i < planID.size(); i++) {
-                        if (planID.get(i).equals(checkboxflag.get(position))) {
+                        if (planID.get(i).equals(datas.get(position).getPlanID())) {
                             planID.remove(i);
                         }
                     }
-                } else if (checkboxflag.get(position).equals("0")) {
+                } else if (selectflag.get(position).equals("0")) {
                     //表示这行未被选中，点击了表示选中
-                    checkboxflag.set(position, "1");
+                    selectflag.set(position, "1");
                     planID.add(datas.get(position).getPlanID());
                 }
                 adapter.notifyDataSetChanged();
@@ -95,12 +104,6 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
         });
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 
     @Override
     public void show(int flag) {
@@ -118,13 +121,12 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
 
     @Override
     public void getTeamLessonFreeTime(List<ConfirmAnAppointmentEntity> data) {
-//        datas.clear();
         //1表示选中，0表示未选中
         for (int i = 0; i < data.size(); i++) {
-            checkboxflag.add("0");
+            selectflag.add("0");
         }
         datas = data;
-        adapter = new ConfirmAnAppointmentAdapter(getActivity(), datas, checkboxflag);
+        adapter = new ConfirmAnAppointmentAdapter(getActivity(), datas, selectflag);
         lv.setAdapter(adapter);
     }
 

@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textColor="@color/text_not_selected"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
@@ -42,10 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:alpha="0.4"
         android:ellipsize="end"
         android:maxLines="6"
-        android:textColor="@color/text_not_selected"
+        android:textColor="@color/textcolor"
         android:textSize="10sp" />
 
     <TextView
@@ -55,7 +54,6 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:alpha="0.4"
         android:gravity="right"
         android:text="更多"
         android:textColor="@color/red"
@@ -89,15 +87,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.4"
                 android:text="我的会籍顾问"
-                android:textColor="@color/text_not_selected" />
+                android:textColor="@color/textcolor" />
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_not_selected"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -211,7 +208,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:text="预约团体课程"
-                    android:textColor="@color/text_not_selected" />
+                    android:textColor="@color/black" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

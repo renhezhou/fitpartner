@@ -62,6 +62,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putString("flag", flag);
             loadingFragment.setArguments(bundle);
         }
+        //这句代码用于解决频繁点击时发生的崩溃现象，未测试
+        getSupportFragmentManager().executePendingTransactions();
         if (!loadingFragment.isAdded()) {
             loadingFragment.show(getSupportFragmentManager(), "loadingFragment");
         }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
@@ -32,7 +33,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
 
     View view;
     private SwipeToLoadLayout swipeToLoadLayout;
-    ListViewForScrollView lv;
+    ListView lv;
     private List<CourseDetailsEntity> data = new ArrayList<>();
     CourseDetailsAdapter courseDetailsAdapter;
     CourseDetailsPresenter courseDetailsPresenter;
@@ -63,7 +64,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        lv = (ListViewForScrollView) view.findViewById(R.id.lv);
+        lv = (ListView) view.findViewById(R.id.swipe_target);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

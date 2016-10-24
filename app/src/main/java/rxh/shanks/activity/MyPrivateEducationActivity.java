@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
+import rxh.shanks.adapter.MYERVAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
 import rxh.shanks.entity.MyPrivateEducationEventBusEntity;
@@ -41,7 +44,7 @@ import rxh.shanks.view.MyPrivateEducationView;
  * Created by Administrator on 2016/8/2.
  * 我的私教
  */
-public class MyPrivateEducationActivity extends BaseActivity implements MyPrivateEducationView {
+public class MyPrivateEducationActivity extends BaseActivity implements MyPrivateEducationView, MYERVAdapter.OnItemClickLitener {
 
 
     @Bind(R.id.back)
@@ -68,27 +71,27 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
     View not_make_an_appointment_view;
     @Bind(R.id.viewpage)
     ViewPager viewpage;
-    @Bind(R.id.gallery)
-    Gallery gallery;
+    @Bind(R.id.recycler_view)
+    RecyclerView recycler_view;
 
     List<Fragment> fragments = new ArrayList<Fragment>();
     //顶部滑动头像
     List<MyPrivateEducationHeadEntity> data = new ArrayList<MyPrivateEducationHeadEntity>();
     public int selectNum = 0;//全局变量，保存被选中的item
     public String flag;//1表示是从我的私教跳转过来的 ，0表示从我的团课跳转过来的
-    MyPrivateEducationGalleryAdapter myPrivateEducationGalleryAdapter;
-    MyPrivateEducationPresenter myPrivateEducationPresenter;
+    MYERVAdapter rvAdapter;
+    MyPrivateEducationPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myPrivateEducationPresenter = new MyPrivateEducationPresenter(this);
+        presenter = new MyPrivateEducationPresenter(this);
         flag = getIntent().getStringExtra("flag");
         initview();
         if (flag.equals("1")) {
-            myPrivateEducationPresenter.getMyPrivateCoach();
+            presenter.getMyPrivateCoach();
         } else {
-            myPrivateEducationPresenter.getMyTeamCoach();
+            presenter.getMyTeamCoach();
         }
     }
 
@@ -100,6 +103,8 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
         } else {
             title.setText("我的私教");
         }
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recycler_view.setLayoutManager(manager);
         back.setOnClickListener(this);
         dadianhua.setOnClickListener(this);
         faduanxin.setOnClickListener(this);
@@ -131,37 +136,11 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
         });
     }
 
-
     public void initdata() {
-        myPrivateEducationGalleryAdapter = new MyPrivateEducationGalleryAdapter(this, data);
-        gallery.setAdapter(myPrivateEducationGalleryAdapter);
         selectNum = (int) (data.size() / 2);
-        gallery.setSelection(selectNum);// 设置默认显示的图片
-        gallery.setOnItemSelectedListener(new Gallery.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
-                selectNum = arg2;//
-                coach_name.setText(data.get(selectNum).getName());
-                coaching_years.setText("执教" + data.get(selectNum).getTeachTime() + "年");
-                club_name.setText(data.get(selectNum).getClubName());
-                myPrivateEducationGalleryAdapter.notifyDataSetChanged();
-                EventBus.getDefault().post(new MyPrivateEducationEventBusEntity(flag, data.get(selectNum)));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-
-        gallery.setOnItemClickListener(new Gallery.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-            }
-        });
+        rvAdapter = new MYERVAdapter(getApplicationContext(), selectNum, data);
+        rvAdapter.setOnItemClickLitener(this);
+        recycler_view.setAdapter(rvAdapter);
         coach_name.setText(data.get(selectNum).getName());
         coaching_years.setText("执教" + data.get(selectNum).getTeachTime() + "年");
         club_name.setText(data.get(selectNum).getClubName());
@@ -195,24 +174,6 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
                 break;
             default:
                 break;
-        }
-    }
-
-    public void selected(int i) {
-        if (i == 0) {
-            already_make_an_appointment_view.setBackgroundResource(R.color.red);
-            already_make_an_appointment_view.setAlpha(0.6f);
-            not_make_an_appointment_view.setAlpha(0.6f);
-            not_make_an_appointment_view.setBackgroundResource(R.color.text_not_selected);
-            already_make_an_appointment.setTextColor(getResources().getColor(R.color.red));
-            not_make_an_appointment.setTextColor(getResources().getColor(R.color.black));
-        } else if (i == 1) {
-            not_make_an_appointment_view.setBackgroundResource(R.color.red);
-            already_make_an_appointment_view.setBackgroundResource(R.color.text_not_selected);
-            already_make_an_appointment.setTextColor(getResources().getColor(R.color.black));
-            already_make_an_appointment_view.setAlpha(0.6f);
-            not_make_an_appointment_view.setAlpha(0.6f);
-            not_make_an_appointment.setTextColor(getResources().getColor(R.color.red));
         }
     }
 
@@ -252,6 +213,35 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
         }
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        selectNum = position;//
+        coach_name.setText(data.get(selectNum).getName());
+        coaching_years.setText("执教" + data.get(selectNum).getTeachTime() + "年");
+        club_name.setText(data.get(selectNum).getClubName());
+        rvAdapter = new MYERVAdapter(getApplicationContext(), selectNum, data);
+        rvAdapter.setOnItemClickLitener(this);
+        recycler_view.setAdapter(rvAdapter);
+        EventBus.getDefault().post(new MyPrivateEducationEventBusEntity(flag, data.get(selectNum)));
+    }
+
+    public void selected(int i) {
+        if (i == 0) {
+            already_make_an_appointment_view.setBackgroundResource(R.color.red);
+            already_make_an_appointment_view.setAlpha(0.6f);
+            not_make_an_appointment_view.setAlpha(0.6f);
+            not_make_an_appointment_view.setBackgroundResource(R.color.text_not_selected);
+            already_make_an_appointment.setTextColor(getResources().getColor(R.color.red));
+            not_make_an_appointment.setTextColor(getResources().getColor(R.color.black));
+        } else if (i == 1) {
+            not_make_an_appointment_view.setBackgroundResource(R.color.red);
+            already_make_an_appointment_view.setBackgroundResource(R.color.text_not_selected);
+            already_make_an_appointment.setTextColor(getResources().getColor(R.color.black));
+            already_make_an_appointment_view.setAlpha(0.6f);
+            not_make_an_appointment_view.setAlpha(0.6f);
+            not_make_an_appointment.setTextColor(getResources().getColor(R.color.red));
+        }
+    }
 
     public class FragAdapter extends FragmentPagerAdapter {
         public FragmentManager fm;
@@ -291,63 +281,5 @@ public class MyPrivateEducationActivity extends BaseActivity implements MyPrivat
         }
 
     }
-
-
-    public class MyPrivateEducationGalleryAdapter extends BaseAdapter {
-
-        public List<MyPrivateEducationHeadEntity> list = null;
-        public Context ctx = null;
-
-        public MyPrivateEducationGalleryAdapter(Context ctx, List<MyPrivateEducationHeadEntity> list) {
-            this.list = list;
-            this.ctx = ctx;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = View.inflate(ctx, R.layout.activity_my_private_education_gallery_item, null);
-                holder.image = (CircleImageView) convertView.findViewById(R.id.image);
-                holder.imageRel = (RelativeLayout) convertView.findViewById(R.id.image_rel);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            Picasso.with(ctx)
-                    .load(list.get(position).getHeadImageURL())
-                    .placeholder(R.drawable.loading_cort)
-                    .error(R.drawable.loading_cort)
-                    .into(holder.image);
-            if (selectNum == position) {
-                holder.image.setLayoutParams(new RelativeLayout.LayoutParams(210, 210));//如果被选择则放大显示
-            } else {
-                holder.image.setLayoutParams(new RelativeLayout.LayoutParams(150, 150));//否则正常
-            }
-            return convertView;
-        }
-    }
-
-    class ViewHolder {
-        CircleImageView image;
-        RelativeLayout imageRel;
-    }
-
 
 }
