@@ -18,14 +18,16 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.entity.LoginCodeEntity;
+import rxh.shanks.entity.YZMEntity;
 import rxh.shanks.presenter.LoginPresenter;
 import rxh.shanks.utils.CheckUtils;
+import rxh.shanks.utils.JsonUtils;
 import rxh.shanks.view.LoginView;
 
 /**
  * Created by Administrator on 2016/8/1.
  */
-public class ForgetPasswordActivity extends BaseActivity implements LoginView {
+public class ForgetPasswordActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.back)
     LinearLayout back;
@@ -40,21 +42,17 @@ public class ForgetPasswordActivity extends BaseActivity implements LoginView {
     @Bind(R.id.confirm)
     Button confirm;
 
-    LoginPresenter loginPresenter;
-
     boolean eh_flag = false;
     private TimeCount time;
+    final Handler handler = new Handler(this);
     EventHandler eh = new EventHandler() {
         @Override
         public void afterEvent(int event, int result, Object data) {
-            if (result == SMSSDK.RESULT_COMPLETE) {
-                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                    String phone = data.toString().substring(7, 18);
-                    loginPresenter.resetpassword("1", null, phone, null);
-                }
-            } else {
-                ((Throwable) data).printStackTrace();
-            }
+            Message msg = new Message();
+            msg.arg1 = event;
+            msg.arg2 = result;
+            msg.obj = data;
+            handler.sendMessage(msg);
         }
     };
 
@@ -62,7 +60,7 @@ public class ForgetPasswordActivity extends BaseActivity implements LoginView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenter(this);
+        SMSSDK.initSDK(this, "15250bf89fb80", "3ef1b078f3b49b49cf22d6d099453646");
         initview();
     }
 
@@ -102,10 +100,15 @@ public class ForgetPasswordActivity extends BaseActivity implements LoginView {
                 }
                 break;
             case R.id.confirm:
+                if (phone_num.getText().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "手机号码不能为空", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (verification_code.getText().length() > 0) {
                     SMSSDK.submitVerificationCode("86", phone_num.getText().toString(), verification_code.getText().toString());
                     SMSSDK.registerEventHandler(eh); //注册短信回调
                     eh_flag = true;
+                    loading("验证中...");
                 } else {
                     Toast.makeText(getApplicationContext(), "验证码不能为空", Toast.LENGTH_LONG).show();
                 }
@@ -115,39 +118,58 @@ public class ForgetPasswordActivity extends BaseActivity implements LoginView {
         }
     }
 
+    @Override
+    public boolean handleMessage(Message msg) {
+        int event = msg.arg1;
+        int result = msg.arg2;
+        Object data = msg.obj;
+        YZMEntity entity = new YZMEntity();
+        dismiss();
+        switch (event) {
+            case SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE:
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    //验证成功
+                    String phone = data.toString().substring(7, 18);
+                    startActivity(new Intent(getApplicationContext(), ResetPasswordActivity.class));
+                    finish();
+                } else {
+                    //验证失败
+                    entity = JsonUtils.get_mob_data(((Throwable) data).getMessage().toString());
+                    if (entity.getDetail() != null) {
+                        Toast.makeText(getApplicationContext(), entity.getDetail(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "验证失败,请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case SMSSDK.EVENT_GET_VERIFICATION_CODE:
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    //获取验证码成功
+                    if (time != null) {
+                        time.start();
+                    } else {
+                        time = new TimeCount(60000, 1000);// 构造CountDownTimer对象
+                        time.start();
+                    }
+                } else {
+                    //获取验证码失败
+                    entity = JsonUtils.get_mob_data(((Throwable) data).getMessage().toString());
+                    if (entity.getDetail() != null) {
+                        Toast.makeText(getApplicationContext(), entity.getDetail(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "获取验证码失败，请重试", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
     public void getverificationcode() {
-        SMSSDK.initSDK(this, "15250bf89fb80", "3ef1b078f3b49b49cf22d6d099453646");
         SMSSDK.getVerificationCode("86", phone_num.getText().toString());
         SMSSDK.registerEventHandler(eh); //注册短信回调
         eh_flag = true;
-        time.start();
-    }
-
-    @Override
-    public void show() {
-        loading("校验中...", "true");
-    }
-
-    @Override
-    public void hide() {
-        dismiss();
-    }
-
-    @Override
-    public void onSuccess(String result, LoginCodeEntity response) {
-        startActivity(new Intent(getApplicationContext(), ResetPasswordActivity.class));
-        finish();
-
-    }
-
-    @Override
-    public void onError(Throwable ex) {
-
-    }
-
-    @Override
-    public void check(String check) {
-        Toast.makeText(getApplicationContext(), check, Toast.LENGTH_LONG).show();
+        loading("获取验证码中...");
     }
 
     /* 定义一个倒计时的内部类 */

@@ -44,7 +44,7 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
     ListView swipe_target;
     List<ViewAppointmentEntity> data = new ArrayList<>();
     ViewAppointmentAdapter adapter;
-    String coachID, lessonID, head_path;//教练ID,课程ID
+    String lessonID;
     ViewAppointmentPresenter presenter;
     ViewAppointmentDialogFragment dialogFragment;
 
@@ -53,9 +53,7 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
         super.onCreate(savedInstanceState);
         presenter = new ViewAppointmentPresenter(this);
         EventBus.getDefault().register(this);
-        coachID = getIntent().getStringExtra("coachID");
         lessonID = getIntent().getStringExtra("lessonID");
-        head_path = getIntent().getStringExtra("head_path");
         initview();
         presenter.getOrderLesson(lessonID);
     }
@@ -84,15 +82,15 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //00:完成未评价  01:完成已评价  10:预约中 11:代约中
                 if (data.get(position).getState().equals("00")) {
-                    if (head_path != null) {
-                        Intent intent = new Intent();
-                        intent.setClass(getApplicationContext(), EvaluateActivity.class);
-                        intent.putExtra("coachID", coachID);
-                        intent.putExtra("appointmentID", data.get(position).getAppointmentID());
-                        intent.putExtra("head_path", head_path);
-                        intent.putExtra("name", data.get(position).getLessonName());
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), EvaluateActivity.class);
+                    intent.putExtra("coachID", data.get(position).getCoachID());
+                    intent.putExtra("coachName", data.get(position).getCoachName());
+                    intent.putExtra("appointmentID", data.get(position).getAppointmentID());
+                    intent.putExtra("head_path", data.get(position).getCoachURL());
+                    intent.putExtra("name", data.get(position).getLessonName());
+                    startActivity(intent);
+
                 } else if (data.get(position).getState().equals("10")) {
 //                    presenter.cancelBespokeLesson(data.get(position).getAppointmentID());
                     showdialog(10, position, "尊敬的用户你好。你点击的项目正处于预约中。如想取消此次预约，请点击确定按钮");
@@ -156,8 +154,9 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
 
     @Override
     public void getOrderLesson(List<ViewAppointmentEntity> viewAppointmentEntityList) {
-        EventBus.getDefault().post(new ReadMsgEntity());
-        data.clear();
+        if (data.size() > 0) {
+            data.clear();
+        }
         data.addAll(viewAppointmentEntityList);
         adapter = new ViewAppointmentAdapter(ViewAppointmentActivity.this, data);
         swipe_target.setAdapter(adapter);

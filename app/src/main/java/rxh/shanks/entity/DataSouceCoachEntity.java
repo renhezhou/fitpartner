@@ -6,7 +6,7 @@ package rxh.shanks.entity;
 public class DataSouceCoachEntity {
 
     private String time;
-    private int flag;//0表示用户和教练都有空，1表示教练没空，2表示用户没空，3表示教练和用户都没空
+    private int flag;//0表示可以预约，1表示用户时间被占用，2表示时间被团课，免费课占用
 
     public String getTime() {
         return time;

@@ -49,13 +49,13 @@ public class BlurImageView extends RelativeLayout {
 
         @Override
         public void draw(Canvas canvas) {
-            canvas.drawColor(greyColor);
-            String failString = "load failure";
-            canvas.translate((canvas.getWidth() - textPaint.measureText(failString)) / 2,
-                    canvas.getHeight() / 2);
-            textPaint.setColor(Color.DKGRAY);
-            textPaint.setTextSize(30);
-            canvas.drawText(failString, 0, failString.length(), textPaint);
+//            canvas.drawColor(greyColor);
+//            String failString = "load failure";
+//            canvas.translate((canvas.getWidth() - textPaint.measureText(failString)) / 2,
+//                    canvas.getHeight() / 2);
+//            textPaint.setColor(Color.DKGRAY);
+//            textPaint.setTextSize(30);
+//            canvas.drawText(failString, 0, failString.length(), textPaint);
         }
 
         @Override
@@ -125,9 +125,10 @@ public class BlurImageView extends RelativeLayout {
         imageView.setLayoutParams(
                 new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageDrawable(defaultDrawable);
+        //imageView.setImageDrawable(defaultDrawable);
+
 //        Picasso.with(mContext)
-//                .load(R.drawable.loading_cort)
+//                .load(R.drawable.load_mohu)
 //                .into(imageView);
 //        loadingCircleProgressView = new LoadingCircleProgressView(mContext);
 //        LayoutParams progressBarLayoutParams =

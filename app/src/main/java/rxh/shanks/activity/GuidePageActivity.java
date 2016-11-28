@@ -40,19 +40,7 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
         Picasso.with(getApplicationContext())
                 .load(R.drawable.guidepage)
                 .into(img);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                if (sp.getString("user", null) != null && sp.getString("password", null) != null && !sp.getString("password", null).equals("")) {
-                    presenter.login("2", null, sp.getString("user", null), sp.getString("password", null));
-                } else {
-                    Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    GuidePageActivity.this.finish();
-                    finish();
-                }
-            }
-        }, 2000); //延迟2秒跳转
-
+        presenter.get_version_name();
     }
 
     @Override
@@ -98,6 +86,28 @@ public class GuidePageActivity extends BaseActivity implements GuidePageView, Gu
         Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
         startActivity(intent);
         GuidePageActivity.this.finish();
+        finish();
+    }
+
+    @Override
+    public void get_version_name(String version_name) {
+        if (version_name.equals(getVersionName())) {
+            if (sp.getString("user", null) != null && sp.getString("password", null) != null && !sp.getString("password", null).equals("")) {
+                presenter.login("2", null, sp.getString("user", null), sp.getString("password", null));
+            } else {
+                Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        } else {
+            showdialog();
+        }
+    }
+
+    @Override
+    public void get_version_name_error() {
+        Intent intent = new Intent(GuidePageActivity.this, LoginActivity.class);
+        startActivity(intent);
         finish();
     }
 

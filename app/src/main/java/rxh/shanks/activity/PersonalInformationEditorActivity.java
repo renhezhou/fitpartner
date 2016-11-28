@@ -77,14 +77,14 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
     //fitness_needs 1代表增肌，2代表减脂，3代表塑形
     String sex = null, fitness_needs = null;
     boolean muscle_flag = false, fat_flag = false, shaping_flag = false;
-    PersonalInformationEditorPresenter personalInformationEditorPresenter;
+    PersonalInformationEditorPresenter presenter;
 
     List<String> path = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        personalInformationEditorPresenter = new PersonalInformationEditorPresenter(this);
+        presenter = new PersonalInformationEditorPresenter(this);
         initview();
     }
 
@@ -164,6 +164,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                 finish();
                 break;
             case R.id.edit:
+                //fitness_needs 1代表增肌，2代表减脂，3代表塑形
                 if (edit.getText().toString().equals("编辑")) {
                     edit.setText("提交");
                     setenabled(true);
@@ -172,6 +173,10 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                         fitness_needs = "1";
                         if (fat_flag) {
                             fitness_needs = fitness_needs + "_2";
+                            if (shaping_flag) {
+                                fitness_needs = fitness_needs + "_3";
+                            }
+                        } else {
                             if (shaping_flag) {
                                 fitness_needs = fitness_needs + "_3";
                             }
@@ -188,7 +193,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                             }
                         }
                     }
-                    personalInformationEditorPresenter.setuserinformationnext(sex, age.getText().toString(), nickname.getText().toString(), phone_num.getText().toString(),
+                    presenter.setuserinformationnext(sex, age.getText().toString(), nickname.getText().toString(), phone_num.getText().toString(),
                             address.getText().toString(), fitness_needs);
                 }
                 break;
@@ -223,34 +228,34 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
             case R.id.muscle:
                 if (muscle_flag) {
                     muscle_flag = false;
-                    muscle.setBackground(getResources().getDrawable(R.drawable.muscle_down));
-                    muscle.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    muscle_flag = true;
                     muscle.setBackground(getResources().getDrawable(R.drawable.muscle_flag_up));
                     muscle.setTextColor(getResources().getColor(R.color.black));
+                } else {
+                    muscle_flag = true;
+                    muscle.setBackground(getResources().getDrawable(R.drawable.muscle_down));
+                    muscle.setTextColor(getResources().getColor(R.color.white));
                 }
                 break;
             case R.id.fat:
                 if (fat_flag) {
                     fat_flag = false;
-                    fat.setBackground(getResources().getDrawable(R.drawable.fat_down));
-                    fat.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    fat_flag = true;
                     fat.setBackground(getResources().getDrawable(R.drawable.fat_up));
                     fat.setTextColor(getResources().getColor(R.color.black));
+                } else {
+                    fat_flag = true;
+                    fat.setBackground(getResources().getDrawable(R.drawable.fat_down));
+                    fat.setTextColor(getResources().getColor(R.color.white));
                 }
                 break;
             case R.id.shaping:
                 if (shaping_flag) {
                     shaping_flag = false;
-                    shaping.setBackground(getResources().getDrawable(R.drawable.shaping_down));
-                    shaping.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    shaping_flag = true;
                     shaping.setBackground(getResources().getDrawable(R.drawable.shaping_up));
                     shaping.setTextColor(getResources().getColor(R.color.black));
+                } else {
+                    shaping_flag = true;
+                    shaping.setBackground(getResources().getDrawable(R.drawable.shaping_down));
+                    shaping.setTextColor(getResources().getColor(R.color.white));
                 }
                 break;
             default:
@@ -285,6 +290,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
 
     @Override
     public void success() {
+        MyApplication.nickName = nickname.getText().toString();
         MyApplication.fitTarget = fitness_needs;
         MyApplication.sex = sex;
         MyApplication.age = age.getText().toString();

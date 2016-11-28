@@ -3,72 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <include layout="@layout/top" />
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <rxh.shanks.customview.CircleImageView
-            android:id="@+id/head_portrait"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginRight="10dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/head_portrait"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/coach_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/coaching_years"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.4"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/club_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.4"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-
-        <rxh.shanks.customview.RatingBar
-            android:id="@+id/coach_ratingbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            app:clickable="false"
-            app:halfstart="false"
-            app:starCount="5"
-            app:starEmpty="@drawable/ic_love_empty"
-            app:starFill="@drawable/ic_love_fill"
-            app:starHalf="@drawable/ic_love_empty"
-            app:starImageHeight="10dp"
-            app:starImagePadding="4dp"
-            app:starImageWidth="10dp" />
-
-    </RelativeLayout>
 
 
     <LinearLayout

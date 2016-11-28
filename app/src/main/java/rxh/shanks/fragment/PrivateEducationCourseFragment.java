@@ -40,8 +40,7 @@ public class PrivateEducationCourseFragment extends BaseFragment implements Priv
     GridView gv;
     @Bind(R.id.confirm_an_appointment)
     TextView confirm_an_appointment;
-    List<PrivateEducationCourseGetHoldingTimeEntity> GetHoldingTimedata = new ArrayList<>();
-    String date;
+    String date, lessonID;
     PrivateEducationCourseGVAdapter adapter;
     PrivateEducationCoursePresenter presenter;
 
@@ -49,16 +48,15 @@ public class PrivateEducationCourseFragment extends BaseFragment implements Priv
     String time;
 
     List<DataSouceCoachEntity> data = new ArrayList<>();
-    List<DataSouceCoachEntity> coachdata = new ArrayList<>();
-    List<DataSouceCoachEntity> userdata = new ArrayList<>();
 
     public interface PrivateEducationCourseFragmentListener {
         void ConfirmAnAppointment();
     }
 
 
-    public static PrivateEducationCourseFragment newInstance(String date, String time) {
+    public static PrivateEducationCourseFragment newInstance(String lessonID, String date, String time) {
         Bundle args = new Bundle();
+        args.putString("lessonID", lessonID);
         args.putString("date", date);
         args.putString("time", time);
         PrivateEducationCourseFragment pageFragment = new PrivateEducationCourseFragment();
@@ -70,20 +68,28 @@ public class PrivateEducationCourseFragment extends BaseFragment implements Priv
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_private_education_course, null);
         presenter = new PrivateEducationCoursePresenter(this);
+        lessonID = getArguments().getString("lessonID");
         date = getArguments().getString("date");
         time = getArguments().getString("time");
         ButterKnife.bind(this, view);
         initview();
-        initdata();
+        presenter.getCoachTime(MyApplication.CoachID, date, time);
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     public void initview() {
+        gv.setEmptyView(view.findViewById(R.id.empty));
         confirm_an_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (positionflag != -1) {
-                    presenter.bespokeLesson(CreatTime.qingqiu(date, data.get(positionflag).getTime(), Integer.parseInt(time)));
+                    presenter.bespokeLesson(lessonID, CreatTime.qingqiu(date, data.get(positionflag).getTime(), Integer.parseInt(time)));
                 } else {
                     Toast.makeText(getActivity(), "请选择预约时间", Toast.LENGTH_LONG).show();
                 }
@@ -103,21 +109,6 @@ public class PrivateEducationCourseFragment extends BaseFragment implements Priv
         });
     }
 
-
-    public void initdata() {
-        presenter.getHoldingTime(MyApplication.CoachID, date);
-
-//        privateEducationCourseGVAdapter = new PrivateEducationCourseGVAdapter(getActivity(), data);
-//        gv.setAdapter(privateEducationCourseGVAdapter);
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
     @Override
     public void show(int flag) {
         if (flag == 3) {
@@ -132,59 +123,10 @@ public class PrivateEducationCourseFragment extends BaseFragment implements Priv
         }
     }
 
-    //教练占用的时间
     @Override
-    public void getHoldingTime(List<PrivateEducationCourseGetHoldingTimeEntity> privateEducationCourseGetHoldingTimeEntityList) {
-        GetHoldingTimedata = privateEducationCourseGetHoldingTimeEntityList;
-        if (GetHoldingTimedata.get(0).getIsRest().equals("0")) {
-            //教练工作日
-            presenter.getUserHoldingTime(date);
-        } else if (GetHoldingTimedata.get(0).getIsRest().equals("1")) {
-            //教练休息日
-        }
-    }
-
-    //用户占用的时间
-    @Override
-    public void getUserHoldingTime(List<PrivateEducationCourseGetUserHoldingTimeEntity> privateEducationCourseGetUserHoldingTimeEntityList) {
-        //教练工作时间表生成方式
-        data = PrivateEducationCourseFragmentDataSouceUtils.creatcoachdata(GetHoldingTimedata.get(0).getWorkTime(), GetHoldingTimedata.get(0).getRestTime(), GetHoldingTimedata.get(0).getDate());
-        //教练已被占时间表
-        if (GetHoldingTimedata.get(0).getHoldTime() != null) {
-            for (int i = 0; i < GetHoldingTimedata.get(0).getHoldTime().size(); i++) {
-                coachdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(GetHoldingTimedata.get(0).getHoldTime().get(i), GetHoldingTimedata.get(0).getRestTime(), GetHoldingTimedata.get(0).getDate()));
-            }
-        }
-
-        for (int i = 0; i < data.size(); i++) {
-            for (int j = 0; j < coachdata.size(); j++) {
-                if (data.get(i).getTime().equals(coachdata.get(j).getTime())) {
-                    DataSouceCoachEntity dataSouceCoachEntity = new DataSouceCoachEntity();
-                    dataSouceCoachEntity.setFlag(1);
-                    dataSouceCoachEntity.setTime(data.get(i).getTime());
-                    data.set(i, dataSouceCoachEntity);
-                }
-            }
-
-        }
-        //用户已被占用时间表
-        if (privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime() != null) {
-            for (int i = 0; i < privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().size(); i++) {
-                userdata.addAll(PrivateEducationCourseFragmentDataSouceUtils.binary_system(privateEducationCourseGetUserHoldingTimeEntityList.get(0).getHoldTime().get(i), "1", privateEducationCourseGetUserHoldingTimeEntityList.get(0).getDate()));
-            }
-        }
-
-        for (int i = 0; i < data.size(); i++) {
-            for (int j = 0; j < userdata.size(); j++) {
-                if (data.get(i).getTime().equals(userdata.get(j).getTime())) {
-                    DataSouceCoachEntity dataSouceCoachEntity = new DataSouceCoachEntity();
-                    dataSouceCoachEntity.setFlag(2);
-                    dataSouceCoachEntity.setTime(data.get(i).getTime());
-                    data.set(i, dataSouceCoachEntity);
-                }
-            }
-
-        }
+    public void getCoachTime(List<DataSouceCoachEntity> entities) {
+        data.clear();
+        data.addAll(entities);
         adapter = new PrivateEducationCourseGVAdapter(getActivity(), data);
         gv.setAdapter(adapter);
     }
@@ -251,7 +193,7 @@ public class PrivateEducationCourseFragment extends BaseFragment implements Priv
                 holder.time.setBackgroundColor(context.getResources().getColor(R.color.red));
                 holder.time.setTextColor(context.getResources().getColor(R.color.white));
             } else {
-                //0表示用户和教练都有空，1表示教练没空，2表示用户没空，3表示时间已经过去了,4表示被选中
+                //0表示用户和教练都有空，1表示时间被私教课占用，2表示时间被团课和免费课占用，3表示时间已经过去了,4表示被选中
                 if (data.get(position).getFlag() == 0) {
                     holder.time.setBackgroundColor(context.getResources().getColor(R.color.white));
                     holder.time.setTextColor(context.getResources().getColor(R.color.red));

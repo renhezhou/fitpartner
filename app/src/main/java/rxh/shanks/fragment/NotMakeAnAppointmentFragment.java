@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.MANEntity;
 import rxh.shanks.activity.ConfirmAnAppointmentActivity;
+import rxh.shanks.activity.ConfirmTheAppointmentOfPrivateEducationActivity;
 import rxh.shanks.activity.PrivateEducationCourseActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.adapter.NotMakeAnAppointmentAdapter;
@@ -42,15 +44,24 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
     List<NotMakeAnAppointmentEntity> data = new ArrayList<>();
     NotMakeAnAppointmentAdapter adapter;
     public String flag;//1表示是从我的私教跳转过来的 ，0表示从我的团课跳转过来的
-    String coachID, coachName, head_path, evaluate, club_name, when_long, time;
     NotMakeAnAppointmentPresenter presenter;
+
+    public static NotMakeAnAppointmentFragment newInstance(String flag) {
+        Bundle args = new Bundle();
+        args.putString("flag", flag);
+        NotMakeAnAppointmentFragment fragment = new NotMakeAnAppointmentFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_not_make_an_appointment, null);
         presenter = new NotMakeAnAppointmentPresenter(this);
+        flag = getArguments().getString("flag");
         // 注册EventBus
         EventBus.getDefault().register(this);
+        initview();
         return view;
     }
 
@@ -60,29 +71,11 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
         EventBus.getDefault().unregister(this);// 反注册EventBus
     }
 
-    //获取从activity传过来的数据
-    public void onEventMainThread(MyPrivateEducationEventBusEntity myPrivateEducationEventBusEntity) {
-        flag = myPrivateEducationEventBusEntity.getFlag();
-        coachID = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getCoachID();
-        coachName = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getName();
-        head_path = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getHeadImageURL();
-        evaluate = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getEvaluate();
-        club_name = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getClubName();
-        when_long = myPrivateEducationEventBusEntity.getMyPrivateEducationHeadEntity().getTeachTime();
-        initview();
+    public void onEventMainThread(MANEntity entity) {
         if (flag.equals("1")) {
-            presenter.getMyUnorderPrivateLesson(coachID);
+            presenter.getMyUnorderPrivateLesson();
         } else {
-            presenter.getMyUnorderTeamLesson(coachID);
-        }
-    }
-
-    //获取下一级界面发送来的消息，更新数据
-    public void onEventMainThread(NotMakeAnAppointmentEventBusEntity notMakeAnAppointmentEventBusEntity) {
-        if (flag.equals("1")) {
-            presenter.getMyUnorderPrivateLesson(coachID);
-        } else {
-            presenter.getMyUnorderTeamLesson(coachID);
+            presenter.getMyUnorderTeamLesson();
         }
     }
 
@@ -92,6 +85,11 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
         lv = (ListView) view.findViewById(R.id.swipe_target);
+        if (flag.equals("1")) {
+            presenter.getMyUnorderPrivateLesson();
+        } else {
+            presenter.getMyUnorderTeamLesson();
+        }
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,27 +97,19 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
                 //私教跳PrivateEducationCourseActivity。
                 Intent intent = new Intent();
                 if (flag.equals("1")) {
-                    //传coachID, coachName, head_path过去;
                     MyApplication.lessonID = data.get(position).getLessonID();
-                    intent.setClass(getActivity(), PrivateEducationCourseActivity.class);
-                    intent.putExtra("coachID", coachID);
-                    intent.putExtra("coachName", coachName);
-                    intent.putExtra("head_path", head_path);
-                    intent.putExtra("evaluate", evaluate);
-                    intent.putExtra("club_name", club_name);
-                    intent.putExtra("when_long", when_long);
-                    intent.putExtra("time", data.get(position).getTime());
+                    intent.setClass(getActivity(), ConfirmTheAppointmentOfPrivateEducationActivity.class);
+                    intent.putExtra("lessonId", data.get(position).getLessonID());
+                    intent.putExtra("lessonName", data.get(position).getLessonName());
+                    intent.putExtra("lesson_address", data.get(position).getAddress());
+                    int sy = Integer.parseInt(data.get(position).getTotalCount()) - Integer.parseInt(data.get(position).getOrderCount());
+                    intent.putExtra("number_of_remaining_nodes", String.valueOf(sy));
                     startActivity(intent);
                 } else {
                     MyApplication.lessonID = data.get(position).getLessonID();
                     intent.setClass(getActivity(), ConfirmAnAppointmentActivity.class);
                     intent.putExtra("title", data.get(position).getLessonName());
-                    intent.putExtra("coachID", coachID);
-                    intent.putExtra("coachName", coachName);
-                    intent.putExtra("head_path", head_path);
-                    intent.putExtra("evaluate", evaluate);
-                    intent.putExtra("club_name", club_name);
-                    intent.putExtra("when_long", when_long);
+                    //intent.putExtra("coachID", coachID);
                     intent.putExtra("lessonID", data.get(position).getLessonID());
                     startActivity(intent);
                 }
@@ -137,9 +127,9 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
     @Override
     public void onRefresh() {
         if (flag.equals("1")) {
-            presenter.getMyUnorderPrivateLesson(coachID);
+            presenter.getMyUnorderPrivateLesson();
         } else {
-            presenter.getMyUnorderTeamLesson(coachID);
+            presenter.getMyUnorderTeamLesson();
         }
     }
 
@@ -168,7 +158,7 @@ public class NotMakeAnAppointmentFragment extends Fragment implements OnRefreshL
     @Override
     public void getMyUnorderPrivateLesson(List<NotMakeAnAppointmentEntity> notMakeAnAppointmentEntityList) {
         data.clear();
-        data = notMakeAnAppointmentEntityList;
+        data.addAll(notMakeAnAppointmentEntityList);
         adapter = new NotMakeAnAppointmentAdapter(getActivity(), data);
         lv.setAdapter(adapter);
     }

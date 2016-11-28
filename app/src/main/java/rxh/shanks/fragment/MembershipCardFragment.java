@@ -22,6 +22,7 @@ import rxh.hb.banner.holder.CBViewHolderCreator;
 import rxh.hb.banner.holder.Holder;
 import rxh.hb.banner.listener.OnItemClickListener;
 import rxh.shanks.activity.DonationCardActivity;
+import rxh.shanks.activity.MembershipCardRenewalActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.entity.MembershipCardCodeEventBusEntity;
 import rxh.shanks.entity.MembershipCardEntity;
@@ -65,6 +66,9 @@ public class MembershipCardFragment extends Fragment {
                 entity.setTotalCount(datas.get(0).getTotalCount());
                 entity.setType(datas.get(0).getType());
                 entity.setValidiPeriod(datas.get(0).getValidiPeriod());
+                entity.setCardState(datas.get(0).getCardState());
+                entity.setClubNames(datas.get(0).getClubNames());
+                entity.setIntroduce(datas.get(0).getIntroduce());
                 datas.set(0, datas.get(i));
                 datas.set(i, entity);
             }
@@ -103,7 +107,7 @@ public class MembershipCardFragment extends Fragment {
         //donation_card转赠次卡
         private LinearLayout donation_card;
         private ImageView flag;
-        private TextView club_name, set_default_card, card_name, due_time, totalCount, remaindCount, remainingTimeOff, card_renewal;
+        private TextView club_name, set_default_card, card_name, due_time, totalCount, remaindCount, remainingTimeOff, card_renewal, card_state, support_venues, introduce;
 
         @Override
         public View createView(Context context) {
@@ -119,6 +123,9 @@ public class MembershipCardFragment extends Fragment {
             remaindCount = (TextView) item_view.findViewById(R.id.remaindCount);
             remainingTimeOff = (TextView) item_view.findViewById(R.id.remainingTimeOff);
             card_renewal = (TextView) item_view.findViewById(R.id.card_renewal);
+            card_state = (TextView) item_view.findViewById(R.id.card_state);
+            support_venues = (TextView) item_view.findViewById(R.id.support_venues);
+            introduce = (TextView) item_view.findViewById(R.id.introduce);
             return item_view;
         }
 
@@ -142,17 +149,27 @@ public class MembershipCardFragment extends Fragment {
             card_name.setText(datas.get(position).getCardName());
             club_name.setText(datas.get(position).getClubName());
             due_time.setText("会员到期日期:" + CheckUtils.timetodate(datas.get(position).getValidiPeriod()));
+            if (datas.get(position).getClubNames() != null) {
+                String suppotvenues = datas.get(position).getClubNames().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                support_venues.setText(suppotvenues);
+            }
+            if (datas.get(position).getCardState() != null) {
+                card_state.setText(CheckUtils.get_card_state(datas.get(position).getCardState()));
+            }
+            introduce.setText(datas.get(position).getIntroduce());
             String endday = CheckUtils.timetodate(datas.get(position).getValidiPeriod());
             try {
                 totalCount.setText("剩余天数:" + CreatTime.test(endday) + "天");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+
             card_renewal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //跳到续卡界面
-//                    startActivity(new Intent(getActivity(), MembershipCardRenewalActivity.class));
+                    //startActivity(new Intent(getActivity(), MembershipCardRenewalActivity.class));
                     Toast.makeText(getActivity(), "功能未开通，敬请期待", Toast.LENGTH_LONG).show();
                 }
             });

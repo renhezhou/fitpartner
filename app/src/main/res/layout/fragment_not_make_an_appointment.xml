@@ -22,7 +22,8 @@
         android:id="@+id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@color/white" />
+        android:divider="#D9D9D9"
+        android:dividerHeight="1dp" />
 
 
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

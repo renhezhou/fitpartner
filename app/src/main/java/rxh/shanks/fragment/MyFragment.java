@@ -22,8 +22,8 @@ import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.FitnessCalendarActivity;
 import rxh.shanks.activity.MembershipCardActivity;
 import rxh.shanks.activity.MoreActivity;
-import rxh.shanks.activity.MyIntegralActivity;
 import rxh.shanks.activity.MyPrivateEducationActivity;
+import rxh.shanks.activity.MyReservationActivity;
 import rxh.shanks.activity.PersonalInformationEditorActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.activity.TestRecordActivity;
@@ -66,6 +66,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     TextView integral;
     @Bind(R.id.integral_exchange)
     TextView integral_exchange;
+    @Bind(R.id.img_bg)
+    ImageView img_bg;
 
 
     @Override
@@ -115,6 +117,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initdata() {
+        Picasso.with(getActivity()).load(R.drawable.load_mohu).into(img_bg);
         rl_bg.setBlurFactor(100);
         rl_bg.setBlurImageByUrl(MyApplication.QNDownToken);
         Picasso.with(getActivity())
@@ -129,9 +132,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.more:
-                Intent intent = new Intent();
+                intent = new Intent();
                 intent.setClass(getActivity(), MoreActivity.class);
                 startActivity(intent);
                 break;
@@ -159,17 +163,25 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.my_private_education:
                 //我的团课和我的私教界面完全相同，故复用
+//                intent = new Intent();
+//                intent.setClass(getActivity(), MyReservationActivity.class);
+//                intent.putExtra("flag", "1");
+//                startActivity(intent);
                 Intent intent1 = new Intent();
-                intent1.setClass(getActivity(), MyPrivateEducationActivity.class);
+                intent1.setClass(getActivity(), MyReservationActivity.class);
                 intent1.putExtra("flag", "1");
                 startActivity(intent1);
                 break;
             case R.id.my_league:
                 //我的团课和我的私教界面完全相同，故复用
                 Intent intent2 = new Intent();
-                intent2.setClass(getActivity(), MyPrivateEducationActivity.class);
+                intent2.setClass(getActivity(), MyReservationActivity.class);
                 intent2.putExtra("flag", "0");
                 startActivity(intent2);
+//                intent = new Intent();
+//                intent.setClass(getActivity(), MyReservationActivity.class);
+//                intent.putExtra("flag", "0");
+//                startActivity(intent);
                 break;
             case R.id.integral_exchange:
                 //startActivity(new Intent(getActivity(), MyIntegralActivity.class));

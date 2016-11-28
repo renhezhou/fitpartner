@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <cn.aigestudio.datepicker.views.DatePicker
+    <rxh.shanks.datepicker.views.DatePicker
         android:id="@+id/datepicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

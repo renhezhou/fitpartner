@@ -43,7 +43,7 @@ public class SystemFragment extends Fragment implements SystemView {
     IntformationAdapter intformationAdapter;
     SystemDialogFragment systemDialogFragment;
     SystemPresenter presenter;
-    int delPosition, readPosition;
+    int delPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,9 +66,7 @@ public class SystemFragment extends Fragment implements SystemView {
     }
 
     public void onEventMainThread(ReadMsgEntity readMsgEntity) {
-        presenter.readMsg(CheckUtils.getbacktype(data.get(readPosition).getType()));
-        data.remove(delPosition);
-        intformationAdapter.notifyDataSetChanged();
+
     }
 
     public void initview() {
@@ -88,7 +86,6 @@ public class SystemFragment extends Fragment implements SystemView {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                readPosition = position;
                 if (data.get(position).getType().equals("教练代约团课") || data.get(position).getType().equals("教练代约私教课")) {
                     Intent intent = new Intent();
                     intent.putExtra("type", data.get(position).getType());

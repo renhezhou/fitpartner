@@ -39,16 +39,17 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
     List<String> planID = new ArrayList<>();
     ConfirmAnAppointmentAdapter adapter;
     ConfirmAnAppointmentPresenter presenter;
-    String date;
+    String date, lessonID;
 
     public interface ConfirmAnAppointmentFragmentListener {
         void ConfirmAnAppointment();
     }
 
 
-    public static ConfirmAnAppointmentFragment newInstance(String date) {
+    public static ConfirmAnAppointmentFragment newInstance(String date, String lessonID) {
         Bundle args = new Bundle();
         args.putString("date", date);
+        args.putString("lessonID", lessonID);
         ConfirmAnAppointmentFragment pageFragment = new ConfirmAnAppointmentFragment();
         pageFragment.setArguments(args);
         return pageFragment;
@@ -60,6 +61,7 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
         view = inflater.inflate(R.layout.fragment_confirm_an_appointment, null);
         presenter = new ConfirmAnAppointmentPresenter(this);
         date = getArguments().getString("date");
+        lessonID = getArguments().getString("lessonID");
         ButterKnife.bind(this, view);
         presenter.getTeamLessonFreeTime(date);
         initview();
@@ -73,11 +75,12 @@ public class ConfirmAnAppointmentFragment extends BaseFragment implements Confir
     }
 
     public void initview() {
+        lv.setEmptyView(view.findViewById(R.id.empty));
         confirm_an_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (planID.size() > 0) {
-                    presenter.orderTeamLesson(MyApplication.lessonID, MyApplication.CoachID, planID);
+                    presenter.orderTeamLesson(lessonID, planID);
                 } else {
                     Toast.makeText(getActivity(), "请选择预约时间", Toast.LENGTH_SHORT).show();
                 }

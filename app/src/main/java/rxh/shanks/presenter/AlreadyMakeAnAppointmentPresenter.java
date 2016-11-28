@@ -28,11 +28,11 @@ public class AlreadyMakeAnAppointmentPresenter {
         this.view = view;
     }
 
-    public void getMyOrderPrivateLesson(String coachID) {
+    public void getMyOrderPrivateLesson() {
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "getMyOrderPrivateLesson"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
-        params.addBodyParameter("coachID", coachID);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
         view.show();
         getInfo.getinfo(params, new Response() {
             @Override
@@ -65,11 +65,11 @@ public class AlreadyMakeAnAppointmentPresenter {
 
     }
 
-    public void getMyOrderTeamLesson(String coachID) {
+    public void getMyOrderTeamLesson() {
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "getMyOrderTeamLesson"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
-        params.addBodyParameter("coachID", coachID);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
         view.show();
         getInfo.getinfo(params, new Response() {
             @Override

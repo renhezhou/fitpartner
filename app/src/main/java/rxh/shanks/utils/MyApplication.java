@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.support.multidex.MultiDex;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import org.xutils.BuildConfig;
 import org.xutils.x;
@@ -58,6 +59,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ZXingLibrary.initDisplayOpinion(this);
         sp = getSharedPreferences("user_info", 0);
         initdata();
         MultiDex.install(this);

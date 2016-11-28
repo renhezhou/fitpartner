@@ -19,6 +19,7 @@ public class AlreadyMakeAnAppointmentEntity {
     private String time;
     private String totalCount;
     private String unOrderCount;
+    private AlreadyMakeAnAppointmentNextLessonEntity nextLesson;
 
     public String getAddress() {
         return address;
@@ -114,5 +115,13 @@ public class AlreadyMakeAnAppointmentEntity {
 
     public void setUnOrderCount(String unOrderCount) {
         this.unOrderCount = unOrderCount;
+    }
+
+    public AlreadyMakeAnAppointmentNextLessonEntity getNextLesson() {
+        return nextLesson;
+    }
+
+    public void setNextLesson(AlreadyMakeAnAppointmentNextLessonEntity nextLesson) {
+        this.nextLesson = nextLesson;
     }
 }

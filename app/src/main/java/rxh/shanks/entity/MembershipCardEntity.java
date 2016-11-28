@@ -1,5 +1,7 @@
 package rxh.shanks.entity;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/8/2.
  */
@@ -14,6 +16,9 @@ public class MembershipCardEntity {
     private String type;
     private String validiPeriod;
     private String cardName;
+    private String cardState;
+    private String introduce;
+    private List<String> clubNames;
 
     public String getCardID() {
         return cardID;
@@ -85,5 +90,29 @@ public class MembershipCardEntity {
 
     public void setCardName(String cardName) {
         this.cardName = cardName;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public List<String> getClubNames() {
+        return clubNames;
+    }
+
+    public void setClubNames(List<String> clubNames) {
+        this.clubNames = clubNames;
+    }
+
+    public String getCardState() {
+        return cardState;
+    }
+
+    public void setCardState(String cardState) {
+        this.cardState = cardState;
     }
 }

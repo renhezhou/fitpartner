@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.MANEntity;
 import rxh.shanks.adapter.ConfirmAnAppointmentPageAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
@@ -43,16 +44,6 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     LinearLayout back;
     @Bind(R.id.title)
     TextView title;
-    @Bind(R.id.head_portrait)
-    CircleImageView head_portrait;
-    @Bind(R.id.coach_name)
-    TextView coach_name;
-    @Bind(R.id.coaching_years)
-    TextView coaching_years;
-    @Bind(R.id.club_name)
-    TextView club_name;
-    @Bind(R.id.coach_ratingbar)
-    RatingBar coach_ratingbar;
     @Bind(R.id.tab_layout)
     TabLayout tab_layout;
     @Bind(R.id.viewpager)
@@ -60,7 +51,7 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     @Bind(R.id.calendar)
     ImageView calendar;
 
-    String titletv, lessonID, coachID, coachName, head_path, evaluate, club_name_tv, when_long;
+    String titletv, lessonID;
 
     CalendarFragment calendarFragment;
     ConfirmAnAppointmentPageAdapter pageAdapter;
@@ -73,13 +64,6 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
         titletv = getIntent().getStringExtra("title");
         lessonID = getIntent().getStringExtra("lessonID");
         MyApplication.lessonID = lessonID;
-        coachID = getIntent().getStringExtra("coachID");
-        MyApplication.CoachID = coachID;
-        coachName = getIntent().getStringExtra("coachName");
-        head_path = getIntent().getStringExtra("head_path");
-        evaluate = getIntent().getStringExtra("evaluate");
-        club_name_tv = getIntent().getStringExtra("club_name");
-        when_long = getIntent().getStringExtra("when_long");
         initview();
     }
 
@@ -88,7 +72,7 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
         ButterKnife.bind(this);
         datelist = CreatTime.creat(new Date());
         fragmentdatelist = CreatTime.creatfragment(new Date());
-        pageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
+        pageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), datelist, fragmentdatelist, lessonID);
         viewpager.setAdapter(pageAdapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
@@ -98,16 +82,7 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     }
 
     public void initdata() {
-        Picasso.with(getApplicationContext())
-                .load(head_path)
-                .placeholder(R.drawable.loading_cort)
-                .error(R.drawable.loading_cort)
-                .into(head_portrait);
         title.setText(titletv);
-        coach_name.setText(coachName);
-        coach_ratingbar.setStar(Float.parseFloat(evaluate));
-        club_name.setText(club_name_tv);
-        coaching_years.setText("执教" + when_long + "年");
     }
 
     @Override
@@ -138,7 +113,7 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
         fragmentdatelist.clear();
         datelist = CreatTime.creat(CreatTime.conversion(date));
         fragmentdatelist = CreatTime.creatfragment(CreatTime.conversion(date));
-        pageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist);
+        pageAdapter = new ConfirmAnAppointmentPageAdapter(getSupportFragmentManager(), datelist, fragmentdatelist, lessonID);
         viewpager.setAdapter(pageAdapter);
     }
 
@@ -147,7 +122,7 @@ public class ConfirmAnAppointmentActivity extends BaseActivity implements Calend
     public void ConfirmAnAppointment() {
         Toast.makeText(getApplicationContext(), "预约成功", Toast.LENGTH_LONG).show();
         //用eb发送消息到上一级界面通知数据更新
-        EventBus.getDefault().post(new NotMakeAnAppointmentEventBusEntity(""));
+        EventBus.getDefault().post(new MANEntity());
         finish();
     }
 }

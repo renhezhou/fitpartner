@@ -179,7 +179,29 @@
         <activity
             android:name=".MyIntegralActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".MyPrivateTeachingAppointmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ConfirmTheAppointmentOfPrivateEducationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyReservationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ScanNextActivity"
+            android:screenOrientation="portrait" />
+        <!--支付宝支付需要注册的activity-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"></activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"></activity>
         <!--融云会话界面-->
         <!--会话页面-->
         <activity

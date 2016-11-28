@@ -12,9 +12,6 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
-import rxh.shanks.activity.InformationActivity;
-import rxh.shanks.activity.LoginActivity;
-import rxh.shanks.activity.MainActivity;
 
 /**
  * Created by Administrator on 2016/8/16.
@@ -23,6 +20,7 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
+        Log.e("", "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             //接收推送的id
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -41,7 +39,7 @@ public class MyReceiver extends BroadcastReceiver {
             //打开自定义的Activity
 //            Intent i = new Intent(context, LoginActivity.class);
 //            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            context.startActivity(i);
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {

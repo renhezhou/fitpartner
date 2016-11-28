@@ -17,20 +17,20 @@ import rxh.shanks.fragment.ConfirmAnAppointmentFragment;
  */
 public class ConfirmAnAppointmentPageAdapter extends FragmentPagerAdapter {
 
-    private Context context;
+    String lessonID;
     private List<String> date = new ArrayList<>();
     private List<String> fragmentdatelist = new ArrayList<>();
 
-    public ConfirmAnAppointmentPageAdapter(FragmentManager fm, Context context, List<String> date, List<String> fragmentdatelist) {
+    public ConfirmAnAppointmentPageAdapter(FragmentManager fm, List<String> date, List<String> fragmentdatelist, String lessonID) {
         super(fm);
-        this.context = context;
         this.date = date;
         this.fragmentdatelist = fragmentdatelist;
+        this.lessonID = lessonID;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ConfirmAnAppointmentFragment.newInstance(fragmentdatelist.get(position));
+        return ConfirmAnAppointmentFragment.newInstance(fragmentdatelist.get(position), lessonID);
     }
 
     @Override

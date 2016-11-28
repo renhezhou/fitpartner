@@ -7,7 +7,7 @@
 
     <include layout="@layout/top" />
 
-    <cn.aigestudio.datepicker.views.DatePicker
+    <rxh.shanks.datepicker.views.DatePicker
         android:id="@+id/datepicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -21,10 +21,10 @@
         android:id="@+id/prompt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="今日无项目"
         android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/red"/>
+        android:text="今日无项目"
+        android:textColor="@color/red"
+        android:textSize="16sp" />
 
 
 </LinearLayout>

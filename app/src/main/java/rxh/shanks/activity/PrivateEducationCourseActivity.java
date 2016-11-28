@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.MANEntity;
 import rxh.shanks.adapter.PrivateEducationCoursePageAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.CircleImageView;
@@ -60,7 +61,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
     @Bind(R.id.viewpager)
     ViewPager viewpager;
 
-    String coachID, coachName, head_path, evaluate, club_name_tv, when_long, time;
+    String coachID, lessonID, coachName, head_path, evaluate, club_name_tv, when_long, time;
     CalendarFragment calendarFragment;
     PrivateEducationCoursePageAdapter pageAdapter;
     private List<String> datelist = new ArrayList<>();
@@ -71,6 +72,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         super.onCreate(savedInstanceState);
         coachID = getIntent().getStringExtra("coachID");
         MyApplication.CoachID = coachID;
+        lessonID = getIntent().getStringExtra("lessonID");
         coachName = getIntent().getStringExtra("coachName");
         head_path = getIntent().getStringExtra("head_path");
         evaluate = getIntent().getStringExtra("evaluate");
@@ -86,7 +88,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         title.setText("预约私教课程");
         datelist = CreatTime.creat(new Date());
         fragmentdatelist = CreatTime.creatfragment(new Date());
-        pageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
+        pageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), datelist, fragmentdatelist, lessonID, time);
         viewpager.setAdapter(pageAdapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
@@ -139,7 +141,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
         fragmentdatelist.clear();
         datelist = CreatTime.creat(CreatTime.conversion(date));
         fragmentdatelist = CreatTime.creatfragment(CreatTime.conversion(date));
-        pageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), this, datelist, fragmentdatelist, time);
+        pageAdapter = new PrivateEducationCoursePageAdapter(getSupportFragmentManager(), datelist, fragmentdatelist, lessonID, time);
         viewpager.setAdapter(pageAdapter);
     }
 
@@ -148,7 +150,7 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
     public void ConfirmAnAppointment() {
         Toast.makeText(getApplicationContext(), "约课成功", Toast.LENGTH_LONG).show();
         //用eb发送消息到上一级界面通知数据更新
-        EventBus.getDefault().post(new NotMakeAnAppointmentEventBusEntity(""));
+        EventBus.getDefault().post(new MANEntity());
         finish();
     }
 }

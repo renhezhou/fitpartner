@@ -36,9 +36,6 @@ public class ConfirmAnAppointmentPresenter {
     }
 
     public void getTeamLessonFreeTime(String date) {
-//        if (checkdata(date)) {
-//            return;
-//        }
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "getTeamLessonFreeTime"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("lessonID", MyApplication.lessonID);
@@ -76,12 +73,11 @@ public class ConfirmAnAppointmentPresenter {
     }
 
 
-    public void orderTeamLesson(String lessonID, String coachID, List<String> planID) {
+    public void orderTeamLesson(String lessonID, List<String> planID) {
         RequestParams params = new RequestParams(CreatUrl.creaturl("lesson", "orderTeamLesson"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("lessonID", lessonID);
-        params.addBodyParameter("coachID", coachID);
         for (String planid : planID) {
             params.addBodyParameter("planID[]", planid);
         }

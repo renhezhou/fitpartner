@@ -30,12 +30,12 @@ public class ResetPasswordActivity extends BaseActivity implements ResetPassword
     EditText reset_new_password;
     @Bind(R.id.reset_password)
     Button reset_password;
-    ResetPasswordPresenter resetPasswordPresenter;
+    ResetPasswordPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        resetPasswordPresenter = new ResetPasswordPresenter(this);
+        presenter = new ResetPasswordPresenter(this);
         initview();
     }
 
@@ -54,7 +54,7 @@ public class ResetPasswordActivity extends BaseActivity implements ResetPassword
                 finish();
                 break;
             case R.id.reset_password:
-                resetPasswordPresenter.resetPassword(new_password.getText().toString(), reset_new_password.getText().toString());
+                presenter.resetPassword(new_password.getText().toString(), reset_new_password.getText().toString());
                 break;
             default:
                 break;
@@ -84,8 +84,7 @@ public class ResetPasswordActivity extends BaseActivity implements ResetPassword
 
     @Override
     public void go() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
+
     }
 
     @Override

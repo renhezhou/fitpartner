@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import rxh.shanks.activity.R;
 import rxh.shanks.loadlibrary.LoadingDrawable;
@@ -19,8 +20,9 @@ import rxh.shanks.loadlibrary.MaterialLoadingRenderer;
 public class LoadingNoPromptFragment extends DialogFragment {
 
     View view;
+    TextView loading;
     ImageView loading_img;
-    String  flag;
+    String flag;
     private LoadingDrawable mMaterialDrawable;
 
     @Override
@@ -29,17 +31,15 @@ public class LoadingNoPromptFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         Bundle bundle = getArguments();
         flag = bundle.getString("flag");
-        if (flag.equals("true")) {
-            getDialog().setCanceledOnTouchOutside(false);
-        } else if (flag.equals("false")) {
-            getDialog().setCanceledOnTouchOutside(true);
-        }
+        getDialog().setCanceledOnTouchOutside(false);
         view = inflater.inflate(R.layout.fragment_loading_no_prompt, container);
         initview();
         return view;
     }
 
     public void initview() {
+        loading = (TextView) view.findViewById(R.id.loading_tv);
+        loading.setText(flag);
         loading_img = (ImageView) view.findViewById(R.id.loading_img);
         mMaterialDrawable = new LoadingDrawable(new MaterialLoadingRenderer(getActivity()));
         loading_img.setImageDrawable(mMaterialDrawable);

@@ -21,6 +21,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp">
 
+                <ImageView
+                    android:id="@+id/img_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="272dp"
+                    android:scaleType="fitXY" />
+
                 <rxh.shanks.customview.BlurImageView
                     android:id="@+id/rl_bg"
                     android:layout_width="match_parent"
@@ -85,14 +91,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="10dp"
-                            android:text="现有积分"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
@@ -101,9 +107,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="0"
+                            android:text="已有0积分"
                             android:textColor="@color/red"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -158,8 +164,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/jianshenrili" />
 
@@ -196,8 +202,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/ticejiluup" />
 
@@ -233,8 +239,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/huiyuankaup" />
 
@@ -278,8 +284,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/youhuiquanup" />
 
@@ -315,8 +321,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/wodesijiaoup" />
 
@@ -352,8 +358,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/wodetuanke" />
 

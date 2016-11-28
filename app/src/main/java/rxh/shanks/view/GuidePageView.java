@@ -14,4 +14,8 @@ public interface GuidePageView {
 
     void check(String check);
 
+    void get_version_name(String version_name);
+
+    void get_version_name_error();
+
 }

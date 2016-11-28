@@ -6,13 +6,50 @@
     android:background="@drawable/activity_test_record_bg"
     android:orientation="vertical">
 
-    <include layout="@layout/top" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="返回"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="健身日历"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="40dp"
-        android:background="@drawable/activity_membership_card_renewal_card_shape">
+        android:background="@drawable/huiyuankabg">
 
         <TextView
             android:id="@+id/club_name"
@@ -24,88 +61,12 @@
             android:textSize="20sp" />
 
 
-        <LinearLayout
+        <ListView
+            android:id="@+id/lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal"
-                android:layout_marginBottom="2dp"
-                android:padding="10dp">
-
-                <rxh.shanks.customview.SmoothCheckBox
-                    android:id="@+id/big_annual_fee_checkbox"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    app:color_checked="#FB6006" />
-
-                <TextView
-                    android:id="@+id/big_annual_fee_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="3998 每年每年每年每年每年"
-                    android:textColor="@color/red"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/big_annual_fee_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="详情"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <rxh.shanks.customview.SmoothCheckBox
-                    android:id="@+id/small_annual_fee_check_box"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical"
-                    app:color_checked="#FB6006" />
-
-                <TextView
-                    android:id="@+id/small_annual_fee_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="3998 每年每年每年每年每年"
-                    android:textColor="@color/red"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/small_annual_fee_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="详情"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+            android:scrollbars="none" />
 
 
         <LinearLayout
@@ -121,10 +82,11 @@
                 android:orientation="horizontal">
 
                 <rxh.shanks.customview.SmoothCheckBox
-                    android:id="@+id/security_protocol_checkbox"
+                    android:id="@+id/sure"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
                     app:color_checked="#FB6006" />
 
                 <TextView
@@ -140,9 +102,9 @@
                 android:id="@+id/pay_immediately"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/activity_membership_card_renewal_card_button_shape"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
                 android:padding="4dp"
                 android:text="立即支付"
                 android:textColor="@color/white" />

@@ -4,6 +4,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import rxh.shanks.entity.LoginCodeEntity;
+import rxh.shanks.entity.VersionNameCodeEntity;
 import rxh.shanks.model.GetInfo;
 import rxh.shanks.model.Is_Networking;
 import rxh.shanks.model.Response;
@@ -75,6 +76,40 @@ public class GuidePagePresenter {
             public void onFinished() {
             }
         });
+    }
+
+    public void get_version_name() {
+        RequestParams params = new RequestParams(CreatUrl.creaturl("user", "getAppVersion"));
+        params.addBodyParameter("type", "3");
+        getInfo.getinfo(params, new Response() {
+                    @Override
+                    public void onSuccess(String result) {
+                        VersionNameCodeEntity entity = new VersionNameCodeEntity();
+                        entity = JsonUtils.get_version_name(result);
+                        if (entity.getCode().equals("0")) {
+                            view.get_version_name(entity.getResult().getAppversion());
+                        } else {
+                            view.check(entity.getError());
+                            view.get_version_name_error();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex) {
+                        view.onError(ex);
+                        view.get_version_name_error();
+                    }
+
+                    @Override
+                    public void onCancelled(Callback.CancelledException cex) {
+                    }
+
+                    @Override
+                    public void onFinished() {
+                    }
+                }
+
+        );
     }
 
 }

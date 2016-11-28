@@ -2,6 +2,7 @@ package rxh.shanks.view;
 
 import java.util.List;
 
+import rxh.shanks.entity.DataSouceCoachEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetHoldingTimeEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetUserHoldingTimeEntity;
 
@@ -14,9 +15,7 @@ public interface PrivateEducationCourseView {
 
     void hide(int flag);
 
-    void getHoldingTime(List<PrivateEducationCourseGetHoldingTimeEntity> privateEducationCourseGetHoldingTimeEntityList);
-
-    void getUserHoldingTime(List<PrivateEducationCourseGetUserHoldingTimeEntity> privateEducationCourseGetUserHoldingTimeEntityList);
+    void getCoachTime(List<DataSouceCoachEntity> entities);
 
     void bespokeLesson();
 

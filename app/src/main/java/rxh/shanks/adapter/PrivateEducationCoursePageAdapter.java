@@ -15,22 +15,21 @@ import rxh.shanks.fragment.PrivateEducationCourseFragment;
  */
 public class PrivateEducationCoursePageAdapter extends FragmentPagerAdapter {
 
-    String time;
-    private Context context;
+    String lessonID, time;
     private List<String> date = new ArrayList<>();
     private List<String> fragmentdatelist = new ArrayList<>();
 
-    public PrivateEducationCoursePageAdapter(FragmentManager fm, Context context, List<String> date, List<String> fragmentdatelist, String time) {
+    public PrivateEducationCoursePageAdapter(FragmentManager fm, List<String> date, List<String> fragmentdatelist, String lessonID, String time) {
         super(fm);
-        this.context = context;
         this.date = date;
         this.fragmentdatelist = fragmentdatelist;
+        this.lessonID = lessonID;
         this.time = time;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return PrivateEducationCourseFragment.newInstance(fragmentdatelist.get(position), time);
+        return PrivateEducationCourseFragment.newInstance(lessonID, fragmentdatelist.get(position), time);
     }
 
     @Override

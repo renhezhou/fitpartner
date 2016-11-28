@@ -52,7 +52,6 @@ public class ResetPasswordPresenter {
                 ResetPasswordCodeEntity resetPasswordCodeEntity = JsonUtils.resetPassword(result);
                 if (resetPasswordCodeEntity.getCode().equals("0")) {
                     resetPasswordView.onSuccess("重置密码成功");
-                    resetPasswordView.go();
                 } else {
                     resetPasswordView.check(resetPasswordCodeEntity.getError());
                 }

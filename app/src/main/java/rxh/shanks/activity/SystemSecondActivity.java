@@ -84,7 +84,6 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
 
     @Override
     public void getMsg(List<SystemLVEntity> systemLVEntityList) {
-        EventBus.getDefault().post(new ReadMsgEntity());
         data = systemLVEntityList;
         systemSecondAdapter = new SystemSecondAdapter(getApplicationContext(), data);
         lv.setAdapter(systemSecondAdapter);

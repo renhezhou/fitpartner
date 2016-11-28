@@ -11,6 +11,9 @@ public class ViewAppointmentEntity {
     private String lessonName;
     private String lessonTime;
     private String state;
+    private String coachID;
+    private String coachName;
+    private String coachURL;
 
     public String getAppointmentID() {
         return appointmentID;
@@ -58,5 +61,29 @@ public class ViewAppointmentEntity {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getCoachName() {
+        return coachName;
+    }
+
+    public void setCoachName(String coachName) {
+        this.coachName = coachName;
+    }
+
+    public String getCoachID() {
+        return coachID;
+    }
+
+    public void setCoachID(String coachID) {
+        this.coachID = coachID;
+    }
+
+    public String getCoachURL() {
+        return coachURL;
+    }
+
+    public void setCoachURL(String coachURL) {
+        this.coachURL = coachURL;
     }
 }

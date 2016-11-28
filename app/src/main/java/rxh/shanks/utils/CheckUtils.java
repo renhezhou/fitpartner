@@ -37,12 +37,14 @@ public class CheckUtils {
 
     //时间戳转化为具体时间
     public static String timetodate(String seconds) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//        return sdf.format(new Date(Long.valueOf(seconds + "000")));
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Long time = new Long(Long.parseLong(seconds));
-        String d = format.format(time);
+        String d = null;
+        if (seconds != null) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Long time = new Long(Long.parseLong(seconds));
+            d = format.format(time);
+        } else {
+            d = "参数为空";
+        }
         return d;
     }
 
@@ -113,6 +115,28 @@ public class CheckUtils {
             result = "EventMessageToUser";
         } else if (type.equals("系统通知")) {
             result = "DevelopSystemMessage";
+        }
+        return result;
+    }
+
+
+    //校验卡的状态
+    public static String get_card_state(String state) {
+        String result = null;
+        if (state.equals("1")) {
+            result = "正常";
+        } else if (state.equals("2")) {
+            result = "续卡";
+        } else if (state.equals("3")) {
+            result = "过期";
+        } else if (state.equals("4")) {
+            result = "注销";
+        } else if (state.equals("5")) {
+            result = "请假";
+        } else if (state.equals("6")) {
+            result = "待审核";
+        } else if (state.equals("7")) {
+            result = "未开卡";
         }
         return result;
     }

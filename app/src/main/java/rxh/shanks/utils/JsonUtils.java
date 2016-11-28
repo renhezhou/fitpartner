@@ -1,6 +1,7 @@
 package rxh.shanks.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
@@ -17,10 +18,13 @@ import rxh.shanks.entity.CoachCodeEntity;
 import rxh.shanks.entity.CoachDetailsCodeEntity;
 import rxh.shanks.entity.ConfirmAnAppointmentActivityCodeEntity;
 import rxh.shanks.entity.ConfirmAnAppointmentListCodeEntity;
+import rxh.shanks.entity.ConfirmTheAppointmentOfPrivateEducationCodeEntity;
+import rxh.shanks.entity.ConfirmTheAppointmentOfPrivateEducationEntity;
 import rxh.shanks.entity.ConsultantCodeEntity;
 import rxh.shanks.entity.ConversationCodeEntity;
 import rxh.shanks.entity.ConversationEntity;
 import rxh.shanks.entity.CourseDetailsCodeEntity;
+import rxh.shanks.entity.DataSouceCoachCodeEntity;
 import rxh.shanks.entity.DonationCardCodeEntity;
 import rxh.shanks.entity.EvaluateCodeEntity;
 import rxh.shanks.entity.FeedbackCodeEntity;
@@ -29,11 +33,14 @@ import rxh.shanks.entity.FitnessCalendarCodeEntity;
 import rxh.shanks.entity.LoginCodeEntity;
 import rxh.shanks.entity.MembershipCardCodeEntity;
 import rxh.shanks.entity.MyPrivateEducationHeadCodeEntity;
+import rxh.shanks.entity.MyPrivateTeachingAppointmentCodeEntity;
 import rxh.shanks.entity.NotMakeAnAppointmentCodeEntity;
 import rxh.shanks.entity.PrivateEducationCourseBespokeLessonEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetHoldingTimeCodeEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetUserHoldingTimeCodeEntity;
 import rxh.shanks.entity.ResetPasswordCodeEntity;
+import rxh.shanks.entity.ScanCodeEntity;
+import rxh.shanks.entity.ScanCodeGetGymCodeEntity;
 import rxh.shanks.entity.SetUserInformationCodeEntity;
 import rxh.shanks.entity.SwitchingVenuesCodeEntity;
 import rxh.shanks.entity.SwitchingVenuesEntity;
@@ -41,9 +48,11 @@ import rxh.shanks.entity.SwitchingVenuesSuccessCodeEntity;
 import rxh.shanks.entity.SystemCodeEntity;
 import rxh.shanks.entity.SystemDelCodeEntity;
 import rxh.shanks.entity.TestRecordCodeEntity;
+import rxh.shanks.entity.VersionNameCodeEntity;
 import rxh.shanks.entity.ViewAppointmentCodeEntity;
 import rxh.shanks.entity.ViewAppointmentState;
 import rxh.shanks.entity.ViewFreeCoursesCodeEntity;
+import rxh.shanks.entity.YZMEntity;
 
 /**
  * Created by Administrator on 2016/4/11.
@@ -300,25 +309,14 @@ public class JsonUtils {
         return result;
     }
 
-    //预约私教课程，获取教练占用的时间
-    public static PrivateEducationCourseGetHoldingTimeCodeEntity getHoldingTime(String data) {
-        PrivateEducationCourseGetHoldingTimeCodeEntity result = new PrivateEducationCourseGetHoldingTimeCodeEntity();
+    //预约私教课程，获取教练排课时间
+    public static DataSouceCoachCodeEntity getCoachTime(String data) {
+        DataSouceCoachCodeEntity result = new DataSouceCoachCodeEntity();
         JSONObject obj = JSONObject.parseObject(data);
         // Gson解析Json
         GsonBuilder gsonb = new GsonBuilder();
         Gson gson = gsonb.create();
-        result = gson.fromJson(obj.toString(), PrivateEducationCourseGetHoldingTimeCodeEntity.class);
-        return result;
-    }
-
-    //预约私教课程，获取用户占用的时间
-    public static PrivateEducationCourseGetUserHoldingTimeCodeEntity getUserHoldingTime(String data) {
-        PrivateEducationCourseGetUserHoldingTimeCodeEntity result = new PrivateEducationCourseGetUserHoldingTimeCodeEntity();
-        JSONObject obj = JSONObject.parseObject(data);
-        // Gson解析Json
-        GsonBuilder gsonb = new GsonBuilder();
-        Gson gson = gsonb.create();
-        result = gson.fromJson(obj.toString(), PrivateEducationCourseGetUserHoldingTimeCodeEntity.class);
+        result = gson.fromJson(obj.toString(), DataSouceCoachCodeEntity.class);
         return result;
     }
 
@@ -449,6 +447,79 @@ public class JsonUtils {
         GsonBuilder gsonb = new GsonBuilder();
         Gson gson = gsonb.create();
         result = gson.fromJson(obj.toString(), ConversationCodeEntity.class);
+        return result;
+    }
+
+
+    //扫一扫
+    public static ScanCodeEntity scan(String data) {
+        ScanCodeEntity result = new ScanCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ScanCodeEntity.class);
+        return result;
+    }
+
+
+    //解析我所购买的课程
+    public static MyPrivateTeachingAppointmentCodeEntity get_my_lesssion(String data) {
+        MyPrivateTeachingAppointmentCodeEntity result = new MyPrivateTeachingAppointmentCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), MyPrivateTeachingAppointmentCodeEntity.class);
+        return result;
+    }
+
+    //解析签到时获取的场馆信息
+    public static ScanCodeGetGymCodeEntity get_gymInfo(String data) {
+        ScanCodeGetGymCodeEntity result = new ScanCodeGetGymCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ScanCodeGetGymCodeEntity.class);
+        return result;
+    }
+
+    //解析预约私教选择教练时服务器返回的数据
+    public static ConfirmTheAppointmentOfPrivateEducationCodeEntity getlessoncoach(String data) {
+        ConfirmTheAppointmentOfPrivateEducationCodeEntity result = new ConfirmTheAppointmentOfPrivateEducationCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ConfirmTheAppointmentOfPrivateEducationCodeEntity.class);
+        return result;
+    }
+
+    //解析获取验证码时服务器返回的数据
+    public static YZMEntity get_mob_data(String data) {
+        YZMEntity result = new YZMEntity();
+        try {
+            JSONObject obj = JSONObject.parseObject(data);
+            // Gson解析Json
+            GsonBuilder gsonb = new GsonBuilder();
+            Gson gson = gsonb.create();
+            result = gson.fromJson(obj.toString(), YZMEntity.class);
+        } catch (Exception ex) {
+
+        }
+        return result;
+    }
+
+
+    //解析版本号
+    public static VersionNameCodeEntity get_version_name(String data) {
+        VersionNameCodeEntity result = new VersionNameCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), VersionNameCodeEntity.class);
         return result;
     }
 

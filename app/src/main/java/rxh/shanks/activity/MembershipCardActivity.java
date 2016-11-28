@@ -18,7 +18,6 @@ import rxh.shanks.entity.MembershipCardEventBusEntity;
 import rxh.shanks.entity.TestRecordEventBusEntity;
 import rxh.shanks.presenter.MembershipCardPresenter;
 import rxh.shanks.view.MembershipCardView;
-
 /**
  * Created by Administrator on 2016/8/2.
  * 会员卡
@@ -29,12 +28,12 @@ public class MembershipCardActivity extends BaseActivity implements MembershipCa
     LinearLayout back;
     @Bind(R.id.title)
     TextView title;
-    MembershipCardPresenter membershipCardPresenter;
+    MembershipCardPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        membershipCardPresenter = new MembershipCardPresenter(this);
+        presenter = new MembershipCardPresenter(this);
         // 注册EventBus
         EventBus.getDefault().register(this);
         initview();
@@ -47,7 +46,7 @@ public class MembershipCardActivity extends BaseActivity implements MembershipCa
     }
 
     public void onEventMainThread(MembershipCardCodeEventBusEntity membershipCardCodeEventBusEntity) {
-        membershipCardPresenter.setDefaultCard(membershipCardCodeEventBusEntity.getCardID());
+        presenter.setDefaultCard(membershipCardCodeEventBusEntity.getCardID());
     }
 
     public void initview() {
@@ -55,7 +54,7 @@ public class MembershipCardActivity extends BaseActivity implements MembershipCa
         ButterKnife.bind(this);
         title.setText("会员卡");
         back.setOnClickListener(this);
-        membershipCardPresenter.getFitCard();
+        presenter.getFitCard();
     }
 
     @Override
@@ -86,7 +85,7 @@ public class MembershipCardActivity extends BaseActivity implements MembershipCa
 
     @Override
     public void setDefaultCard() {
-        membershipCardPresenter.getFitCard();
+        presenter.getFitCard();
         Toast.makeText(getApplicationContext(), "首选会员卡修改成功", Toast.LENGTH_LONG).show();
     }
 

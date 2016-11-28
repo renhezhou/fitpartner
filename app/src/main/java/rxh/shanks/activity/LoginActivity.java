@@ -30,8 +30,10 @@ import rxh.shanks.base.BaseActivity;
 import rxh.shanks.customview.ToggleButton;
 import rxh.shanks.entity.DataSouceCoachEntity;
 import rxh.shanks.entity.LoginCodeEntity;
+import rxh.shanks.entity.YZMEntity;
 import rxh.shanks.presenter.LoginPresenter;
 import rxh.shanks.utils.CheckUtils;
+import rxh.shanks.utils.JsonUtils;
 import rxh.shanks.utils.MyApplication;
 import rxh.shanks.utils.PrivateEducationCourseFragmentDataSouceUtils;
 import rxh.shanks.view.LoginView;
@@ -39,7 +41,7 @@ import rxh.shanks.view.LoginView;
 /**
  * Created by Administrator on 2016/7/29.
  */
-public class LoginActivity extends BaseActivity implements LoginView {
+public class LoginActivity extends BaseActivity implements LoginView, Handler.Callback {
 
     @Bind(R.id.user)
     EditText user;
@@ -59,33 +61,31 @@ public class LoginActivity extends BaseActivity implements LoginView {
     TextView forget_password;
     @Bind(R.id.login)
     Button login;
-    LoginPresenter loginPresenter;
+    LoginPresenter presenter;
     private TimeCount time;
     //为false表示用户名登录，true表示手机号码登录
     boolean switch_login_flag = false;
-    boolean eh_flag = false;
 
     private SharedPreferences sp;
 
-
+    boolean eh_flag = false;
+    final Handler handler = new Handler(this);
     EventHandler eh = new EventHandler() {
         @Override
         public void afterEvent(int event, int result, Object data) {
-            if (result == SMSSDK.RESULT_COMPLETE) {
-                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                    String phone = data.toString().substring(7, 18);
-                    loginPresenter.login("1", phone, null, null);
-                }
-            } else {
-                ((Throwable) data).printStackTrace();
-            }
+            Message msg = new Message();
+            msg.arg1 = event;
+            msg.arg2 = result;
+            msg.obj = data;
+            handler.sendMessage(msg);
         }
     };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenter(this);
+        presenter = new LoginPresenter(this);
+        SMSSDK.initSDK(this, "15250bf89fb80", "3ef1b078f3b49b49cf22d6d099453646");
         sp = getSharedPreferences("user_info", 0);
         initview();
     }
@@ -135,14 +135,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         });
     }
 
-    public void getverificationcode() {
-        SMSSDK.initSDK(this, "15250bf89fb80", "3ef1b078f3b49b49cf22d6d099453646");
-        SMSSDK.getVerificationCode("86", user.getText().toString());
-        SMSSDK.registerEventHandler(eh); //注册短信回调
-        eh_flag = true;
-        time.start();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -153,12 +145,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                 break;
             case R.id.get_verification_code:
                 if (user.getText().length() == 0) {
-                    Toast.makeText(getApplicationContext(), "格式错误", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "手机号码不能为空", Toast.LENGTH_LONG).show();
                 } else {
                     if (CheckUtils.isMobileNO(user.getText().toString())) {
                         getverificationcode();
                     } else {
-                        Toast.makeText(getApplicationContext(), "格式错误", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "手机号码格式错误", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
@@ -168,11 +160,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
                         SMSSDK.submitVerificationCode("86", user.getText().toString(), verification_code.getText().toString());
                         SMSSDK.registerEventHandler(eh); //注册短信回调
                         eh_flag = true;
+                        loading("校验中...");
                     } else {
                         Toast.makeText(getApplicationContext(), "不能为空", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    loginPresenter.login("2", null, user.getText().toString(), password.getText().toString());
+                    presenter.login("2", null, user.getText().toString(), password.getText().toString());
                 }
                 break;
             default:
@@ -180,25 +173,50 @@ public class LoginActivity extends BaseActivity implements LoginView {
         }
     }
 
-
-    /* 定义一个倒计时的内部类 */
-    class TimeCount extends CountDownTimer {
-        public TimeCount(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
+    @Override
+    public boolean handleMessage(Message msg) {
+        int event = msg.arg1;
+        int result = msg.arg2;
+        Object data = msg.obj;
+        YZMEntity entity = new YZMEntity();
+        dismiss();
+        switch (event) {
+            case SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE:
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    //验证成功
+                    String phone = data.toString().substring(7, 18);
+                    presenter.login("1", phone, null, null);
+                } else {
+                    //验证失败
+                    entity = JsonUtils.get_mob_data(((Throwable) data).getMessage().toString());
+                    if (entity.getDetail() != null) {
+                        Toast.makeText(getApplicationContext(), entity.getDetail(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "验证失败,请稍后重试", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case SMSSDK.EVENT_GET_VERIFICATION_CODE:
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    //获取验证码成功
+                    if (time != null) {
+                        time.start();
+                    } else {
+                        time = new TimeCount(60000, 1000);// 构造CountDownTimer对象
+                        time.start();
+                    }
+                } else {
+                    //获取验证码失败
+                    entity = JsonUtils.get_mob_data(((Throwable) data).getMessage().toString());
+                    if (entity.getDetail() != null) {
+                        Toast.makeText(getApplicationContext(), entity.getDetail(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "获取验证码失败，请重试", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
         }
-
-        @Override
-        public void onFinish() {// 计时完毕时触发
-            get_verification_code.setText("重新验证");
-            get_verification_code.setClickable(true);
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {// 计时过程显示
-            get_verification_code.setClickable(false);
-            get_verification_code.setText(millisUntilFinished / 1000 + "秒");
-        }
-
+        return false;
     }
 
 
@@ -252,5 +270,32 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Override
     public void check(String check) {
         Toast.makeText(getApplicationContext(), check, Toast.LENGTH_LONG).show();
+    }
+
+    public void getverificationcode() {
+        SMSSDK.getVerificationCode("86", user.getText().toString());
+        SMSSDK.registerEventHandler(eh); //注册短信回调
+        eh_flag = true;
+        loading("获取验证码中...");
+    }
+
+    /* 定义一个倒计时的内部类 */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {// 计时完毕时触发
+            get_verification_code.setText("重新验证");
+            get_verification_code.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {// 计时过程显示
+            get_verification_code.setClickable(false);
+            get_verification_code.setText(millisUntilFinished / 1000 + "秒");
+        }
+
     }
 }
