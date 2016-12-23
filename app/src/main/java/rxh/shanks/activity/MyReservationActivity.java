@@ -21,7 +21,7 @@ import rxh.shanks.fragment.NotMakeAnAppointmentFragment;
 
 /**
  * Created by Administrator on 2016/11/7.
- * 我的预约
+ * 我的预约。包括私教和团课
  */
 public class MyReservationActivity extends BaseActivity {
 

@@ -31,12 +31,12 @@ public class ConversationListActivity extends BaseActivity implements Conversati
     @Bind(R.id.system_ll)
     LinearLayout system_ll;
 
-    ConversationListPresenter conversationListPresenter;
+    ConversationListPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        conversationListPresenter = new ConversationListPresenter(this);
+        presenter = new ConversationListPresenter(this);
         initview();
     }
 
@@ -51,7 +51,7 @@ public class ConversationListActivity extends BaseActivity implements Conversati
 
             @Override
             public UserInfo getUserInfo(String userId) {
-                return conversationListPresenter.getUserInfo(userId);//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
+                return presenter.getUserInfo(userId);//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
             }
 
         }, true);

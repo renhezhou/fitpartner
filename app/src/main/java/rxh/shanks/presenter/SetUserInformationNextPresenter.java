@@ -19,24 +19,24 @@ import rxh.shanks.view.SetUserInformationView;
 public class SetUserInformationNextPresenter {
 
     private GetInfo getInfo;
-    private SetUserInformationNextView setUserInformationNextView;
+    private SetUserInformationNextView view;
 
-    public SetUserInformationNextPresenter(SetUserInformationNextView setUserInformationNextView) {
+    public SetUserInformationNextPresenter(SetUserInformationNextView view) {
         getInfo = new Is_Networking();
-        this.setUserInformationNextView = setUserInformationNextView;
+        this.view = view;
     }
 
-    public void setuserinformationnext(String sex, String age, String nick_name, String contact_address, String fitness_needs) {
-        if (age.length() == 0) {
-            setUserInformationNextView.check("年龄不能为空");
+    public void setuserinformationnext(String sex, String ID_card, String nick_name, String contact_address, String fitness_needs) {
+        if (ID_card.length() == 0) {
+            view.check("身份证号码不能为空");
             return;
         }
         if (nick_name.length() == 0) {
-            setUserInformationNextView.check("昵称不能为空");
+            view.check("昵称不能为空");
             return;
         }
         if (contact_address.length() == 0) {
-            setUserInformationNextView.check("家庭地址不能为空");
+            view.check("家庭地址不能为空");
             return;
         }
         RequestParams params = new RequestParams(CreatUrl.creaturl("user", "completeUserInfo"));
@@ -44,38 +44,38 @@ public class SetUserInformationNextPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("name", MyApplication.realName);
         params.addBodyParameter("sex", sex);
-        params.addBodyParameter("age", age);
+        params.addBodyParameter("IDcardNumber", ID_card);
         params.addBodyParameter("nickName", nick_name);
         params.addBodyParameter("address", contact_address);
         params.addBodyParameter("fitTarget", fitness_needs);
-        setUserInformationNextView.show();
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                setUserInformationNextView.hide();
+                view.hide();
                 SetUserInformationCodeEntity setUserInformationCodeEntity = JsonUtils.setuserinformation(result);
                 if (setUserInformationCodeEntity.getCode().equals("0")) {
-                    setUserInformationNextView.onSuccess();
+                    view.onSuccess();
                 } else {
-                    setUserInformationNextView.check(setUserInformationCodeEntity.getError());
+                    view.check(setUserInformationCodeEntity.getError());
                 }
 
             }
 
             @Override
             public void onError(Throwable ex) {
-                setUserInformationNextView.hide();
-                setUserInformationNextView.onError(ex);
+                view.hide();
+                view.onError(ex);
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                setUserInformationNextView.hide();
+                view.hide();
             }
 
             @Override
             public void onFinished() {
-                setUserInformationNextView.hide();
+                view.hide();
             }
         });
     }

@@ -245,6 +245,7 @@ public class LoginActivity extends BaseActivity implements LoginView, Handler.Ca
         editor.putString("currentClubName", response.getResult().getCurrentClubName());
         editor.putString("address", response.getResult().getAddress());
         editor.putString("age", response.getResult().getAge());
+        editor.putString("IDcardNumber", response.getResult().getIDcardNumber());
         editor.putString("phoneNumber", response.getResult().getPhoneNumber());
         editor.putString("sex", response.getResult().getSex());
         editor.putString("fitTarget", response.getResult().getFitTarget());

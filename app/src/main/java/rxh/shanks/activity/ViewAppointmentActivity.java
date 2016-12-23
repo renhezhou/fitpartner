@@ -52,17 +52,11 @@ public class ViewAppointmentActivity extends BaseActivity implements OnRefreshLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ViewAppointmentPresenter(this);
-        EventBus.getDefault().register(this);
         lessonID = getIntent().getStringExtra("lessonID");
         initview();
         presenter.getOrderLesson(lessonID);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
     public void onEventMainThread(EAEntity eaEntity) {
         presenter.getOrderLesson(lessonID);

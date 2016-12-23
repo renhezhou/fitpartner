@@ -1,6 +1,7 @@
 package rxh.shanks.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -40,8 +41,9 @@ public class SystemFragment extends Fragment implements SystemView {
     View view;
     ListView lv;
     private List<SystemLVEntity> data = new ArrayList<>();
-    IntformationAdapter intformationAdapter;
+    IntformationAdapter adapter;
     SystemDialogFragment systemDialogFragment;
+    private SharedPreferences sp;
     SystemPresenter presenter;
     int delPosition;
 
@@ -49,6 +51,7 @@ public class SystemFragment extends Fragment implements SystemView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_system, null);
         presenter = new SystemPresenter(this);
+        sp = getActivity().getSharedPreferences("user_info", 0);
         // 注册EventBus
         EventBus.getDefault().register(this);
         initview();
@@ -86,17 +89,48 @@ public class SystemFragment extends Fragment implements SystemView {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences.Editor editor = sp.edit();
+                if (CheckUtils.getbacktype(data.get(position).getType()).equals("RemindLessonToUser")) {
+                    editor.putInt("RemindLessonToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("ReplaceGroupClassToUser")) {
+                    editor.putInt("ReplaceGroupClassToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("ReplaceOrderLessonToUser")) {
+                    editor.putInt("ReplaceOrderLessonToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("CardCloseExpiredToUser")) {
+                    editor.putInt("CardCloseExpiredToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("SendCouponToUser")) {
+                    editor.putInt("SendCouponToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("DeductionLessonToUser")) {
+                    editor.putInt("DeductionLessonToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("NormalMessageToUser")) {
+                    editor.putInt("NormalMessageToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("EventMessageToUser")) {
+                    editor.putInt("EventMessageToUser", 0);
+                    editor.commit();
+                } else if (CheckUtils.getbacktype(data.get(position).getType()).equals("DevelopSystemMessage")) {
+                    editor.putInt("DevelopSystemMessage", 0);
+                    editor.commit();
+                }
                 if (data.get(position).getType().equals("教练代约团课") || data.get(position).getType().equals("教练代约私教课")) {
                     Intent intent = new Intent();
-                    intent.putExtra("type", data.get(position).getType());
+                    intent.putExtra("type", CheckUtils.getbacktype(data.get(position).getType()));
                     intent.setClass(getActivity(), SystemNextActivity.class);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent();
-                    intent.putExtra("type", data.get(position).getType());
+                    intent.putExtra("type", CheckUtils.getbacktype(data.get(position).getType()));
                     intent.setClass(getActivity(), SystemSecondActivity.class);
                     startActivity(intent);
                 }
+                adapter = new IntformationAdapter(getActivity(), data);
+                lv.setAdapter(adapter);
             }
         });
         presenter.getMsg();
@@ -105,8 +139,8 @@ public class SystemFragment extends Fragment implements SystemView {
     @Override
     public void getMsg(List<SystemLVEntity> systemLVEntityList) {
         data = systemLVEntityList;
-        intformationAdapter = new IntformationAdapter(getActivity(), data);
-        lv.setAdapter(intformationAdapter);
+        adapter = new IntformationAdapter(getActivity(), data);
+        lv.setAdapter(adapter);
     }
 
     @Override
@@ -118,6 +152,6 @@ public class SystemFragment extends Fragment implements SystemView {
     public void delSuccess() {
         Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_LONG);
         data.remove(delPosition);
-        intformationAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }

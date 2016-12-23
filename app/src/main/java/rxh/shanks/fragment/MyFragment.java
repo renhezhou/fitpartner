@@ -1,6 +1,7 @@
 package rxh.shanks.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,11 +19,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.FitnessCalendarActivity;
 import rxh.shanks.activity.MembershipCardActivity;
 import rxh.shanks.activity.MoreActivity;
-import rxh.shanks.activity.MyPrivateEducationActivity;
 import rxh.shanks.activity.MyReservationActivity;
 import rxh.shanks.activity.PersonalInformationEditorActivity;
 import rxh.shanks.activity.R;
@@ -61,19 +62,22 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.my_league)
     LinearLayout my_league;
     @Bind(R.id.rl_bg)
-    BlurImageView rl_bg;
+    ImageView rl_bg;
     @Bind(R.id.integral)
     TextView integral;
     @Bind(R.id.integral_exchange)
     TextView integral_exchange;
-    @Bind(R.id.img_bg)
-    ImageView img_bg;
+    @Bind(R.id.notice_num)
+    TextView notice_num;
+
+    private SharedPreferences sp;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my, null);
         ButterKnife.bind(this, view);
+        sp = getActivity().getSharedPreferences("user_info", 0);
         EventBus.getDefault().register(this);
         initview();
         initdata();
@@ -117,9 +121,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     }
 
     public void initdata() {
-        Picasso.with(getActivity()).load(R.drawable.load_mohu).into(img_bg);
-        rl_bg.setBlurFactor(100);
-        rl_bg.setBlurImageByUrl(MyApplication.QNDownToken);
+        Glide.with(this).load(MyApplication.QNDownToken)
+                .bitmapTransform(new BlurTransformation(getActivity()))
+                .placeholder(R.drawable.load_mohu)
+                .into(rl_bg);
         Picasso.with(getActivity())
                 .load(MyApplication.QNDownToken)
                 .placeholder(R.drawable.loading_cort)
@@ -127,6 +132,31 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 .into(head_portrait);
         name.setText(MyApplication.nickName);
         club_name.setText(MyApplication.currentClubName);
+        //上课提醒
+        int RemindLessonToUser_num = sp.getInt("RemindLessonToUser", 0);
+        //教练代约团课
+        int ReplaceGroupClassToUser_num = sp.getInt("ReplaceGroupClassToUser", 0);
+        //教练代约私教课
+        int ReplaceOrderLessonToUser_num = sp.getInt("ReplaceOrderLessonToUser", 0);
+        //会员卡即将到期
+        int CardCloseExpiredToUser_num = sp.getInt("CardCloseExpiredToUser", 0);
+        //新增优惠券
+        int SendCouponToUser_num = sp.getInt("SendCouponToUser", 0);
+        //课程扣除提醒
+        int DeductionLessonToUser_num = sp.getInt("DeductionLessonToUser", 0);
+        //场馆通知
+        int NormalMessageToUser_num = sp.getInt("NormalMessageToUser", 0);
+        //场馆活动
+        int EventMessageToUser_num = sp.getInt("EventMessageToUser", 0);
+        //系统通知
+        int DevelopSystemMessage_num = sp.getInt("DevelopSystemMessage", 0);
+        int all_notice = RemindLessonToUser_num + ReplaceGroupClassToUser_num + ReplaceOrderLessonToUser_num + CardCloseExpiredToUser_num +
+                SendCouponToUser_num + DeductionLessonToUser_num + NormalMessageToUser_num + EventMessageToUser_num + DevelopSystemMessage_num;
+        if (all_notice > 0) {
+            notice_num.setText(String.valueOf(all_notice));
+        } else {
+            notice_num.setVisibility(View.GONE);
+        }
     }
 
 
@@ -144,6 +174,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 //启动会话列表界面
                 if (RongIM.getInstance() != null)
                     RongIM.getInstance().startConversationList(getActivity());
+                notice_num.setVisibility(View.GONE);
                 break;
             case R.id.head_portrait:
                 startActivity(new Intent(getActivity(), PersonalInformationEditorActivity.class));
@@ -163,10 +194,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.my_private_education:
                 //我的团课和我的私教界面完全相同，故复用
-//                intent = new Intent();
-//                intent.setClass(getActivity(), MyReservationActivity.class);
-//                intent.putExtra("flag", "1");
-//                startActivity(intent);
                 Intent intent1 = new Intent();
                 intent1.setClass(getActivity(), MyReservationActivity.class);
                 intent1.putExtra("flag", "1");
@@ -178,10 +205,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 intent2.setClass(getActivity(), MyReservationActivity.class);
                 intent2.putExtra("flag", "0");
                 startActivity(intent2);
-//                intent = new Intent();
-//                intent.setClass(getActivity(), MyReservationActivity.class);
-//                intent.putExtra("flag", "0");
-//                startActivity(intent);
                 break;
             case R.id.integral_exchange:
                 //startActivity(new Intent(getActivity(), MyIntegralActivity.class));

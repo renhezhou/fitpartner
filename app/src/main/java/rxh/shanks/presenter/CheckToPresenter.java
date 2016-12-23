@@ -4,6 +4,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import rxh.shanks.entity.CheckToCodeEntity;
+import rxh.shanks.entity.CheckToHandlerCodeEntity;
 import rxh.shanks.entity.CoachDetailsCodeEntity;
 import rxh.shanks.entity.FitCardCodeEntity;
 import rxh.shanks.model.GetInfo;
@@ -21,48 +22,53 @@ import rxh.shanks.view.CoachDetailsView;
 public class CheckToPresenter {
 
     private GetInfo getInfo;
-    private CheckToView checkToView;
+    private CheckToView view;
 
-    public CheckToPresenter(CheckToView checkToView) {
+    public CheckToPresenter(CheckToView view) {
         getInfo = new Is_Networking();
-        this.checkToView = checkToView;
+        this.view = view;
     }
 
-    public void generatedQR(String cardID, String cardType) {
+    public void generatedQR(final String cardID, final String cardType) {
         RequestParams params = new RequestParams(CreatUrl.creaturl("card", "generatedQR"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("cardID", cardID);
         params.addBodyParameter("cardType", cardType);
+        view.show(2);
         getInfo.getinfo(params, new Response() {
-            @Override
-            public void onSuccess(String result) {
-                checkToView.hide();
-                CheckToCodeEntity checkToCodeEntity = new CheckToCodeEntity();
-                checkToCodeEntity = JsonUtils.generatedQR(result);
-                if (checkToCodeEntity.getCode().equals("0")) {
-                    checkToView.generatedQR(checkToCodeEntity.getResult());
-                } else {
-                    checkToView.onFinished(checkToCodeEntity.getError());
+                    @Override
+                    public void onSuccess(String result) {
+                        view.hide();
+                        CheckToCodeEntity checkToCodeEntity = new CheckToCodeEntity();
+                        checkToCodeEntity = JsonUtils.generatedQR(result);
+                        if (checkToCodeEntity.getCode().equals("0")) {
+                            view.generatedQR(checkToCodeEntity.getResult());
+                        } else if (checkToCodeEntity.getCode().equals("9")) {
+                            view.handleCard(cardID, cardType);
+                        } else {
+                            view.onFinished(checkToCodeEntity.getError());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex) {
+                        view.hide();
+                    }
+
+                    @Override
+                    public void onCancelled(Callback.CancelledException cex) {
+                        view.hide();
+                    }
+
+                    @Override
+                    public void onFinished() {
+                        view.hide();
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Throwable ex) {
-                checkToView.hide();
-            }
-
-            @Override
-            public void onCancelled(Callback.CancelledException cex) {
-                checkToView.hide();
-            }
-
-            @Override
-            public void onFinished() {
-                checkToView.hide();
-            }
-        });
+        );
     }
 
     public void getFitCard() {
@@ -70,32 +76,72 @@ public class CheckToPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
-        checkToView.show();
+        view.show(0);
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 FitCardCodeEntity fitCardCodeEntity = new FitCardCodeEntity();
                 fitCardCodeEntity = JsonUtils.getFitCard(result);
                 if (fitCardCodeEntity.getCode().equals("0")) {
-                    checkToView.getFitCard(fitCardCodeEntity.getResult());
+                    view.getFitCard(fitCardCodeEntity.getResult());
                 } else {
-                    checkToView.onFinished(fitCardCodeEntity.getError());
+                    view.onFinished(fitCardCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-                checkToView.hide();
+                view.hide();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                checkToView.hide();
+                view.hide();
             }
 
             @Override
             public void onFinished() {
-                checkToView.hide();
+                view.hide();
+            }
+        });
+    }
+
+
+    public void handleCard(final String cardID, final String cardType) {
+        RequestParams params = new RequestParams(CreatUrl.creaturl("card", "handleCard"));
+        params.addBodyParameter("token", MyApplication.token);
+        params.addBodyParameter("clubID", MyApplication.currentClubID);
+        params.addBodyParameter("cardID", cardID);
+        params.addBodyParameter("cardType", cardType);
+        view.show(1);
+        getInfo.getinfo(params, new Response() {
+            @Override
+            public void onSuccess(String result) {
+                view.hide();
+                CheckToHandlerCodeEntity entity = new CheckToHandlerCodeEntity();
+                entity = JsonUtils.handleCard(result);
+                if (entity.getCode().equals("0")) {
+                    view.handleCardSuccess(cardID, cardType);
+                    view.generatedQR(entity.getResult());
+                } else {
+                    view.onFinished(entity.getError());
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex) {
+                view.hide();
+            }
+
+            @Override
+            public void onCancelled(Callback.CancelledException cex) {
+                view.hide();
+            }
+
+            @Override
+            public void onFinished() {
+                view.hide();
             }
         });
     }

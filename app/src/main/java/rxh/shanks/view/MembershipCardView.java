@@ -19,4 +19,6 @@ public interface MembershipCardView {
 
     void toast(String msg);
 
+    void error();
+
 }

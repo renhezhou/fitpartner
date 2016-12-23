@@ -14,6 +14,7 @@ import rxh.shanks.entity.AlreadyMakeAnAppointmentCodeEntity;
 import rxh.shanks.entity.BrandGymPaidCodeEntity;
 import rxh.shanks.entity.BrandInfoCodeEntity;
 import rxh.shanks.entity.CheckToCodeEntity;
+import rxh.shanks.entity.CheckToHandlerCodeEntity;
 import rxh.shanks.entity.CoachCodeEntity;
 import rxh.shanks.entity.CoachDetailsCodeEntity;
 import rxh.shanks.entity.ConfirmAnAppointmentActivityCodeEntity;
@@ -30,17 +31,27 @@ import rxh.shanks.entity.EvaluateCodeEntity;
 import rxh.shanks.entity.FeedbackCodeEntity;
 import rxh.shanks.entity.FitCardCodeEntity;
 import rxh.shanks.entity.FitnessCalendarCodeEntity;
+import rxh.shanks.entity.ForgetPayPasswordCodeEntity;
 import rxh.shanks.entity.LoginCodeEntity;
 import rxh.shanks.entity.MembershipCardCodeEntity;
+import rxh.shanks.entity.ModifyLoginPasswordCodeEntity;
+import rxh.shanks.entity.ModifyPayPasswordCodeEntity;
 import rxh.shanks.entity.MyPrivateEducationHeadCodeEntity;
 import rxh.shanks.entity.MyPrivateTeachingAppointmentCodeEntity;
 import rxh.shanks.entity.NotMakeAnAppointmentCodeEntity;
+import rxh.shanks.entity.PaymentCodeEntity;
+import rxh.shanks.entity.PaymentConfirmCodeEntity;
+import rxh.shanks.entity.PaymentInfoCodeEntity;
+import rxh.shanks.entity.PaymentReceiverCodeEntity;
+import rxh.shanks.entity.PaymentStoredValueCodeCardListEntity;
 import rxh.shanks.entity.PrivateEducationCourseBespokeLessonEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetHoldingTimeCodeEntity;
 import rxh.shanks.entity.PrivateEducationCourseGetUserHoldingTimeCodeEntity;
+import rxh.shanks.entity.ReceiverEntity;
 import rxh.shanks.entity.ResetPasswordCodeEntity;
 import rxh.shanks.entity.ScanCodeEntity;
 import rxh.shanks.entity.ScanCodeGetGymCodeEntity;
+import rxh.shanks.entity.SetPayPasswordCodeEntity;
 import rxh.shanks.entity.SetUserInformationCodeEntity;
 import rxh.shanks.entity.SwitchingVenuesCodeEntity;
 import rxh.shanks.entity.SwitchingVenuesEntity;
@@ -520,6 +531,139 @@ public class JsonUtils {
         GsonBuilder gsonb = new GsonBuilder();
         Gson gson = gsonb.create();
         result = gson.fromJson(obj.toString(), VersionNameCodeEntity.class);
+        return result;
+    }
+
+    //提前开卡
+    public static CheckToHandlerCodeEntity handleCard(String data) {
+        CheckToHandlerCodeEntity result = new CheckToHandlerCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), CheckToHandlerCodeEntity.class);
+        return result;
+    }
+
+    // 解析推送的内容
+    public static ReceiverEntity get_receiver_info(String data) {
+        ReceiverEntity result = new ReceiverEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ReceiverEntity.class);
+        return result;
+    }
+
+    // 会员卡
+    public static MembershipCardCodeEntity getMembershipCard(String data) {
+        MembershipCardCodeEntity result = new MembershipCardCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), MembershipCardCodeEntity.class);
+        return result;
+    }
+
+
+    // 修改密码
+    public static ModifyLoginPasswordCodeEntity modifyloginpassword(String data) {
+        ModifyLoginPasswordCodeEntity result = new ModifyLoginPasswordCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ModifyLoginPasswordCodeEntity.class);
+        return result;
+    }
+
+    // 获取储值卡支付二维码
+    public static PaymentCodeEntity generatedPaidQR(String data) {
+        PaymentCodeEntity result = new PaymentCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), PaymentCodeEntity.class);
+        return result;
+    }
+
+    // 设置储值卡支付密码
+    public static SetPayPasswordCodeEntity setpaypassword(String data) {
+        SetPayPasswordCodeEntity result = new SetPayPasswordCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), SetPayPasswordCodeEntity.class);
+        return result;
+    }
+
+    // 修改储值卡支付密码
+    public static ModifyPayPasswordCodeEntity modifypaypassword(String data) {
+        ModifyPayPasswordCodeEntity result = new ModifyPayPasswordCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ModifyPayPasswordCodeEntity.class);
+        return result;
+    }
+
+    // 重置储值卡支付密码
+    public static ForgetPayPasswordCodeEntity forgetpaypassword(String data) {
+        ForgetPayPasswordCodeEntity result = new ForgetPayPasswordCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), ForgetPayPasswordCodeEntity.class);
+        return result;
+    }
+
+    //获取二维码支付推送的message
+    public static PaymentReceiverCodeEntity get_pr(String data) {
+        PaymentReceiverCodeEntity result = new PaymentReceiverCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), PaymentReceiverCodeEntity.class);
+        return result;
+    }
+
+    //选用何种储值卡进行支付
+    public static PaymentStoredValueCodeCardListEntity getpaidcard(String data) {
+        PaymentStoredValueCodeCardListEntity result = new PaymentStoredValueCodeCardListEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), PaymentStoredValueCodeCardListEntity.class);
+        return result;
+    }
+
+    //选用详细支付信息
+    public static PaymentInfoCodeEntity get_pay_info(String data) {
+        PaymentInfoCodeEntity result = new PaymentInfoCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), PaymentInfoCodeEntity.class);
+        return result;
+    }
+
+    //选用储值卡进行支付
+    public static PaymentConfirmCodeEntity pay_confirm(String data) {
+        PaymentConfirmCodeEntity result = new PaymentConfirmCodeEntity();
+        JSONObject obj = JSONObject.parseObject(data);
+        // Gson解析Json
+        GsonBuilder gsonb = new GsonBuilder();
+        Gson gson = gsonb.create();
+        result = gson.fromJson(obj.toString(), PaymentConfirmCodeEntity.class);
         return result;
     }
 

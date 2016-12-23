@@ -13,8 +13,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="16dp"
+            android:layout_width="13dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="6dp"
             android:src="@drawable/back" />
@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:text="返回"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="@dimen/three_ts" />
     </LinearLayout>
 
     <TextView
@@ -35,6 +35,6 @@
         android:layout_centerInParent="true"
         android:text="健身日历"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="@dimen/five_ts" />
 
 </RelativeLayout>

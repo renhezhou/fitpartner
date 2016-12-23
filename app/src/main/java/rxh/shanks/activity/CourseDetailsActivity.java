@@ -42,7 +42,7 @@ public class CourseDetailsActivity extends BaseActivity implements CalendarFragm
     String clubname;
 
     CalendarFragment calendarFragment;
-    CourseDetailsPageAdapter courseDetailsPageAdapter;
+    CourseDetailsPageAdapter adapter;
     private List<String> datelist = new ArrayList<>();
     private List<String> seclet = new ArrayList<>();
 
@@ -62,8 +62,8 @@ public class CourseDetailsActivity extends BaseActivity implements CalendarFragm
         calendar.setOnClickListener(this);
         datelist = CreatTime.creat(new Date());
         seclet = CreatTime.seclet(new Date());
-        courseDetailsPageAdapter = new CourseDetailsPageAdapter(getSupportFragmentManager(), this, datelist, seclet);
-        viewpager.setAdapter(courseDetailsPageAdapter);
+        adapter = new CourseDetailsPageAdapter(getSupportFragmentManager(), this, datelist, seclet);
+        viewpager.setAdapter(adapter);
         tab_layout.setupWithViewPager(viewpager);
         tab_layout.setTabMode(TabLayout.MODE_FIXED);
     }
@@ -96,8 +96,8 @@ public class CourseDetailsActivity extends BaseActivity implements CalendarFragm
         seclet.clear();
         datelist = CreatTime.creat(CreatTime.conversion(date));
         seclet = CreatTime.seclet(CreatTime.conversion(date));
-        courseDetailsPageAdapter = new CourseDetailsPageAdapter(getSupportFragmentManager(), this, datelist, seclet);
-        viewpager.setAdapter(courseDetailsPageAdapter);
+        adapter = new CourseDetailsPageAdapter(getSupportFragmentManager(), this, datelist, seclet);
+        viewpager.setAdapter(adapter);
     }
 
 }

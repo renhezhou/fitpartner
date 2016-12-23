@@ -59,13 +59,13 @@ public class DonationCardPresenter {
     }
 
 
-    public void giftQR(String clubID, String cardID, String cardType) {
+    public void giftQR(String clubID, String cardID) {
         RequestParams params = new RequestParams(CreatUrl.creaturl("card", "giftQR"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
-        params.addBodyParameter("count", "1");
-        params.addBodyParameter("cardType", cardType);
         params.addBodyParameter("clubID", clubID);
+        params.addBodyParameter("count", "1");
+        params.addBodyParameter("cardType", "1");
         params.addBodyParameter("cardID", cardID);
         getInfo.getinfo(params, new Response() {
             @Override

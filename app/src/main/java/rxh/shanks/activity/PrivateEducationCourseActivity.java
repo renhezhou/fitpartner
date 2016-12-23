@@ -1,8 +1,10 @@
 package rxh.shanks.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -148,9 +150,16 @@ public class PrivateEducationCourseActivity extends BaseActivity implements Cale
     //预约私教课成功的回调
     @Override
     public void ConfirmAnAppointment() {
-        Toast.makeText(getApplicationContext(), "约课成功", Toast.LENGTH_LONG).show();
+        new AlertDialog.Builder(this)
+                .setTitle("预约成功")
+                .setMessage("你已成功预约该私教课程。请准时前往上课")
+                .setCancelable(false)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        finish();
+                    }
+                }).show();
         //用eb发送消息到上一级界面通知数据更新
         EventBus.getDefault().post(new MANEntity());
-        finish();
     }
 }

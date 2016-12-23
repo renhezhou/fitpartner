@@ -3,6 +3,7 @@ package rxh.shanks.activity;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -14,21 +15,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
+import rxh.shanks.EBEntity.DCEntity;
 import rxh.shanks.adapter.DonationCardGVAdapter;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.entity.DonationCardEntity;
 import rxh.shanks.presenter.DonationCardPresenter;
-import rxh.shanks.utils.CreatTime;
 import rxh.shanks.utils.ScreenShotTools;
 import rxh.shanks.view.DonationCardView;
 
@@ -42,16 +46,15 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
     LinearLayout back;
     @Bind(R.id.title)
     TextView title;
-    @Bind(R.id.prompt)
-    TextView prompt;
-    @Bind(R.id.residual_frequency)
-    TextView residual_frequency;
-    @Bind(R.id.generate_two_dimensional_code)
-    TextView generate_two_dimensional_code;
+    @Bind(R.id.surplus)
+    TextView surplus;
+    @Bind(R.id.generate_code)
+    TextView generate_code;
     @Bind(R.id.gv)
     GridView gv;
 
     Bitmap mBitmap;
+    int selected_position = -1;
 
     View view;
     Dialog photochoosedialog;
@@ -59,32 +62,31 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
     private TextView cancel, card_number, share, save;
 
 
-    String cardID, clubID, cardType, totalCount;
-
-    DonationCardPresenter donationCardPresenter;
-    DonationCardGVAdapter donationCardGVAdapter;
+    String cardID, clubID, surplus_String;
+    int surpluscount;
+    DonationCardPresenter presenter;
+    DonationCardGVAdapter adapter;
     List<DonationCardEntity> data = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        donationCardPresenter = new DonationCardPresenter(this);
+        presenter = new DonationCardPresenter(this);
         cardID = getIntent().getStringExtra("cardID");
         clubID = getIntent().getStringExtra("clubID");
-        cardType = getIntent().getStringExtra("cardType");
-        totalCount = getIntent().getStringExtra("totalCount");
+        surplus_String = getIntent().getStringExtra("surplus");
+        surpluscount = Integer.parseInt(surplus_String);
         initview();
-        donationCardPresenter.gitSurplusGiftQR(cardID);
+        presenter.gitSurplusGiftQR(cardID);
     }
 
     public void initview() {
         setContentView(R.layout.activity_donation_card);
         ButterKnife.bind(this);
-        title.setText("转赠次卡");
-        prompt.setText("每张二维码仅限单人单次使用\n使用后立即失效\n请谨慎截图转发");
-        residual_frequency.setText("剩余次数\n" + totalCount + "次");
         back.setOnClickListener(this);
-        generate_two_dimensional_code.setOnClickListener(this);
+        generate_code.setOnClickListener(this);
+        title.setText("转赠次卡");
+        surplus.setText("剩余：" + surpluscount + "次");
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -102,8 +104,12 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
             case R.id.back:
                 finish();
                 break;
-            case R.id.generate_two_dimensional_code:
-                donationCardPresenter.giftQR(clubID, cardID, cardType);
+            case R.id.generate_code:
+                if (surpluscount > 0) {
+                    presenter.giftQR(clubID, cardID);
+                } else {
+                    Toast.makeText(getApplicationContext(), "次数不足", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.cancel:
                 photochoosedialog.dismiss();
@@ -126,24 +132,23 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
     @Override
     public void gitSurplusGiftQR(List<DonationCardEntity> donationCardEntityList) {
         data = donationCardEntityList;
-        donationCardGVAdapter = new DonationCardGVAdapter(getApplicationContext(), data);
-        gv.setAdapter(donationCardGVAdapter);
+        adapter = new DonationCardGVAdapter(getApplicationContext(), data, selected_position);
+        gv.setAdapter(adapter);
     }
 
     @Override
     public void giftQR(List<DonationCardEntity> donationCardEntityList) {
+        EventBus.getDefault().post(new DCEntity());
+        surpluscount--;
+        surplus.setText("剩余：" + surpluscount + "次");
         if (donationCardEntityList.size() > 0) {
-            residual_frequency.setText("剩余次数\n" + donationCardEntityList.get(0).getCount() + "次");
+
         }
         if (donationCardEntityList != null) {
             data.clear();
             data = donationCardEntityList;
-            donationCardGVAdapter = new DonationCardGVAdapter(getApplicationContext(), data);
-            gv.setAdapter(donationCardGVAdapter);
-            showphotochooseDialog();
-            card_number.setText("次卡编号为:" + data.get(0).getCodeID());
-            mBitmap = CodeUtils.createImage(data.get(0).getQRString(), 400, 400, null);
-            QR_code.setImageBitmap(mBitmap);
+            adapter = new DonationCardGVAdapter(getApplicationContext(), data, selected_position);
+            gv.setAdapter(adapter);
         }
     }
 
@@ -171,7 +176,6 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
         // 设置点击外围解散
         photochoosedialog.setCanceledOnTouchOutside(true);
         photochoosedialog.show();
-
         cancel = (TextView) view.findViewById(R.id.cancel);
         QR_code = (ImageView) view.findViewById(R.id.QR_code);
         card_number = (TextView) view.findViewById(R.id.card_number);
@@ -180,6 +184,32 @@ public class DonationCardActivity extends BaseActivity implements DonationCardVi
         cancel.setOnClickListener(this);
         share.setOnClickListener(this);
         save.setOnClickListener(this);
+    }
+
+    //截屏实现类
+    private void screenshot() {
+        // 获取屏幕
+        View dView = getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+        if (bmp != null) {
+            try {
+                // 获取内置SD卡路径
+                String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+                // 图片文件路径
+                long currentTime = System.currentTimeMillis();
+                SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd-HH-mm-ss");
+                Date date = new Date(currentTime);
+                String filePath = sdCardPath + File.separator + "fitparther/" + format.format(date) + ".png";
+                File file = new File(filePath);
+                FileOutputStream os = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+            } catch (Exception e) {
+            }
+        }
     }
 
 }

@@ -54,11 +54,11 @@ public class SystemSecondActivity extends BaseActivity implements SystemNextView
         setContentView(R.layout.activity_system_second);
         ButterKnife.bind(this);
         back.setOnClickListener(this);
-        title.setText(type);
+        title.setText(CheckUtils.gettype(type));
     }
 
     public void initdata() {
-        systemNextPresenter.getMsg(CheckUtils.getbacktype(type));
+        systemNextPresenter.getMsg(type);
     }
 
     @Override

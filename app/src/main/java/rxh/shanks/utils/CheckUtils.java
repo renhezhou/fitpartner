@@ -123,20 +123,24 @@ public class CheckUtils {
     //校验卡的状态
     public static String get_card_state(String state) {
         String result = null;
-        if (state.equals("1")) {
-            result = "正常";
-        } else if (state.equals("2")) {
-            result = "续卡";
-        } else if (state.equals("3")) {
-            result = "过期";
-        } else if (state.equals("4")) {
-            result = "注销";
-        } else if (state.equals("5")) {
-            result = "请假";
-        } else if (state.equals("6")) {
-            result = "待审核";
-        } else if (state.equals("7")) {
-            result = "未开卡";
+        if (state != null) {
+            if (state.equals("1")) {
+                result = "正常";
+            } else if (state.equals("2")) {
+                result = "续卡";
+            } else if (state.equals("3")) {
+                result = "过期";
+            } else if (state.equals("4")) {
+                result = "注销";
+            } else if (state.equals("5")) {
+                result = "请假";
+            } else if (state.equals("6")) {
+                result = "待审核";
+            } else if (state.equals("7")) {
+                result = "未开卡";
+            }
+        } else {
+            result = "";
         }
         return result;
     }

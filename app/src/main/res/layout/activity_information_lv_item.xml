@@ -2,20 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_centerVertical="true"
-        android:layout_margin="20dp" />
+        android:layout_marginRight="10dp">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/notice_num"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="top|right"
+            android:background="@drawable/yuan_textview"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/img"
+        android:layout_toRightOf="@+id/fl"
         android:orientation="vertical">
 
         <LinearLayout

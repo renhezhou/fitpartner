@@ -2,34 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <include layout="@layout/top" />
 
     <RelativeLayout
-        android:id="@+id/clear_application_cache"
+        android:id="@+id/switching_venues"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:text="清除应用缓存"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:layout_centerVertical="true"
+            android:text="切换场馆"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_alignParentRight="true"
-            android:alpha="0.4"
-            android:text="0.00M"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:layout_centerVertical="true"
+            android:alpha="0.6"
+            android:src="@drawable/go" />
     </RelativeLayout>
 
     <View
@@ -38,56 +38,53 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <RelativeLayout
         android:id="@+id/venue_agreement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
+            android:layout_centerVertical="true"
             android:text="场馆协议"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:alpha="0.6"
             android:src="@drawable/go" />
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
 
     <RelativeLayout
-        android:id="@+id/switching_venues"
+        android:id="@+id/modify_login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:text="切换场馆"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:layout_centerVertical="true"
+            android:text="修改登录密码"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:alpha="0.6"
             android:src="@drawable/go" />
     </RelativeLayout>
@@ -98,37 +95,123 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
+
+    <RelativeLayout
+        android:id="@+id/modify_pay_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="修改支付密码"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.6"
+            android:src="@drawable/go" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:alpha="0.2"
+        android:background="@color/background" />
+
+    <RelativeLayout
+        android:id="@+id/forget_pay_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="忘记支付密码?"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.6"
+            android:src="@drawable/go" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/clear_application_cache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="清除应用缓存"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.4"
+            android:text="0.00M"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/background" />
+
 
     <RelativeLayout
         android:id="@+id/feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
+            android:layout_centerVertical="true"
             android:text="意见反馈"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:alpha="0.6"
             android:src="@drawable/go" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -144,7 +227,7 @@
             android:background="@drawable/activity_more_shape"
             android:text="退出登录"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

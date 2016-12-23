@@ -66,4 +66,10 @@
         <attr name="halfstart" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="PswInputView">
+        <attr name="count" format="integer" />
+        <attr name="border_color" format="color" />
+        <attr name="dot_color" format="color" />
+    </declare-styleable>
+
 </resources>

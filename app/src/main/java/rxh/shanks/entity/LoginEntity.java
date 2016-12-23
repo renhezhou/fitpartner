@@ -25,6 +25,7 @@ public class LoginEntity {
     private String imToken;
     private String APPURL;
     private String age;
+    private String IDcardNumber;
 
     public String getQNDownToken() {
         return QNDownToken;
@@ -184,5 +185,13 @@ public class LoginEntity {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getIDcardNumber() {
+        return IDcardNumber;
+    }
+
+    public void setIDcardNumber(String IDcardNumber) {
+        this.IDcardNumber = IDcardNumber;
     }
 }

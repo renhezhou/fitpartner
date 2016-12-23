@@ -63,6 +63,7 @@ public class LoginPresenter {
                     MyApplication.currentClubName = response.getResult().getCurrentClubName();
                     MyApplication.address = response.getResult().getAddress();
                     MyApplication.age = response.getResult().getAge();
+                    MyApplication.IDcardNumber = response.getResult().getIDcardNumber();
                     MyApplication.phoneNumber = response.getResult().getPhoneNumber();
                     MyApplication.sex = response.getResult().getSex();
                     MyApplication.fitTarget = response.getResult().getFitTarget();

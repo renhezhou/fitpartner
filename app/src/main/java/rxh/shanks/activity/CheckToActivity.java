@@ -1,8 +1,12 @@
 package rxh.shanks.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +24,8 @@ import butterknife.ButterKnife;
 import rxh.shanks.base.BaseActivity;
 import rxh.shanks.entity.FitCardEntity;
 import rxh.shanks.presenter.CheckToPresenter;
+import rxh.shanks.utils.ChangeUtils;
+import rxh.shanks.utils.MyApplication;
 import rxh.shanks.view.CheckToView;
 
 /**
@@ -73,8 +79,14 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
     }
 
     @Override
-    public void show() {
-        loading("获取信息中...", "true");
+    public void show(int flag) {
+        if (flag == 0) {
+            loading("获取信息中...", "true");
+        } else if (flag == 1) {
+            loading("开卡中...", "true");
+        } else if (flag == 2) {
+            loading("二维码生成中...", "true");
+        }
     }
 
     @Override
@@ -89,13 +101,75 @@ public class CheckToActivity extends BaseActivity implements CheckToView {
     }
 
     @Override
+    public void handleCardSuccess(String cardID, String cardType) {
+        presenter.generatedQR(cardID, cardType);
+    }
+
+    @Override
+    public void handleCard(final String cardID, final String cardType) {
+        new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("你还未开卡，是否提前开卡？")
+                .setCancelable(false)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int j) {
+                        dismiss();
+                        presenter.handleCard(cardID, cardType);
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dismiss();
+                        finish();
+                    }
+                }).show();
+    }
+
+    @Override
     public void onFinished(String result) {
         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void getFitCard(List<FitCardEntity> fitCardEntityList) {
-        presenter.generatedQR(fitCardEntityList.get(0).getCardID(), fitCardEntityList.get(0).getType());
+    public void getFitCard(final List<FitCardEntity> fitCardEntityList) {
+        for (int i = 0; i < fitCardEntityList.size(); i++) {
+            if (fitCardEntityList.get(i).getCardID().equals(MyApplication.defaultmembercard)) {
+                if (fitCardEntityList.get(i).getCardState().equals("1")) {
+                    presenter.generatedQR(fitCardEntityList.get(i).getCardID(), fitCardEntityList.get(i).getType());
+                } else if (fitCardEntityList.get(i).getCardState().equals("7")) {
+                    final int finalI = i;
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("你还未开卡，是否提前开卡？")
+                            .setCancelable(false)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialoginterface, int j) {
+                                    dismiss();
+                                    presenter.handleCard(fitCardEntityList.get(finalI).getCardID(), fitCardEntityList.get(finalI).getType());
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dismiss();
+                                    finish();
+                                }
+                            }).show();
+                } else {
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("你好，你的卡处于" + ChangeUtils.get_card_type(fitCardEntityList.get(i).getCardState()) + "状态，暂时不能签到")
+                            .setCancelable(false)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialoginterface, int j) {
+                                    dismiss();
+                                    finish();
+                                }
+                            }).show();
+                }
+            }
+        }
     }
 
 

@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rxh.shanks.base.BaseActivity;
@@ -23,18 +25,19 @@ import rxh.shanks.view.SetUserInformationNextView;
  */
 public class SetUserInformationNextActivity extends BaseActivity implements SetUserInformationNextView {
 
-    @Bind(R.id.go)
-    TextView go;
+
     @Bind(R.id.head_portrait)
     CircleImageView head_portrait;
     @Bind(R.id.male)
     ImageView male;
     @Bind(R.id.NV)
     ImageView NV;
-    @Bind(R.id.age)
-    TextView age;
     @Bind(R.id.nick_name)
     EditText nick_name;
+    @Bind(R.id.real_name)
+    EditText real_name;
+    @Bind(R.id.ID_card)
+    EditText ID_card;
     @Bind(R.id.contact_address)
     EditText contact_address;
     @Bind(R.id.muscle)
@@ -45,9 +48,8 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
     TextView shaping;
     @Bind(R.id.next)
     Button next;
-    @Bind(R.id.real_name)
-    TextView real_name;
-    SetUserInformationNextPresenter setUserInformationNextPresenter;
+
+    SetUserInformationNextPresenter presenter;
     //sex 1代表男，0代表女；
     //fitness_needs 1代表增肌，2代表减脂，3代表塑形
     String sex = null, fitness_needs = null;
@@ -56,30 +58,66 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUserInformationNextPresenter = new SetUserInformationNextPresenter(this);
+        presenter = new SetUserInformationNextPresenter(this);
         initview();
     }
 
-    @SuppressLint("NewApi")
     public void initview() {
         setContentView(R.layout.activity_set_user_information_next);
         ButterKnife.bind(this);
-        go.setOnClickListener(this);
-        male.setOnClickListener(this);
-        NV.setOnClickListener(this);
         muscle.setOnClickListener(this);
         fat.setOnClickListener(this);
         shaping.setOnClickListener(this);
         next.setOnClickListener(this);
-        sex = "1";
-        real_name.setText(MyApplication.realName);
-        age.setText(MyApplication.age);
+        initdata();
+    }
+
+    @SuppressLint("NewApi")
+    public void initdata() {
+        Picasso.with(getApplicationContext())
+                .load(MyApplication.QNDownToken)
+                .placeholder(R.drawable.loading_cort)
+                .error(R.drawable.loading_cort)
+                .into(head_portrait);
+        if (MyApplication.sex.equals("1")) {
+            sex = "1";
+            Picasso.with(getApplicationContext()).load(R.drawable.nandown).into(male);
+            Picasso.with(getApplicationContext()).load(R.drawable.nvup).into(NV);
+        } else {
+            sex = "0";
+            Picasso.with(getApplicationContext()).load(R.drawable.nanup).into(male);
+            Picasso.with(getApplicationContext()).load(R.drawable.nvdown).into(NV);
+        }
+        if (MyApplication.nickName != null) {
+            nick_name.setText(MyApplication.nickName);
+            nick_name.setEnabled(false);
+        } else {
+            nick_name.setEnabled(true);
+        }
+        if (MyApplication.realName != null) {
+            real_name.setText(MyApplication.realName);
+            real_name.setEnabled(false);
+        } else {
+            real_name.setEnabled(true);
+        }
+        if (MyApplication.IDcardNumber != null) {
+            ID_card.setText(MyApplication.IDcardNumber);
+            ID_card.setEnabled(false);
+        } else {
+            ID_card.setEnabled(true);
+        }
+        if (MyApplication.address != null) {
+            contact_address.setText(MyApplication.address);
+            contact_address.setEnabled(false);
+        } else {
+            contact_address.setEnabled(true);
+        }
         muscle.setBackground(getResources().getDrawable(R.drawable.muscle_flag_up));
-        muscle.setTextColor(getResources().getColor(R.color.black));
+        muscle.setTextColor(getResources().getColor(R.color.textcolor));
         fat.setBackground(getResources().getDrawable(R.drawable.fat_up));
-        fat.setTextColor(getResources().getColor(R.color.black));
+        fat.setTextColor(getResources().getColor(R.color.textcolor));
         shaping.setBackground(getResources().getDrawable(R.drawable.shaping_up));
-        shaping.setTextColor(getResources().getColor(R.color.black));
+        shaping.setTextColor(getResources().getColor(R.color.textcolor));
     }
 
     @SuppressLint("NewApi")
@@ -89,16 +127,6 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
             case R.id.go:
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 break;
-            case R.id.male:
-                sex = "1";
-                male.setBackground(getResources().getDrawable(R.drawable.nandown));
-                NV.setBackground(getResources().getDrawable(R.drawable.nvup));
-                break;
-            case R.id.NV:
-                sex = "0";
-                male.setBackground(getResources().getDrawable(R.drawable.nanup));
-                NV.setBackground(getResources().getDrawable(R.drawable.nvdown));
-                break;
             case R.id.muscle:
                 if (muscle_flag) {
                     muscle_flag = false;
@@ -107,7 +135,7 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
                 } else {
                     muscle_flag = true;
                     muscle.setBackground(getResources().getDrawable(R.drawable.muscle_flag_up));
-                    muscle.setTextColor(getResources().getColor(R.color.black));
+                    muscle.setTextColor(getResources().getColor(R.color.textcolor));
                 }
                 break;
             case R.id.fat:
@@ -118,7 +146,7 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
                 } else {
                     fat_flag = true;
                     fat.setBackground(getResources().getDrawable(R.drawable.fat_up));
-                    fat.setTextColor(getResources().getColor(R.color.black));
+                    fat.setTextColor(getResources().getColor(R.color.textcolor));
                 }
                 break;
             case R.id.shaping:
@@ -129,7 +157,7 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
                 } else {
                     shaping_flag = true;
                     shaping.setBackground(getResources().getDrawable(R.drawable.shaping_up));
-                    shaping.setTextColor(getResources().getColor(R.color.black));
+                    shaping.setTextColor(getResources().getColor(R.color.textcolor));
                 }
                 break;
             case R.id.next:
@@ -153,7 +181,7 @@ public class SetUserInformationNextActivity extends BaseActivity implements SetU
                         }
                     }
                 }
-                setUserInformationNextPresenter.setuserinformationnext(sex, age.getText().toString(), nick_name.getText().toString(),
+                presenter.setuserinformationnext(sex, ID_card.getText().toString(), nick_name.getText().toString(),
                         contact_address.getText().toString(), fitness_needs);
                 break;
             default:

@@ -20,43 +20,43 @@ import rxh.shanks.view.MembershipCardView;
 public class MembershipCardPresenter {
 
     private GetInfo getInfo;
-    private MembershipCardView membershipCardView;
+    private MembershipCardView view;
 
-    public MembershipCardPresenter(MembershipCardView membershipCardView) {
+    public MembershipCardPresenter(MembershipCardView view) {
         getInfo = new Is_Networking();
-        this.membershipCardView = membershipCardView;
+        this.view = view;
     }
 
-    public void getFitCard() {
-        RequestParams params = new RequestParams(CreatUrl.creaturl("card", "getFitCard"));
+    public void getMembershipCard() {
+        RequestParams params = new RequestParams(CreatUrl.creaturl("card", "getMyCard"));
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("clubID", MyApplication.currentClubID);
-        membershipCardView.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
-                membershipCardView.hide();
-                MembershipCardCodeEntity membershipCardCodeEntity = new MembershipCardCodeEntity();
-                membershipCardCodeEntity = JsonUtils.getmyFitCard(result);
-                if (membershipCardCodeEntity.getCode().equals("0")) {
-                    membershipCardView.getFitCard(membershipCardCodeEntity.getResult());
+                MembershipCardCodeEntity entity = new MembershipCardCodeEntity();
+                entity = JsonUtils.getMembershipCard(result);
+                if (entity.getCode().equals("0")) {
+                    view.getFitCard(entity.getResult());
+                } else {
+                    view.toast(entity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
-                membershipCardView.hide();
+                view.error();
             }
 
             @Override
             public void onCancelled(Callback.CancelledException cex) {
-                membershipCardView.hide();
+                view.hide();
             }
 
             @Override
             public void onFinished() {
-                membershipCardView.hide();
+                view.hide();
             }
         });
     }
@@ -68,21 +68,24 @@ public class MembershipCardPresenter {
         params.addBodyParameter("token", MyApplication.token);
         params.addBodyParameter("userID", MyApplication.userID);
         params.addBodyParameter("cardID", cardID);
+        view.show();
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                view.hide();
                 MembershipCardCodeEntity membershipCardCodeEntity = new MembershipCardCodeEntity();
                 membershipCardCodeEntity = JsonUtils.getmyFitCard(result);
                 if (membershipCardCodeEntity.getCode().equals("0")) {
-                    membershipCardView.setDefaultCard();
+                    view.setDefaultCard();
                     MyApplication.defaultmembercard = cardID;
                 } else {
-                    membershipCardView.toast(membershipCardCodeEntity.getError());
+                    view.toast(membershipCardCodeEntity.getError());
                 }
             }
 
             @Override
             public void onError(Throwable ex) {
+                view.hide();
             }
 
             @Override

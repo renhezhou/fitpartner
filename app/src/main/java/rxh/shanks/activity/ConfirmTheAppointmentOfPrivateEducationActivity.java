@@ -142,6 +142,11 @@ public class ConfirmTheAppointmentOfPrivateEducationActivity extends BaseActivit
     }
 
     @Override
+    public void error() {
+        r_load.setText("服务器或网络异常");
+    }
+
+    @Override
     public void getlessoncoach(List<ConfirmTheAppointmentOfPrivateEducationEntity> entities) {
         initview();
         data.clear();

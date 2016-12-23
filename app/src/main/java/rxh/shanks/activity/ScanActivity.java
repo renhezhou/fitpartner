@@ -1,8 +1,11 @@
 package rxh.shanks.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,11 +36,13 @@ public class ScanActivity extends BaseActivity implements CodeUtils.AnalyzeCallb
 
     String qrString;
     ScanPresenter presenter;
+    private SharedPreferences sp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ScanPresenter(this);
+        sp = getSharedPreferences("user_info", 0);
         initview();
     }
 
@@ -46,17 +51,34 @@ public class ScanActivity extends BaseActivity implements CodeUtils.AnalyzeCallb
         ButterKnife.bind(this);
         title.setText("扫码");
         back.setOnClickListener(this);
-        /**
-         * 执行扫面Fragment的初始化操作
-         */
-        CaptureFragment captureFragment = new CaptureFragment();
-        // 为二维码扫描界面设置定制化界面
-        // CodeUtils.setFragmentArgs(captureFragment, R.id.fl_my_container);
-        captureFragment.setAnalyzeCallback(this);
-        /**
-         * 替换我们的扫描控件
-         */
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
+        if (sp.getInt("sts", 0) == 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage("尊敬的用户，您好。为了手机尽快的识别出二维码。我们建议您在扫描的时候，尽量让二维码完全置于扫描框内，并距扫描框边有一定距离。")
+                    .setCancelable(false)
+                    .setPositiveButton("我知道了", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialoginterface, int i) {
+                            CaptureFragment captureFragment = new CaptureFragment();
+                            captureFragment.setAnalyzeCallback(ScanActivity.this);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
+                        }
+                    })
+                    .setNegativeButton("不再提醒", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putInt("sts", 1);
+                            editor.commit();
+                            CaptureFragment captureFragment = new CaptureFragment();
+                            captureFragment.setAnalyzeCallback(ScanActivity.this);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
+                        }
+                    }).show();
+        } else {
+            CaptureFragment captureFragment = new CaptureFragment();
+            captureFragment.setAnalyzeCallback(ScanActivity.this);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
+        }
     }
 
     @Override

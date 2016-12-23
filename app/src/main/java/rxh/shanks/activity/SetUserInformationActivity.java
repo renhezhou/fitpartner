@@ -65,7 +65,13 @@ public class SetUserInformationActivity extends BaseActivity implements SetUserI
         ButterKnife.bind(this);
         next.setOnClickListener(this);
         select_head.setOnClickListener(this);
-        user_name.setText(MyApplication.realName);
+        if (MyApplication.realName != null) {
+            user_name.setText(MyApplication.realName);
+            user_name.setEnabled(false);
+        } else {
+            user_name.setEnabled(true);
+        }
+
     }
 
     @Override

@@ -32,4 +32,12 @@
     <!-- jd -->
     <dimen name="refresh_header_height_jd">100dp</dimen>
 
+    <dimen name="one_ts">10sp</dimen>
+    <dimen name="two_ts">12sp</dimen>
+    <dimen name="three_ts">14sp</dimen>
+    <dimen name="four_ts">16sp</dimen>
+    <dimen name="five_ts">18sp</dimen>
+    <dimen name="six_ts">20sp</dimen>
+    <dimen name="seven_ts">30sp</dimen>
+
 </resources>

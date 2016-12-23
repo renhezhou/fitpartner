@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#9B9B9B"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/support_venues"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="这是支持场馆"
+        android:textColor="#9B9B9B"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/card_renewal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/activity_membership_card_button_shape"
+        android:paddingBottom="6dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="6dp"
+        android:text="续  卡"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>

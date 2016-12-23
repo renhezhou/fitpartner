@@ -5,11 +5,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,10 +15,7 @@ import java.util.List;
 
 import rxh.shanks.activity.R;
 import rxh.shanks.customview.CircleImageView;
-import rxh.shanks.entity.AlreadyMakeAnAppointmentEntity;
 import rxh.shanks.entity.SwitchingVenuesAdapterEntity;
-import rxh.shanks.entity.SwitchingVenuesCodeEntity;
-import rxh.shanks.entity.SwitchingVenuesEntity;
 import rxh.shanks.utils.MyApplication;
 
 /**

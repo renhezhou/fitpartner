@@ -9,11 +9,15 @@ import rxh.shanks.entity.FitCardEntity;
  */
 public interface CheckToView {
 
-    void show();
+    void show(int flag);
 
     void hide();
 
     void generatedQR(String result);
+
+    void handleCardSuccess(String cardID, String cardType);
+
+    void handleCard(String cardID, String cardType);
 
     void onFinished(String result);
 

@@ -101,19 +101,8 @@ public class BannerFragment extends Fragment {
 
         @Override
         public void UpdateUI(Context context, int position, String data) {
-            //在这儿对imageview进行加载
-//            Glide
-//                    .with(context)
-//                    .load(urls.get(position))
-//                    .centerCrop()
-//                    // .placeholder(R.drawable.ic_launcher)
-//                    .crossFade()
-//                    .into(imageView);
             Picasso.with(context)
                     .load(urls.get(position))
-//                    .placeholder(R.drawable.loading_cort)
-//                    .error(R.drawable.loading_cort)
-                    .fit()
                     .into(imageView);
         }
     }

@@ -3,8 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/red"
-    android:paddingRight="40dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingRight="40dp">
 
 
     <LinearLayout
@@ -35,7 +35,6 @@
         android:id="@+id/check_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -51,6 +50,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="签个到"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/payment" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="付    款"
             android:textColor="@color/white" />
 
 

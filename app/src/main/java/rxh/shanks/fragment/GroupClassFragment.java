@@ -28,6 +28,7 @@ import rxh.shanks.view.CoachDetailsView;
 
 /**
  * Created by Administrator on 2016/8/3.
+ * 团课
  */
 public class GroupClassFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener, CoachDetailsView {
 

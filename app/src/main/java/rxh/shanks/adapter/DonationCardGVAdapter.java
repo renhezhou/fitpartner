@@ -20,12 +20,14 @@ import rxh.shanks.entity.DonationCardEntity;
 public class DonationCardGVAdapter extends BaseAdapter {
 
     Context context;
+    int selected_position;
     private List<DonationCardEntity> data = new ArrayList<>();
     LayoutInflater mInflater;
 
-    public DonationCardGVAdapter(Context context, List<DonationCardEntity> data) {
+    public DonationCardGVAdapter(Context context, List<DonationCardEntity> data, int selected_position) {
         this.context = context;
         this.data = data;
+        this.selected_position = selected_position;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -61,6 +63,13 @@ public class DonationCardGVAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.name.setText(data.get(position).getCodeID());
+        if (selected_position == position) {
+            holder.name.setBackgroundResource(R.drawable.activity_donation_card_gv_item_red_shape);
+            holder.name.setTextColor(context.getResources().getColor(R.color.red));
+        } else {
+            holder.name.setBackgroundResource(R.drawable.activity_donation_card_gv_item_shape);
+            holder.name.setTextColor(context.getResources().getColor(R.color.textcolor));
+        }
         return convertView;
     }
 

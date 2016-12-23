@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <FrameLayout
@@ -18,7 +18,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:alpha="0.2"
+            android:alpha="0.6"
             android:background="@color/black" />
 
         <RelativeLayout
@@ -34,11 +34,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="16dp"
+                    android:layout_width="13dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="6dp"
-                    android:src="@drawable/fanhui" />
+                    android:src="@drawable/back" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="返回"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/three_ts" />
             </LinearLayout>
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_centerInParent="true"
                 android:text="河洲"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/five_ts" />
 
             <TextView
                 android:id="@+id/edit"
@@ -66,7 +66,7 @@
                 android:layout_centerVertical="true"
                 android:text="编辑"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/three_ts" />
         </RelativeLayout>
 
         <rxh.shanks.customview.CircleImageView
@@ -80,15 +80,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
+            android:layout_centerVertical="true"
             android:text="性别"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <ImageView
             android:id="@+id/boy"
@@ -107,154 +108,132 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
             android:text="年龄"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <EditText
             android:id="@+id/age"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:background="@null"
             android:gravity="center_vertical|right"
-            android:text="22"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
             android:text="姓名"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:background="@null"
             android:gravity="center_vertical|right"
-            android:text="任河洲"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
             android:text="用户昵称"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <EditText
             android:id="@+id/nickname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:background="@null"
             android:gravity="center_vertical|right"
-            android:text="任河洲"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
             android:text="手机号码"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <EditText
             android:id="@+id/phone_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:background="@null"
             android:gravity="center_vertical|right"
-            android:text="15928818892"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
@@ -263,10 +242,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:alpha="0.6"
             android:text="健身需求"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -281,7 +259,7 @@
                 android:layout_margin="4dp"
                 android:padding="2dp"
                 android:text="增肌"
-                android:textSize="16sp" />
+                android:textSize="@dimen/three_ts" />
 
             <TextView
                 android:id="@+id/fat"
@@ -290,7 +268,7 @@
                 android:layout_margin="4dp"
                 android:padding="2dp"
                 android:text="减脂"
-                android:textSize="16sp" />
+                android:textSize="@dimen/three_ts" />
 
             <TextView
                 android:id="@+id/shaping"
@@ -299,43 +277,38 @@
                 android:layout_margin="4dp"
                 android:padding="2dp"
                 android:text="塑形"
-                android:textSize="16sp" />
+                android:textSize="@dimen/three_ts" />
         </LinearLayout>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:alpha="0.2"
-        android:background="@color/text_not_selected" />
+        android:background="@color/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
             android:text="联系地址"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <EditText
             android:id="@+id/address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:background="@null"
             android:gravity="center_vertical|right"
-            android:text="四川成都高新区"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
     </LinearLayout>
 
 

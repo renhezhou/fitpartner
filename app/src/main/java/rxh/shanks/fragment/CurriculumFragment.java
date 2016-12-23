@@ -37,6 +37,7 @@ import io.rong.imkit.RongIM;
 import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.CheckToActivity;
 import rxh.shanks.activity.CourseDetailsActivity;
+import rxh.shanks.activity.PaymentActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.activity.ScanActivity;
 import rxh.shanks.activity.VenueIntroductionActivity;
@@ -69,7 +70,7 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
     private TextView peopleandtime, more, club_name, club_profile, name, view_free_courses, booking_group_course;
     private ImageView add;
     private CircleImageView head_portrait;
-    private LinearLayout scan, check_to;
+    private LinearLayout scan, check_to, payment;
     private RelativeLayout dadianhua, chat;
 
     private List<BrandGymPaidEntity> data = new ArrayList<>();
@@ -175,6 +176,10 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
                 startActivity(new Intent(getActivity(), CheckToActivity.class));
                 popupWindow.dismiss();
                 break;
+            case R.id.payment:
+                startActivity(new Intent(getActivity(), PaymentActivity.class));
+                popupWindow.dismiss();
+                break;
             case R.id.more:
                 Intent moreintent = new Intent();
                 moreintent.setClass(getActivity(), VenueIntroductionActivity.class);
@@ -268,8 +273,10 @@ public class CurriculumFragment extends Fragment implements OnRefreshListener, O
                 null);
         scan = (LinearLayout) popView.findViewById(R.id.scan);
         check_to = (LinearLayout) popView.findViewById(R.id.check_to);
+        payment = (LinearLayout) popView.findViewById(R.id.payment);
         scan.setOnClickListener(this);
         check_to.setOnClickListener(this);
+        payment.setOnClickListener(this);
         popupWindow = new PopupWindow(popView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

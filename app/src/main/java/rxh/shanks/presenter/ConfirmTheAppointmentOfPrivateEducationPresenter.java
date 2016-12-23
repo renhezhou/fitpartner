@@ -48,6 +48,7 @@ public class ConfirmTheAppointmentOfPrivateEducationPresenter {
             @Override
             public void onError(Throwable ex) {
                 view.hide();
+                view.error();
             }
 
             @Override

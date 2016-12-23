@@ -19,6 +19,7 @@ import java.util.List;
 import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
 import rxh.shanks.provider.MyTextMessageItemProvider;
+import rxh.shanks.view.MyConnectionStatusListener;
 
 /**
  * Created by Administrator on 2016/4/11.
@@ -42,6 +43,7 @@ public class MyApplication extends Application {
     //定义一些个人中心界面需要用到的数据
     public static String address = null;
     public static String age = null;
+    public static String IDcardNumber = null;
     public static String phoneNumber = null;
     public static String sex = null;
     public static String fitTarget = null;
@@ -85,7 +87,10 @@ public class MyApplication extends Application {
             RongIM.init(this);
             //设置聊天界面头像不显示
             RongIM.getInstance().registerMessageTemplate(new MyTextMessageItemProvider());
-
+            /**
+             * 设置连接状态变化的监听器.
+             */
+            RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
         }
     }
 
@@ -119,6 +124,9 @@ public class MyApplication extends Application {
         }
         if (sp.getString("age", null) != null) {
             age = (sp.getString("age", null));
+        }
+        if (sp.getString("IDcardNumber", null) != null) {
+            IDcardNumber = (sp.getString("IDcardNumber", null));
         }
         if (sp.getString("phoneNumber", null) != null) {
             phoneNumber = (sp.getString("phoneNumber", null));

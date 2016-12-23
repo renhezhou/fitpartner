@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/yuan_tv"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:background="@drawable/activity_donation_card_gv_item_shape"
+        android:gravity="center"
+        android:text="1254"
+        android:textColor="#9B9B9B"
+        android:textSize="14sp" />
 
 </RelativeLayout>

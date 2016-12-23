@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
@@ -25,6 +26,7 @@ import de.greenrobot.event.EventBus;
 import rxh.shanks.EBEntity.SVAEntity;
 import rxh.shanks.activity.CheckToActivity;
 import rxh.shanks.activity.CoachDetailsActivity;
+import rxh.shanks.activity.PaymentActivity;
 import rxh.shanks.activity.R;
 import rxh.shanks.activity.ScanActivity;
 import rxh.shanks.adapter.CoachAdapter;
@@ -44,7 +46,7 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
     private SwipeToLoadLayout swipeToLoadLayout;
     ListView lv;
     private ImageView add;
-    private LinearLayout scan, check_to;
+    private LinearLayout scan, check_to, payment;
     private List<CoachEntity> data = new ArrayList<>();
     CoachAdapter adapter;
     CoachPsesenter presenter;
@@ -148,6 +150,10 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
                 startActivity(new Intent(getActivity(), CheckToActivity.class));
                 popupWindow.dismiss();
                 break;
+            case R.id.payment:
+                startActivity(new Intent(getActivity(), PaymentActivity.class));
+                popupWindow.dismiss();
+                break;
             default:
                 break;
         }
@@ -161,8 +167,10 @@ public class CoachFragment extends Fragment implements OnRefreshListener, OnLoad
                 null);
         scan = (LinearLayout) popView.findViewById(R.id.scan);
         check_to = (LinearLayout) popView.findViewById(R.id.check_to);
+        payment = (LinearLayout) popView.findViewById(R.id.payment);
         scan.setOnClickListener(this);
         check_to.setOnClickListener(this);
+        payment.setOnClickListener(this);
         popupWindow = new PopupWindow(popView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

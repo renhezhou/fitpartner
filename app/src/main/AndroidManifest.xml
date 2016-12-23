@@ -191,6 +191,21 @@
         <activity
             android:name=".ScanNextActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ModifyLoginPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SetPayPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ModifyPayPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgetPayPasswordActivity"
+            android:screenOrientation="portrait" />
         <!--支付宝支付需要注册的activity-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

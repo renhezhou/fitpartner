@@ -129,11 +129,11 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
             girl.setBackground(getResources().getDrawable(R.drawable.nvdown));
         }
         muscle.setBackground(getResources().getDrawable(R.drawable.muscle_flag_up));
-        muscle.setTextColor(getResources().getColor(R.color.black));
+        muscle.setTextColor(getResources().getColor(R.color.textcolor));
         fat.setBackground(getResources().getDrawable(R.drawable.fat_up));
-        fat.setTextColor(getResources().getColor(R.color.black));
+        fat.setTextColor(getResources().getColor(R.color.textcolor));
         shaping.setBackground(getResources().getDrawable(R.drawable.shaping_up));
-        shaping.setTextColor(getResources().getColor(R.color.black));
+        shaping.setTextColor(getResources().getColor(R.color.textcolor));
         //fitTarget格式为1_4类型的
         String str = MyApplication.fitTarget;
         if (str != null) {
@@ -229,7 +229,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                 if (muscle_flag) {
                     muscle_flag = false;
                     muscle.setBackground(getResources().getDrawable(R.drawable.muscle_flag_up));
-                    muscle.setTextColor(getResources().getColor(R.color.black));
+                    muscle.setTextColor(getResources().getColor(R.color.textcolor));
                 } else {
                     muscle_flag = true;
                     muscle.setBackground(getResources().getDrawable(R.drawable.muscle_down));
@@ -240,7 +240,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                 if (fat_flag) {
                     fat_flag = false;
                     fat.setBackground(getResources().getDrawable(R.drawable.fat_up));
-                    fat.setTextColor(getResources().getColor(R.color.black));
+                    fat.setTextColor(getResources().getColor(R.color.textcolor));
                 } else {
                     fat_flag = true;
                     fat.setBackground(getResources().getDrawable(R.drawable.fat_down));
@@ -251,7 +251,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
                 if (shaping_flag) {
                     shaping_flag = false;
                     shaping.setBackground(getResources().getDrawable(R.drawable.shaping_up));
-                    shaping.setTextColor(getResources().getColor(R.color.black));
+                    shaping.setTextColor(getResources().getColor(R.color.textcolor));
                 } else {
                     shaping_flag = true;
                     shaping.setBackground(getResources().getDrawable(R.drawable.shaping_down));
@@ -294,6 +294,7 @@ public class PersonalInformationEditorActivity extends BaseActivity implements P
         MyApplication.fitTarget = fitness_needs;
         MyApplication.sex = sex;
         MyApplication.age = age.getText().toString();
+        MyApplication.address = address.getText().toString();
         if (path.size() > 0) {
             uploadheadportrait(path.get(0));
         } else {

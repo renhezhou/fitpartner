@@ -60,6 +60,7 @@ public class SetUserInformationPresenter {
         getInfo.getinfo(params, new Response() {
             @Override
             public void onSuccess(String result) {
+                setUserInformationView.hide();
                 SetUserInformationCodeEntity setUserInformationCodeEntity = JsonUtils.setuserinformation(result);
                 if (setUserInformationCodeEntity.getCode().equals("0")) {
                     setUserInformationView.onSuccess();

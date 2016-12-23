@@ -35,8 +35,8 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
     private SwipeToLoadLayout swipeToLoadLayout;
     ListView lv;
     private List<CourseDetailsEntity> data = new ArrayList<>();
-    CourseDetailsAdapter courseDetailsAdapter;
-    CourseDetailsPresenter courseDetailsPresenter;
+    CourseDetailsAdapter adapter;
+    CourseDetailsPresenter presenter;
 
 
     String date;
@@ -52,7 +52,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_course_details, null);
-        courseDetailsPresenter = new CourseDetailsPresenter(this);
+        presenter = new CourseDetailsPresenter(this);
         date = getArguments().getString("date");
         initview();
         initdada();
@@ -73,6 +73,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
                 intent.setClass(getActivity(), PrivateEducationOrLeagueDetailsActivity.class);
                 intent.putExtra("logo", data.get(position).getLogo());
                 intent.putExtra("address", data.get(position).getAddress());
+                intent.putExtra("coachID", data.get(position).getCoachID());
                 intent.putExtra("coachName", data.get(position).getCoachName());
                 intent.putExtra("lessonIntro", data.get(position).getLessonIntro());
                 intent.putExtra("lessonName", data.get(position).getLessonName());
@@ -86,7 +87,7 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
     }
 
     public void initdada() {
-        courseDetailsPresenter.getFreeLesson(date);
+        presenter.getFreeLesson(date);
     }
 
     @Override
@@ -110,8 +111,8 @@ public class CourseDetailsFragment extends Fragment implements OnRefreshListener
     public void getFreeLesson(List<CourseDetailsEntity> courseDetailsEntityList) {
         swipeToLoadLayout.setRefreshing(false);
         data = courseDetailsEntityList;
-        courseDetailsAdapter = new CourseDetailsAdapter(getActivity(), data);
-        lv.setAdapter(courseDetailsAdapter);
+        adapter = new CourseDetailsAdapter(getActivity(), data);
+        lv.setAdapter(adapter);
     }
 
 

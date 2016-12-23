@@ -5,30 +5,13 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:text="跳过"
-            android:textColor="@color/red"
-            android:textSize="20sp" />
-
-    </RelativeLayout>
-
 
     <rxh.shanks.customview.CircleImageView
         android:id="@+id/head_portrait"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:src="@drawable/logo" />
+        android:layout_marginTop="40dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -68,38 +51,46 @@
             android:layout_marginTop="30dp"
             android:background="@null"
             android:gravity="center_horizontal"
-            android:hint="昵称" />
+            android:hint="昵称"
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#000" />
+            android:background="@color/background" />
 
-        <TextView
+        <EditText
             android:id="@+id/real_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@null"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:hint="真实姓名"
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#000" />
+            android:background="@color/background" />
 
-        <TextView
-            android:id="@+id/age"
+        <EditText
+            android:id="@+id/ID_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@null"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:hint="身份证号码"
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#000" />
+            android:background="@color/background" />
 
 
         <EditText
@@ -109,20 +100,24 @@
             android:layout_marginTop="30dp"
             android:background="@null"
             android:gravity="center_horizontal"
-            android:hint="联系地址" />
+            android:hint="联系地址"
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#000" />
+            android:background="@color/background" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="30dp"
             android:text="健身需求"
-            android:textSize="20sp" />
+            android:textColor="@color/textcolor"
+            android:textSize="@dimen/three_ts" />
 
 
         <LinearLayout
@@ -139,7 +134,8 @@
                 android:background="@drawable/activity_login_shape"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="增肌" />
+                android:text="增肌"
+                android:textSize="@dimen/two_ts" />
 
             <TextView
                 android:id="@+id/fat"
@@ -151,7 +147,8 @@
                 android:background="@drawable/activity_login_shape"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="减脂" />
+                android:text="减脂"
+                android:textSize="@dimen/two_ts" />
 
             <TextView
                 android:id="@+id/shaping"
@@ -162,7 +159,8 @@
                 android:background="@drawable/activity_login_shape"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="塑形" />
+                android:text="塑形"
+                android:textSize="@dimen/two_ts" />
 
         </LinearLayout>
 
@@ -178,7 +176,7 @@
                 android:background="@drawable/rounded_button"
                 android:text="完  成"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/three_ts" />
         </RelativeLayout>
     </LinearLayout>
 

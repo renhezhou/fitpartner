@@ -15,6 +15,8 @@ public interface ConfirmTheAppointmentOfPrivateEducationView {
 
     void toast(String msg);
 
+    void error();
+
     void getlessoncoach(List<ConfirmTheAppointmentOfPrivateEducationEntity> entities);
 
 

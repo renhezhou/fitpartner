@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -30,13 +30,13 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/activity_login_shape"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:src="@drawable/user" />
 
             <EditText
@@ -45,7 +45,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@null"
-                android:hint="请输入用户名" />
+                android:hint="请输入用户名"
+                android:padding="10dp"
+                android:textColor="@color/textcolor"
+                android:textSize="@dimen/three_ts" />
 
         </LinearLayout>
 
@@ -57,13 +60,13 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/activity_login_shape"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:src="@drawable/password" />
 
             <EditText
@@ -73,7 +76,10 @@
                 android:layout_gravity="center_vertical"
                 android:background="@null"
                 android:hint="请输入密码"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/textcolor"
+                android:textSize="@dimen/three_ts" />
 
         </LinearLayout>
 
@@ -85,13 +91,13 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/activity_login_shape"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:src="@drawable/password" />
 
             <EditText
@@ -101,7 +107,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="请输入验证码" />
+                android:hint="请输入验证码"
+                android:padding="10dp"
+                android:textColor="@color/textcolor"
+                android:textSize="@dimen/three_ts" />
 
             <View
                 android:layout_width="1dp"
@@ -116,7 +125,8 @@
                 android:layout_marginLeft="10dp"
                 android:background="@null"
                 android:text="获取验证码"
-                android:textColor="@color/red" />
+                android:textColor="@color/red"
+                android:textSize="@dimen/two_ts" />
 
         </LinearLayout>
 
@@ -142,14 +152,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="切换手机登录" />
+                android:text="切换手机登录"
+                android:textColor="@color/textcolor"
+                android:textSize="@dimen/two_ts" />
 
             <TextView
                 android:id="@+id/forget_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="忘记密码?" />
+                android:text="忘记密码?"
+                android:textColor="@color/textcolor"
+                android:textSize="@dimen/two_ts" />
         </LinearLayout>
 
         <Button
@@ -159,6 +173,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
+            android:textSize="@dimen/three_ts"
             android:background="@drawable/activity_login_button_shape"
             android:text="登 录"
             android:textColor="#fff" />

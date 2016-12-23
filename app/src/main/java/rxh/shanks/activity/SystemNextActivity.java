@@ -45,14 +45,14 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView {
 
     String type;
     private List<SystemLVEntity> data = new ArrayList<>();
-    SystemNextAdapter systemNextAdapter;
-    SystemNextPresenter systemNextPresenter;
+    SystemNextAdapter adapter;
+    SystemNextPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getIntent().getStringExtra("type");
-        systemNextPresenter = new SystemNextPresenter(this);
+        presenter = new SystemNextPresenter(this);
         initview();
         initdata();
     }
@@ -61,11 +61,11 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView {
         setContentView(R.layout.activity_system_next);
         ButterKnife.bind(this);
         back.setOnClickListener(this);
-        title.setText(type);
+        title.setText(CheckUtils.gettype(type));
     }
 
     public void initdata() {
-        systemNextPresenter.getMsg(CheckUtils.getbacktype(type));
+        presenter.getMsg(type);
     }
 
     @Override
@@ -92,8 +92,8 @@ public class SystemNextActivity extends BaseActivity implements SystemNextView {
     @Override
     public void getMsg(List<SystemLVEntity> systemLVEntityList) {
         data = systemLVEntityList;
-        systemNextAdapter = new SystemNextAdapter(getApplicationContext(), data);
-        lv.setAdapter(systemNextAdapter);
+        adapter = new SystemNextAdapter(getApplicationContext(), data);
+        lv.setAdapter(adapter);
     }
 
     @Override

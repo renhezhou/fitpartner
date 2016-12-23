@@ -1,6 +1,10 @@
 package rxh.shanks.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +51,7 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
     @Bind(R.id.purchase)
     TextView purchase;
 
-    String logo, addresss, coachName, lessonIntro, lessonName, lessonID, evaluates, prices, time;
+    String logo, addresss, coachID, coachName, lessonIntro, lessonName, lessonID, evaluates, prices, time;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,18 +67,9 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
         back.setOnClickListener(this);
         consultation.setOnClickListener(this);
         purchase.setOnClickListener(this);
-//        Glide
-//                .with(getApplicationContext())
-//                .load(logo)
-//                .centerCrop()
-//                //.placeholder(R.drawable.ic_launcher)
-//                .crossFade()
-//                .into(img);
         if (logo != null && !logo.equals("")) {
             Picasso.with(getApplicationContext())
                     .load(logo)
-//                .placeholder(R.drawable.loading_cort)
-//                .error(R.drawable.loading_cort)
                     .into(img);
         }
         project.setText(lessonName);
@@ -83,7 +78,6 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
         } else {
             evaluate.setStar(0f);
         }
-
         coach_name.setText(coachName);
         when_long.setText("时长：" + time + "分钟");
         price.setText(prices + "元/节");
@@ -94,6 +88,7 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
     public void initdata() {
         logo = getIntent().getStringExtra("logo");
         addresss = getIntent().getStringExtra("address");
+        coachID = getIntent().getStringExtra("coachID");
         coachName = getIntent().getStringExtra("coachName");
         lessonIntro = getIntent().getStringExtra("lessonIntro");
         lessonName = getIntent().getStringExtra("lessonName");
@@ -110,11 +105,29 @@ public class PrivateEducationOrLeagueDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.consultation:
+                new AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("购课模块暂未开通，敬请期待。")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialoginterface, int i) {
+                                dismiss();
+                            }
+                        }).show();
                 //启动会话界面
-                if (RongIM.getInstance() != null)
-                    RongIM.getInstance().startPrivateChat(PrivateEducationOrLeagueDetailsActivity.this, MyApplication.CoachID, coachName);
+                //if (RongIM.getInstance() != null)
+                //RongIM.getInstance().startPrivateChat(PrivateEducationOrLeagueDetailsActivity.this, MyApplication.CoachID, coachName);
                 break;
             case R.id.purchase:
+                new AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("购课模块暂未开通，敬请期待。")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialoginterface, int i) {
+                                dismiss();
+                            }
+                        }).show();
                 break;
             default:
                 break;
